@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>431</width>
+    <height>203</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Ingredient name: </string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Quantity</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QSpinBox" name="spinBox">
+     <property name="prefix">
+      <string/>
+     </property>
+     <property name="maximum">
+      <number>100000</number>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Unit</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="comboBox">
+     <property name="currentText">
+      <string>Piece</string>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <item>
+      <property name="text">
+       <string>Piece</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Milli-litre (ml)</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Gram (g)</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Table spoon</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Tea spoon</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>New Item</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Type</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QComboBox" name="comboBox_2">
+     <item>
+      <property name="text">
+       <string>Fruit</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Veggy</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Spice</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Dairy</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Dry food</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Condiment</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Fish</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Red meat</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>White meat</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Pink meat</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_5">
+     <property name="text">
+      <string>Prefered Season</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QComboBox" name="comboBox_3">
+     <item>
+      <property name="text">
+       <string>Spring</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Summer</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Autumn</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Winter</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Not relevant</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QPushButton" name="pushButton">
+     <property name="text">
+      <string>Done</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="lineEdit"/>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
