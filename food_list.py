@@ -54,6 +54,10 @@ class food_list:
         self._recipe_list.append(recipe)
         self._update_recipe_count()
 
+    def add_ingredient(self, ingredient):
+        self._ingredient_list.append(ingredient)
+        self._update_ingredient_count()
+
     def remove_recipe(self, recipe_id):
         pass
 
@@ -77,3 +81,9 @@ class food_list:
 
     def _update_ingredient_count(self):
         self.ingredient_count = len(self._ingredient_list)
+
+    def check_if_ingredient_exist(self, ingredient_name):
+        for ingredient in self._ingredient_list:
+            if ingredient_name == ingredient.name:
+                return True
+        return False
