@@ -1,8 +1,7 @@
-
-
 import recipe
 import json
 import os.path
+import logging
 
 
 class food_list:
@@ -17,8 +16,8 @@ class food_list:
         self.recipe_count = len(self._recipe_list)
         self.ingredient_count = len(self._ingredient_list)
 
-    def store_food_list(self):
-        json.dump(self._recipe_list, open(self._recipe_path, 'w'), sort_keys=True)
+    def store_recipe_list(self):
+        print("store function is not yet implemented")
 
     def import_recipe_list(self):
         # check if the path exist
@@ -33,7 +32,7 @@ class food_list:
             try:
                 self._recipe_list = json.load(open(self._recipe_path))
             except json.decoder.JSONDecodeError:
-                print("Food list is empty or invalid")
+                logging.error("Food list is empty or invalid")
 
     def import_ingredient_list(self):
         # check if the path exist
@@ -48,11 +47,24 @@ class food_list:
             try:
                 self._ingredient_list = json.load(open(self._ingredient_path))
             except json.decoder.JSONDecodeError:
-                print("Ingredient list is empty or invalid")
+                logging.error("Ingredient list is empty or invalid")
 
     def add_recipe(self, recipe):
-        self._recipe_list.append(recipe)
-        self._update_recipe_count()
+        # check if recipe already exist
+        if (False):
+            pass
+        # if not, then add it to the list
+        else:
+            if self.recipe_count > 0:
+                # edit the recipe ID (plus 1)
+                recipe._id = self._recipe_list[-1]._id + 1
+            # add the recipe to the food list
+            self._recipe_list.append(recipe)
+            # increase the counter
+            self._update_recipe_count()
+            # write to file
+            self.store_recipe_list()
+
 
     def add_ingredient(self, ingredient):
         self._ingredient_list.append(ingredient)
@@ -62,7 +74,7 @@ class food_list:
         pass
 
     def store_ingredient_list(self):
-        json.dump(self._ingredient_list, open(self._recipe_path, 'w'), sort_keys=True)
+        pass
 
     def set_recipe_db_path(self, path):
         self._recipe_path = path
@@ -87,3 +99,13 @@ class food_list:
             if ingredient_name == ingredient.name:
                 return True
         return False
+
+    #===========================================================================
+    # check if input and output files
+    #================================
+    def check_if_list_path_is_correct(self, path):
+        if path.endswith('.json'):
+            return True
+        else:
+            logging.error("The file provided is not a Json file.")
+            return False

@@ -1,8 +1,4 @@
-
-
-
 import ingredient
-import json
 
 class recipe:
     """
@@ -39,7 +35,12 @@ class recipe:
         pass
 
     def set_name(self, name):
-        self._name = path
+        self._name = name
 
-    def get_db_path(self):
-        return self._recipe_path
+    def print_recipe(self):
+        print(self._name)
+        print(self._id)
+        print(self._meta_data)
+        print(self._ingredient_list)
+        print(self._instruction)
+        print(self._tags)
