@@ -5,7 +5,7 @@ from recipe import recipe
 import logging
 
 class newIngredientPopup(QWidget):
-    def __init__(self, temp_recipe):
+    def __init__(self, ingredient_list):
         # setup the window
         super().__init__()
         uic.loadUi('add_ingredient_popup.ui', self)
@@ -13,7 +13,8 @@ class newIngredientPopup(QWidget):
         self.pushButton_remove_ingredient.clicked.connect(self.pushButton_remove_ingredient_clicked)
         self.pushButton_add_all_to_recipe.clicked.connect(self.pushButton_add_all_to_recipe_clicked)
         #
-        self.temp_recipe = temp_recipe
+        self.ing_list = ingredient_list
+        self.ing_list.clear()
         # setup the table
         self.tableWidget_ingredient_list.setColumnCount(5)
         self.row = 0
@@ -35,8 +36,8 @@ class newIngredientPopup(QWidget):
         self.tableWidget_ingredient_list.setItem(self.row,0, QTableWidgetItem(self.lineEdit_ingredient_name.text()))
         self.tableWidget_ingredient_list.setItem(self.row,1, QTableWidgetItem(str(self.spinBox_quantity.value())))
         self.tableWidget_ingredient_list.setItem(self.row,2, QTableWidgetItem(self.comboBox_unit.currentText()))
-        self.tableWidget_ingredient_list.setItem(self.row,3, QTableWidgetItem(self.comboBox_season.currentText()))
-        self.tableWidget_ingredient_list.setItem(self.row,4, QTableWidgetItem(self.comboBox_type.currentText()))
+        self.tableWidget_ingredient_list.setItem(self.row,3, QTableWidgetItem(self.comboBox_type.currentText()))
+        self.tableWidget_ingredient_list.setItem(self.row,4, QTableWidgetItem(self.comboBox_season.currentText()))
 
     def pushButton_remove_ingredient_clicked(self):
         if (self.row > 0):
@@ -53,6 +54,6 @@ class newIngredientPopup(QWidget):
                                                                 self.tableWidget_ingredient_list.takeItem(index, 4).text())
             #self.foodlist.add_ingredient(temp_ingredient)
             # add ingredients to the recipe
-            self.temp_recipe.add_ingredient(temp_ingredient)
+            self.ing_list.append(temp_ingredient)
         # close the window
         self.close()

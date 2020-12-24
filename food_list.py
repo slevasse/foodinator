@@ -2,6 +2,7 @@ import recipe
 import json
 import os.path
 import logging
+import copy
 
 
 class food_list:
@@ -16,8 +17,23 @@ class food_list:
         self.recipe_count = len(self._recipe_list)
         self.ingredient_count = len(self._ingredient_list)
 
+#===============================================================================
+# IOs
+#================================
     def store_recipe_list(self):
-        print("store function is not yet implemented")
+        if len(self._recipe_list) > 0:
+            dicted_recipe_list = []
+            for rec in self._recipe_list:
+                dicted_recipe_list.append(rec.dictify())
+            dictified_recipe_list = {"recipe_list": dicted_recipe_list}
+            # write to file
+            with open(self._recipe_path, 'w+') as outfile:
+                json.dump(dictified_recipe_list, outfile,sort_keys=False, indent=4)
+
+            outfile.close()
+
+        else:
+            logging.warning("Tried to write the recipe_list to file but list is empty.")
 
     def import_recipe_list(self):
         # check if the path exist
@@ -28,11 +44,13 @@ class food_list:
             # close it
             fp.close()
         else:
+            pass
             # we try to import the file
-            try:
-                self._recipe_list = json.load(open(self._recipe_path))
-            except json.decoder.JSONDecodeError:
-                logging.error("Food list is empty or invalid")
+            #try:
+            #    self._recipe_list = json.load(open(self._recipe_path))
+            #except json.decoder.JSONDecodeError:
+            #    logging.error("Food list is empty or invalid")
+
 
     def import_ingredient_list(self):
         # check if the path exist
@@ -49,6 +67,13 @@ class food_list:
             except json.decoder.JSONDecodeError:
                 logging.error("Ingredient list is empty or invalid")
 
+
+    def store_ingredient_list(self):
+        pass
+
+#===============================================================================
+# IOs
+#================================
     def add_recipe(self, recipe):
         # check if recipe already exist
         if (False):
@@ -59,7 +84,7 @@ class food_list:
                 # edit the recipe ID (plus 1)
                 recipe._id = self._recipe_list[-1]._id + 1
             # add the recipe to the food list
-            self._recipe_list.append(recipe)
+            self._recipe_list.append(copy.deepcopy(recipe))
             # increase the counter
             self._update_recipe_count()
             # write to file
@@ -73,8 +98,7 @@ class food_list:
     def remove_recipe(self, recipe_id):
         pass
 
-    def store_ingredient_list(self):
-        pass
+
 
     def set_recipe_db_path(self, path):
         self._recipe_path = path

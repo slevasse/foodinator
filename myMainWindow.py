@@ -6,6 +6,7 @@ import food_list as fl
 import copy as cp
 import recipe
 import logging
+import copy
 
 class myMainWindow(QMainWindow):
     def __init__(self):
@@ -36,13 +37,14 @@ class myMainWindow(QMainWindow):
         # enable widgets
         self._enable_all_receipe_widgets(True)
         # create a new temporary recipe
+        #self.temp_recipe = recipe.recipe()
         self.temp_recipe = recipe.recipe()
 
 #================
     # define signal slot interaction here
     def add_new_ingredient_button_clicked(self):
         # get a popup
-        self.new_ingredient_popup = newIngredientPopup(self.temp_recipe)
+        self.new_ingredient_popup = newIngredientPopup(self.temp_recipe._ingredient_list)
 
 
 #================
@@ -66,11 +68,11 @@ class myMainWindow(QMainWindow):
         # disable fields
         self._enable_all_receipe_widgets(False)
         # add to fooddlist
+        self.temp_recipe.print_recipe()
         self.foodlist.add_recipe(self.temp_recipe)
         # clear the temp recipe
-        self.temp_recipe = None
-        # update the recipe count view
-        self.foodlist._recipe_list[-1].print_recipe()
+        #self.temp_recipe._ingredient_list.clear()
+        self.temp_recipe.clear_recipe()
 
 
 #================
