@@ -25,7 +25,7 @@
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
-        <string>Generate Food List</string>
+        <string>Recipe list info</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="1" column="1">
@@ -105,6 +105,16 @@
         <string>Add Recipe</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
+        <item row="3" column="1">
+         <widget class="QSpinBox" name="spinBox_cooktime">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="maximum">
+           <number>1000</number>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="0">
          <widget class="QPushButton" name="pushButton_start_new_receipe">
           <property name="enabled">
@@ -118,18 +128,11 @@
         <item row="3" column="0">
          <widget class="QLabel" name="label_cooktime">
           <property name="text">
-           <string>Cooking Time (HH:MM)</string>
+           <string>Cooking Time (Min):</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_ingredient">
-          <property name="text">
-           <string>Ingredients:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1">
+        <item row="8" column="1">
          <widget class="QPlainTextEdit" name="plainTextEdit_instructions">
           <property name="enabled">
            <bool>false</bool>
@@ -156,11 +159,11 @@
         <item row="2" column="0">
          <widget class="QLabel" name="label_preptime">
           <property name="text">
-           <string>Preparation Time (HH:MM):</string>
+           <string>Preparation Time (Min):</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="label_instructions">
           <property name="text">
            <string>Instructions:</string>
@@ -190,20 +193,6 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QPushButton" name="pushButton_addnew_ingredient">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Add a ingredients</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
         <item row="0" column="1">
          <widget class="QPushButton" name="pushButton_add_recipe_to_list">
           <property name="enabled">
@@ -214,19 +203,154 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
-         <widget class="QSpinBox" name="spinBox_cooktime">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="1">
          <widget class="QSpinBox" name="spinBox_preptime">
           <property name="enabled">
            <bool>false</bool>
           </property>
+          <property name="maximum">
+           <number>1000</number>
+          </property>
          </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Meal type:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QPushButton" name="pushButton_addnew_ingredient">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Add ingredients</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_ingredient">
+          <property name="text">
+           <string>Ingredients:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QCheckBox" name="checkBox_type_breakfast">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Breakfast</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_type_smoothie">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Smoothie</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_type_main">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Main</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_type_dessert">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Dessert</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_type_appetizer">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Appetizer</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_type_fika">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Fika</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Tags:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="checkBox_tag_baby">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Baby safe </string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="checkBox_tag_vege">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Vegetarian</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="checkBox_tag_vegan">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Vegan</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="checkBox_protein">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>High protein</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
@@ -234,6 +358,11 @@
        <attribute name="title">
         <string>View current list of recipe</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QListWidget" name="listWidget"/>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>

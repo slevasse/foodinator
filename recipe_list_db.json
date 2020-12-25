@@ -1,85 +1,93 @@
 {
     "recipe_list": [
         {
-            "_name": "one",
+            "_name": "bf",
             "_id": 0,
             "_meta_data": {
-                "preptime": 1,
-                "cooktime": 1,
-                "serve": 1
+                "preptime": 5,
+                "cooktime": 0,
+                "serve": 1,
+                "type": [
+                    "Breakfast"
+                ],
+                "tags": [
+                    "Vegetarian"
+                ]
             },
             "_ingredient_list": [
                 {
-                    "name": "one",
+                    "name": "banana",
+                    "quantity": 1,
+                    "unit": "Piece",
+                    "type": "Fruit",
+                    "season": "Spring"
+                },
+                {
+                    "name": "apple",
                     "quantity": 1,
                     "unit": "Piece",
                     "type": "Fruit",
                     "season": "Spring"
                 }
             ],
-            "_instruction": "frist",
-            "_tags": []
+            "_instruction": ""
         },
         {
-            "_name": "two",
+            "_name": "potato mush",
             "_id": 1,
             "_meta_data": {
-                "preptime": 2,
-                "cooktime": 2,
-                "serve": 2
+                "preptime": 15,
+                "cooktime": 30,
+                "serve": 4,
+                "type": [
+                    "Main"
+                ],
+                "tags": [
+                    "Vegetarian"
+                ]
             },
             "_ingredient_list": [
                 {
-                    "name": "two",
-                    "quantity": 2,
-                    "unit": "Piece",
-                    "type": "Fruit",
-                    "season": "Spring"
-                },
-                {
-                    "name": "twotwo",
-                    "quantity": 22,
+                    "name": "potato",
+                    "quantity": 10,
                     "unit": "Piece",
                     "type": "Veggy",
-                    "season": "Spring"
+                    "season": "Autumn"
+                },
+                {
+                    "name": "milk",
+                    "quantity": 200,
+                    "unit": "Milli-litre (ml)",
+                    "type": "Dairy",
+                    "season": "Not relevant"
                 }
             ],
-            "_instruction": "2",
-            "_tags": []
+            "_instruction": ""
         },
         {
-            "_name": "three",
+            "_name": "test",
             "_id": 2,
             "_meta_data": {
-                "preptime": 3,
-                "cooktime": 3,
-                "serve": 3
+                "preptime": 1,
+                "cooktime": 1,
+                "serve": 1,
+                "type": [
+                    "Fika"
+                ],
+                "tags": [
+                    "High_Protein"
+                ]
             },
             "_ingredient_list": [
                 {
-                    "name": "three",
-                    "quantity": 3,
-                    "unit": "Piece",
-                    "type": "Fruit",
-                    "season": "Spring"
-                },
-                {
-                    "name": "threethree",
-                    "quantity": 33,
-                    "unit": "Piece",
-                    "type": "Fruit",
-                    "season": "Spring"
-                },
-                {
-                    "name": "threethreethree",
-                    "quantity": 333,
+                    "name": "atom",
+                    "quantity": 1,
                     "unit": "Piece",
                     "type": "Fruit",
                     "season": "Spring"
                 }
             ],
-            "_instruction": "third",
-            "_tags": []
+            "_instruction": ""
         }
     ]
 }

@@ -3,7 +3,8 @@ import json
 import os.path
 import logging
 import copy
-
+from PyQt5.QtWidgets import *
+from ingredient import ingredient
 
 class food_list:
     """
@@ -27,30 +28,45 @@ class food_list:
                 dicted_recipe_list.append(rec.dictify())
             dictified_recipe_list = {"recipe_list": dicted_recipe_list}
             # write to file
-            with open(self._recipe_path, 'w+') as outfile:
+            with open(self._recipe_path, 'w') as outfile:
                 json.dump(dictified_recipe_list, outfile,sort_keys=False, indent=4)
 
             outfile.close()
-
         else:
             logging.warning("Tried to write the recipe_list to file but list is empty.")
 
     def import_recipe_list(self):
-        # check if the path exist
-        if not(os.path.isfile(self._recipe_path)):
-            # if it does not exist we create it
-            with open(self._recipe_path, 'w') as fp:
-                pass
-            # close it
-            fp.close()
-        else:
-            pass
-            # we try to import the file
-            #try:
-            #    self._recipe_list = json.load(open(self._recipe_path))
-            #except json.decoder.JSONDecodeError:
-            #    logging.error("Food list is empty or invalid")
-
+        try:
+            with open(self._recipe_path, "r") as read_file:
+                # load the file as a dict
+                data = json.load(read_file)
+                # iterate through the dict
+                for a_recipe in data["recipe_list"]:
+                    # get the ingredients
+                    ingredient_list = []
+                    for a_ing in a_recipe["_ingredient_list"]:
+                        ingredient_list.append(ingredient(a_ing["name"],
+                                                        a_ing["quantity"],
+                                                        a_ing["unit"],
+                                                        a_ing["type"],
+                                                        a_ing["season"],))
+                                                        # write the new object list
+                    self._recipe_list.append(recipe.recipe(a_recipe["_name"],
+                                                           a_recipe["_id"],
+                                                           a_recipe["_meta_data"],
+                                                           ingredient_list,
+                                                           a_recipe["_instruction"]))
+                self.recipe_count = len(self._recipe_list)
+                return (True, "")
+        except FileNotFoundError:
+            # if the file is not found
+            # log that we could not find the file
+            logging.error("IN IMPORT_RECIPE_LIST: The file countaining the recipes was not found, please check that : %s , is a correct path.", self._recipe_path)
+            return (False, "The file: %s, was not found, please check that the file exist and try again.", self._recipe_path)
+        except json.decoder.JSONDecodeError:
+            # log that we could not find the file
+            logging.error("IN IMPORT_RECIPE_LIST: The content of the file countaining the recipes is invalid, please check that the path and file content is correct and and try again.")
+            return (False, "The content of the file countaining the recipes is invalid, please check that the path and file content is correct and and try again.")
 
     def import_ingredient_list(self):
         # check if the path exist
@@ -123,13 +139,3 @@ class food_list:
             if ingredient_name == ingredient.name:
                 return True
         return False
-
-    #===========================================================================
-    # check if input and output files
-    #================================
-    def check_if_list_path_is_correct(self, path):
-        if path.endswith('.json'):
-            return True
-        else:
-            logging.error("The file provided is not a Json file.")
-            return False

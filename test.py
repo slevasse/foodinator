@@ -27,7 +27,7 @@ with open('recipe_list_db.json', 'w') as outfile:
 
 
 
-with open("recipe_list_db.json", "r") as read_file:
+with open("recipe_list_db.jsn", "r") as read_file:
     # load the file as a dict
     data = json.load(read_file)
     #

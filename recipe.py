@@ -7,16 +7,14 @@ class recipe:
     """
     def __init__(self, name = None,
                  id = 0,
-                 meta_data = {'preptime':0, 'cooktime':0, 'serve':0},
+                 meta_data = {'preptime':0, 'cooktime':0, 'serve':0, 'type':[], 'tags':[]},
                  ingredient_list = [],
-                 instruction = '',
-                 tags = []):
+                 instruction = ''):
         self._name = name  # the name
         self._id = id
         self._meta_data = meta_data  # preptime, cooktime, serve N,
         self._ingredient_list = ingredient_list  # a list of ingredients ingredient name, (quantity, unit), type (meat, veg, spice, etc), season.
         self._instruction = instruction  # the instruction as a text, optional
-        self._tags = tags  # a list of tags relating the recipe
 
     def add_ingredient(self, ingredient_obj):
         self._ingredient_list.append(ingredient_obj)
@@ -27,13 +25,12 @@ class recipe:
     def add_tag(self, tag):
         self._tags.append(tag)
 
-    def update_meta_data(self, preptime = 0, cooktime = 0, serve = 0):
+    def update_meta_data(self, preptime = 0, cooktime = 0, serve = 0, type = [], tags = []):
         self._meta_data['preptime'] = preptime
         self._meta_data['cooktime'] = cooktime
         self._meta_data['serve'] = serve
-
-    def remove_tag(self, tag):
-        pass
+        self._meta_data['type'] = type
+        self._meta_data['tags'] = tags
 
     def set_name(self, name):
         self._name = name
@@ -57,7 +54,6 @@ class recipe:
         print(self._meta_data)
         print(self._ingredient_list)
         print(self._instruction)
-        print(self._tags)
 
     def clear_recipe(self):
         self._name = None
@@ -65,4 +61,3 @@ class recipe:
         self._meta_data = {'preptime':0, 'cooktime':0, 'serve':0}
         self._ingredient_list = []
         self._instruction = ''
-        self._tags = []
