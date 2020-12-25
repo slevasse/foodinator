@@ -5,7 +5,7 @@
             "_id": 0,
             "_meta_data": {
                 "preptime": 5,
-                "cooktime": 0,
+                "cooktime": 10,
                 "serve": 1,
                 "type": [
                     "Breakfast"
@@ -85,6 +85,65 @@
                     "unit": "Piece",
                     "type": "Fruit",
                     "season": "Spring"
+                }
+            ],
+            "_instruction": ""
+        },
+        {
+            "_name": "olive oil",
+            "_id": 3,
+            "_meta_data": {
+                "preptime": 20,
+                "cooktime": 0,
+                "serve": 1,
+                "type": [
+                    "Main",
+                    "Dessert"
+                ],
+                "tags": [
+                    "Vegan"
+                ]
+            },
+            "_ingredient_list": [
+                {
+                    "name": "olive",
+                    "quantity": 1000,
+                    "unit": "Gram (g)",
+                    "type": "Veggy",
+                    "season": "Summer"
+                }
+            ],
+            "_instruction": ""
+        },
+        {
+            "_name": "air",
+            "_id": 4,
+            "_meta_data": {
+                "preptime": 10,
+                "cooktime": 15,
+                "serve": 1,
+                "type": [
+                    "Fika"
+                ],
+                "tags": [
+                    "Vegan",
+                    "Baby"
+                ]
+            },
+            "_ingredient_list": [
+                {
+                    "name": "nitrogen",
+                    "quantity": 700,
+                    "unit": "Milli-litre (ml)",
+                    "type": "Condiment",
+                    "season": "Not relevant"
+                },
+                {
+                    "name": "oxygen",
+                    "quantity": 300,
+                    "unit": "Milli-litre (ml)",
+                    "type": "Condiment",
+                    "season": "Not relevant"
                 }
             ],
             "_instruction": ""

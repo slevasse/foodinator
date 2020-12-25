@@ -22,6 +22,18 @@ class myMainWindow(QMainWindow):
         self.pushButton_add_recipe_to_list.clicked.connect(self.pushButton_add_recipe_to_list_clicked)
         self.pushButton_select_food_list.clicked.connect(self.pushButton_select_food_list_clicked)
         self.pushButton_select_ingredient_list.clicked.connect(self.pushButton_select_ingredient_list_clicked)
+        # connect sorting option in recipe display
+        self.checkBox_sort_appetizer.toggled.connect(self.recipe_display_sorting_updated)
+        self.checkBox_sort_main.toggled.connect(self.recipe_display_sorting_updated)
+        self.checkBox_sort_dessert.toggled.connect(self.recipe_display_sorting_updated)
+        self.checkBox_sort_fika.toggled.connect(self.recipe_display_sorting_updated)
+        self.checkBox_sort_smoothie.toggled.connect(self.recipe_display_sorting_updated)
+        self.checkBox_sort_vege.toggled.connect(self.recipe_display_sorting_updated)
+        self.checkBox_sort_vegan.toggled.connect(self.recipe_display_sorting_updated)
+        self.checkBox_sort_baby.toggled.connect(self.recipe_display_sorting_updated)
+        self.checkBox_sort_high_prot.toggled.connect(self.recipe_display_sorting_updated)
+        self.checkBox_sort_burger.toggled.connect(self.recipe_display_sorting_updated)
+        self.checkBox_sort_breakfast.toggled.connect(self.recipe_display_sorting_updated)
 
         # get the foodlist
         self.foodlist = fl.food_list()
@@ -31,6 +43,9 @@ class myMainWindow(QMainWindow):
         # if the list was imported correctly
         self._import_recipe_list()
         self.foodlist.import_ingredient_list()
+        # update the foodlist
+        self.table_row_count = 0
+        self._init_recipe_table()
 #===============================================================================
 # Button methods
 #================
@@ -73,6 +88,8 @@ class myMainWindow(QMainWindow):
             self.temp_recipe.clear_recipe()
             # update the recipe counter
             self.label_number_of_recipe.setText(str(self.foodlist.recipe_count))
+            # update the table of recipes
+            self._insert_recipe_line(self.foodlist._recipe_list[-1])
         else:
             QMessageBox.about(self, "Information", "You cannot save a recipe with this few information.")
 
@@ -101,6 +118,72 @@ class myMainWindow(QMainWindow):
         else:
             QMessageBox.about(self, "Error", "The file selected is not a valid ingredient-list. Please retry.")
 
+#===============================================================================
+# Recipe display
+#================
+    def recipe_display_sorting_updated(self):
+        # make a list of sorting criterias
+        criteria_dict = self.get_sorting_criteria_list()
+        # get the recipe that match
+        recipe_matched = self.get_matching_recipe(criteria_dict)
+
+        for rec in recipe_matched:
+            print(rec._name)
+
+
+    def get_sorting_criteria_list(self):
+        sorting_criteria = {'type': [], 'tags': []}
+        if self.checkBox_sort_appetizer.isChecked():
+            sorting_criteria['type'].append("Appetizer")
+        if self.checkBox_sort_main.isChecked():
+            sorting_criteria['type'].append("Main")
+        if self.checkBox_sort_dessert.isChecked():
+            sorting_criteria['type'].append("Dessert")
+        if self.checkBox_sort_fika.isChecked():
+            sorting_criteria['type'].append("Fika")
+        if self.checkBox_sort_breakfast.isChecked():
+            sorting_criteria['type'].append("Breakfast")
+        if self.checkBox_sort_smoothie.isChecked():
+            sorting_criteria['type'].append("Smoothie")
+        return sorting_criteria
+
+    def get_matching_recipe(self, criteria_dict):
+        recipe_list = []
+        for rec in self.foodlist._recipe_list:
+            if self.is_recipe_matching_criterias(rec, criteria_dict):
+                recipe_list.append(rec)
+        return recipe_list
+
+    def is_recipe_matching_criterias(self, recipe, criteria_dict):
+        # we do a OR test if one of the criteria match we are done here
+        # looking at type first
+        type_test = False
+        for crit in criteria_dict['type']:
+            for type in recipe._meta_data['type']:
+                if crit == type:
+                    type_test = True
+                    return type_test
+                    # we can exit the loop as we are sure a criterion only match one type
+        return type_test
+
+
+    def _init_recipe_table(self):
+        self.tableWidget_recipe.clear()
+        self.tableWidget_recipe.setColumnCount(4)
+        self.tableWidget_recipe.setHorizontalHeaderLabels(["Name", "Preparation Time", "Type", "Tag"])
+        self.tableWidget_recipe.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_recipe.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableWidget_recipe.setSortingEnabled(True)
+        for rec in self.foodlist._recipe_list:
+            self._insert_recipe_line(rec)
+
+    def _insert_recipe_line(self, recipe):
+        self.tableWidget_recipe.insertRow(self.table_row_count)
+        self.tableWidget_recipe.setItem(self.table_row_count,0, QTableWidgetItem(recipe._name))
+        self.tableWidget_recipe.setItem(self.table_row_count,1, QTableWidgetItem(str(recipe._meta_data['preptime'] + recipe._meta_data['cooktime'])))
+        self.tableWidget_recipe.setItem(self.table_row_count,2, QTableWidgetItem(','.join(recipe._meta_data['type'])))
+        self.tableWidget_recipe.setItem(self.table_row_count,3, QTableWidgetItem(','.join(recipe._meta_data['tags'])))
+        self.table_row_count = self.table_row_count + 1
 
 #===============================================================================
 # Other methods
