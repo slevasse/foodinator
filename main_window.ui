@@ -21,7 +21,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget_main">
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -246,7 +246,7 @@
         </item>
         <item row="6" column="1">
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="0" column="1">
+          <item row="0" column="2">
            <widget class="QCheckBox" name="checkBox_tag_baby">
             <property name="enabled">
              <bool>false</bool>
@@ -266,7 +266,7 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
+          <item row="0" column="1">
            <widget class="QCheckBox" name="checkBox_tag_vegan">
             <property name="enabled">
              <bool>false</bool>
@@ -276,13 +276,23 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="QCheckBox" name="checkBox_protein">
+          <item row="1" column="2">
+           <widget class="QCheckBox" name="checkBox_tag_protein">
             <property name="enabled">
              <bool>false</bool>
             </property>
             <property name="text">
              <string>High protein</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="checkBox_tag_burger">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Burger</string>
             </property>
            </widget>
           </item>
@@ -376,12 +386,18 @@
             <property name="text">
              <string>Burger</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item row="4" column="1">
            <widget class="QCheckBox" name="checkBox_sort_baby">
             <property name="text">
              <string>Baby</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -390,6 +406,9 @@
             <property name="text">
              <string>Fika</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item row="2" column="1">
@@ -397,12 +416,18 @@
             <property name="text">
              <string>Vegetarian</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item row="3" column="0">
            <widget class="QCheckBox" name="checkBox_sort_main">
             <property name="text">
              <string>Main</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -425,12 +450,18 @@
             <property name="text">
              <string>Dessert</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item row="3" column="1">
            <widget class="QCheckBox" name="checkBox_sort_vegan">
             <property name="text">
              <string>Vegan</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -439,12 +470,18 @@
             <property name="text">
              <string>High Protein</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item row="2" column="0">
            <widget class="QCheckBox" name="checkBox_sort_appetizer">
             <property name="text">
              <string>Appetizer</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -453,6 +490,9 @@
             <property name="text">
              <string>Smoothie</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item row="1" column="0">
@@ -460,12 +500,37 @@
             <property name="text">
              <string>Breakfast</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
          </layout>
         </item>
         <item>
-         <widget class="QTableWidget" name="tableWidget_recipe"/>
+         <widget class="QTableWidget" name="tableWidget_recipe">
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="tabKeyNavigation">
+           <bool>false</bool>
+          </property>
+          <property name="showDropIndicator" stdset="0">
+           <bool>false</bool>
+          </property>
+          <property name="dragDropOverwriteMode">
+           <bool>false</bool>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+          <property name="sortingEnabled">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>

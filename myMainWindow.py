@@ -2,6 +2,8 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QTime
 from newIngredientPopup import newIngredientPopup
+from editRecipePopup import editRecipePopup
+from tag_definition import recipe_tags
 import food_list as fl
 import copy as cp
 import recipe
@@ -34,7 +36,7 @@ class myMainWindow(QMainWindow):
         self.checkBox_sort_high_prot.toggled.connect(self.recipe_display_sorting_updated)
         self.checkBox_sort_burger.toggled.connect(self.recipe_display_sorting_updated)
         self.checkBox_sort_breakfast.toggled.connect(self.recipe_display_sorting_updated)
-
+        self.tableWidget_recipe.cellDoubleClicked.connect(self.open_edit_recipe_popup)
         # get the foodlist
         self.foodlist = fl.food_list()
         # load the recipe list
@@ -126,9 +128,16 @@ class myMainWindow(QMainWindow):
         criteria_dict = self.get_sorting_criteria_list()
         # get the recipe that match
         recipe_matched = self.get_matching_recipe(criteria_dict)
-
+        # update the display
+        # clear the content
+        self.tableWidget_recipe.clearContents()
+        # resise the table
+        for _ in range(self.table_row_count + 1):
+            self.tableWidget_recipe.removeRow(self.table_row_count)
+            self.table_row_count = self.table_row_count -1
+        self.table_row_count = 0
         for rec in recipe_matched:
-            print(rec._name)
+            self._insert_recipe_line(rec)
 
 
     def get_sorting_criteria_list(self):
@@ -145,6 +154,16 @@ class myMainWindow(QMainWindow):
             sorting_criteria['type'].append("Breakfast")
         if self.checkBox_sort_smoothie.isChecked():
             sorting_criteria['type'].append("Smoothie")
+        if self.checkBox_sort_vege.isChecked():
+            sorting_criteria['tags'].append("Vegetarian")
+        if self.checkBox_sort_vegan.isChecked():
+            sorting_criteria['tags'].append("Vegan")
+        if self.checkBox_sort_baby.isChecked():
+            sorting_criteria['tags'].append("Baby")
+        if self.checkBox_sort_high_prot.isChecked():
+            sorting_criteria['tags'].append("High_Protein")
+        if self.checkBox_sort_burger.isChecked():
+            sorting_criteria['tags'].append("Burger")
         return sorting_criteria
 
     def get_matching_recipe(self, criteria_dict):
@@ -157,14 +176,15 @@ class myMainWindow(QMainWindow):
     def is_recipe_matching_criterias(self, recipe, criteria_dict):
         # we do a OR test if one of the criteria match we are done here
         # looking at type first
-        type_test = False
         for crit in criteria_dict['type']:
             for type in recipe._meta_data['type']:
                 if crit == type:
-                    type_test = True
-                    return type_test
-                    # we can exit the loop as we are sure a criterion only match one type
-        return type_test
+                    for crit_tag in criteria_dict['tags']:
+                        for tag in recipe._meta_data['tags']:
+                            if crit_tag == tag:
+                                return True
+                                # we can exit the loop as we are sure a criterion only match one type
+        return False
 
 
     def _init_recipe_table(self):
@@ -173,7 +193,7 @@ class myMainWindow(QMainWindow):
         self.tableWidget_recipe.setHorizontalHeaderLabels(["Name", "Preparation Time", "Type", "Tag"])
         self.tableWidget_recipe.horizontalHeader().setStretchLastSection(True)
         self.tableWidget_recipe.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.tableWidget_recipe.setSortingEnabled(True)
+        self.tableWidget_recipe.setSortingEnabled(False)
         for rec in self.foodlist._recipe_list:
             self._insert_recipe_line(rec)
 
@@ -184,6 +204,12 @@ class myMainWindow(QMainWindow):
         self.tableWidget_recipe.setItem(self.table_row_count,2, QTableWidgetItem(','.join(recipe._meta_data['type'])))
         self.tableWidget_recipe.setItem(self.table_row_count,3, QTableWidgetItem(','.join(recipe._meta_data['tags'])))
         self.table_row_count = self.table_row_count + 1
+
+
+    def open_edit_recipe_popup(self, row, col):
+        print(self.tableWidget_recipe.item(row,0).text())
+        #rec = recipe.recipe()
+        #self.editRecipePop = editRecipePopup(rec)
 
 #===============================================================================
 # Other methods
@@ -206,7 +232,8 @@ class myMainWindow(QMainWindow):
             self.checkBox_tag_vege.setEnabled(True)
             self.checkBox_tag_vegan.setEnabled(True)
             self.checkBox_tag_baby.setEnabled(True)
-            self.checkBox_protein.setEnabled(True)
+            self.checkBox_tag_protein.setEnabled(True)
+            self.checkBox_tag_burger.setEnabled(True)
         else:
             self.pushButton_add_recipe_to_list.setDisabled(True)
             self.lineEdit_dishname.setDisabled(True)
@@ -224,7 +251,8 @@ class myMainWindow(QMainWindow):
             self.checkBox_tag_vege.setDisabled(True)
             self.checkBox_tag_vegan.setDisabled(True)
             self.checkBox_tag_baby.setDisabled(True)
-            self.checkBox_protein.setDisabled(True)
+            self.checkBox_tag_protein.setDisabled(True)
+            self.checkBox_tag_burger.setDisabled(True)
 
     def _import_recipe_list(self):
         import_res = self.foodlist.import_recipe_list()
@@ -276,6 +304,8 @@ class myMainWindow(QMainWindow):
             tag_list.append("Vegan")
         if self.checkBox_tag_baby.isChecked():
             tag_list.append("Baby")
-        if self.checkBox_protein.isChecked():
+        if self.checkBox_tag_protein.isChecked():
             tag_list.append("High_Protein")
+        if self.checkBox_tag_burger.isChecked():
+            tag_list.append("Burger")
         return tag_list

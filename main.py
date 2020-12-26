@@ -7,9 +7,6 @@ import food_list as fl
 from PyQt5.QtWidgets import *
 import logging
 
-# get the food list object
-foodlist = fl.food_list()
-
 def main():
     """ Main program """
     # start the logger
