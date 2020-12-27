@@ -9,6 +9,7 @@ import copy as cp
 import recipe
 import logging
 import copy
+from custom_table_items import recipe_table_item
 
 class myMainWindow(QMainWindow):
     def __init__(self):
@@ -199,7 +200,7 @@ class myMainWindow(QMainWindow):
 
     def _insert_recipe_line(self, recipe):
         self.tableWidget_recipe.insertRow(self.table_row_count)
-        self.tableWidget_recipe.setItem(self.table_row_count,0, QTableWidgetItem(recipe._name))
+        self.tableWidget_recipe.setItem(self.table_row_count,0, recipe_table_item(recipe))
         self.tableWidget_recipe.setItem(self.table_row_count,1, QTableWidgetItem(str(recipe._meta_data['preptime'] + recipe._meta_data['cooktime'])))
         self.tableWidget_recipe.setItem(self.table_row_count,2, QTableWidgetItem(','.join(recipe._meta_data['type'])))
         self.tableWidget_recipe.setItem(self.table_row_count,3, QTableWidgetItem(','.join(recipe._meta_data['tags'])))
@@ -207,9 +208,18 @@ class myMainWindow(QMainWindow):
 
 
     def open_edit_recipe_popup(self, row, col):
-        print(self.tableWidget_recipe.item(row,0).text())
-        #rec = recipe.recipe()
-        #self.editRecipePop = editRecipePopup(rec)
+        self.editRecipePop = editRecipePopup(self.tableWidget_recipe.item(row,0).recipe)
+        self.editRecipePop.updated_recipe.connect(self.update_recipe)
+#------------------------------------------------------------
+# Update_recipe
+#------------------------------------------------------------
+    def update_recipe(self, recipe):
+        #replace the recipe by the updated one
+        self.foodlist._recipe_list[recipe._id] = recipe
+        # save to file
+        self.foodlist.store_recipe_list()
+        # update the main display
+        self.recipe_display_sorting_updated()
 
 #===============================================================================
 # Other methods

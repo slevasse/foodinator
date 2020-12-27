@@ -14,7 +14,7 @@ class recipe:
         self._id = id
         self._meta_data = meta_data  # preptime, cooktime, serve N,
         self._ingredient_list = ingredient_list  # a list of ingredients ingredient name, (quantity, unit), type (meat, veg, spice, etc), season.
-        self._instruction = instruction  # the instruction as a text, optional
+        self._instruction = instruction # the instruction as a text, optional
 
     def add_ingredient(self, ingredient_obj):
         self._ingredient_list.append(ingredient_obj)

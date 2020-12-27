@@ -1,7 +1,7 @@
 {
     "recipe_list": [
         {
-            "_name": "bf",
+            "_name": "beef potato with moose",
             "_id": 0,
             "_meta_data": {
                 "preptime": 5,
@@ -43,7 +43,8 @@
                     "Main"
                 ],
                 "tags": [
-                    "Vegetarian"
+                    "Vegetarian",
+                    "super cool"
                 ]
             },
             "_ingredient_list": [
@@ -65,7 +66,7 @@
             "_instruction": ""
         },
         {
-            "_name": "test",
+            "_name": "super dessert",
             "_id": 2,
             "_meta_data": {
                 "preptime": 1,
@@ -75,7 +76,8 @@
                     "Fika"
                 ],
                 "tags": [
-                    "High_Protein"
+                    "super cool",
+                    "Vegetarian"
                 ]
             },
             "_ingredient_list": [
@@ -87,15 +89,15 @@
                     "season": "Spring"
                 }
             ],
-            "_instruction": ""
+            "_instruction": "Tada!"
         },
         {
-            "_name": "olive oil",
+            "_name": "potato oil",
             "_id": 3,
             "_meta_data": {
                 "preptime": 20,
-                "cooktime": 0,
-                "serve": 1,
+                "cooktime": 100,
+                "serve": 20,
                 "type": [
                     "Main",
                     "Dessert"
@@ -113,13 +115,13 @@
                     "season": "Summer"
                 }
             ],
-            "_instruction": ""
+            "_instruction": "bla"
         },
         {
-            "_name": "air",
+            "_name": "Air",
             "_id": 4,
             "_meta_data": {
-                "preptime": 10,
+                "preptime": 15,
                 "cooktime": 15,
                 "serve": 1,
                 "type": [
@@ -146,7 +148,41 @@
                     "season": "Not relevant"
                 }
             ],
-            "_instruction": ""
+            "_instruction": "* doo the thing \n* And do this too"
+        },
+        {
+            "_name": "fish in water",
+            "_id": 5,
+            "_meta_data": {
+                "preptime": 5,
+                "cooktime": 5,
+                "serve": 2,
+                "type": [
+                    "Smoothie"
+                ],
+                "tags": [
+                    "Vegan",
+                    "Baby",
+                    "Burger"
+                ]
+            },
+            "_ingredient_list": [
+                {
+                    "name": "fish",
+                    "quantity": 2,
+                    "unit": "Piece",
+                    "type": "Fish",
+                    "season": "Not relevant"
+                },
+                {
+                    "name": "water",
+                    "quantity": 1000,
+                    "unit": "Milli-litre (ml)",
+                    "type": "Dairy",
+                    "season": "Not relevant"
+                }
+            ],
+            "_instruction": "put fish in water and blend"
         }
     ]
 }
