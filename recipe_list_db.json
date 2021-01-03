@@ -50,7 +50,7 @@
             "_ingredient_list": [
                 {
                     "name": "potato",
-                    "quantity": 10,
+                    "quantity": 3,
                     "unit": "Piece",
                     "type": "Veggy",
                     "season": "Autumn"
@@ -61,6 +61,13 @@
                     "unit": "Milli-litre (ml)",
                     "type": "Dairy",
                     "season": "Not relevant"
+                },
+                {
+                    "name": "bananator",
+                    "quantity": 1400,
+                    "unit": "Piece",
+                    "type": "Fruit",
+                    "season": "Spring"
                 }
             ],
             "_instruction": ""
@@ -87,12 +94,19 @@
                     "unit": "Piece",
                     "type": "Fruit",
                     "season": "Spring"
+                },
+                {
+                    "name": "proton",
+                    "quantity": 5,
+                    "unit": "Piece",
+                    "type": "Fruit",
+                    "season": "Spring"
                 }
             ],
             "_instruction": "Tada!"
         },
         {
-            "_name": "potato oil",
+            "_name": "potato oiled",
             "_id": 3,
             "_meta_data": {
                 "preptime": 20,
@@ -125,7 +139,8 @@
                 "cooktime": 15,
                 "serve": 1,
                 "type": [
-                    "Fika"
+                    "Fika",
+                    "Starter"
                 ],
                 "tags": [
                     "Vegan",

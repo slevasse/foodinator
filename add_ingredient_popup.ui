@@ -210,21 +210,21 @@
      <item>
       <widget class="QPushButton" name="pushButton_add_ingredient">
        <property name="text">
-        <string>Add ingredient to temporary list</string>
+        <string>Add ingredient</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_remove_ingredient">
        <property name="text">
-        <string>Remove last ingredient to temporary list</string>
+        <string>Remove selected ingredient</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_add_all_to_recipe">
+      <widget class="QPushButton" name="pushButton_save">
        <property name="text">
-        <string>Add all ingredients to recipe</string>
+        <string>Save</string>
        </property>
       </widget>
      </item>

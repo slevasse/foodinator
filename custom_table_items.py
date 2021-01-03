@@ -3,7 +3,6 @@ import ingredient
 from recipe import recipe
 from ingredient import ingredient
 import logging
-from tag_definition import recipe_tags
 
 class recipe_table_item(QTableWidgetItem):
     def __init__(self, recipe):

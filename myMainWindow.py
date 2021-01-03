@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QTime
 from newIngredientPopup import newIngredientPopup
 from editRecipePopup import editRecipePopup
-from tag_definition import recipe_tags
+from all_definition import recipe_defs
 import food_list as fl
 import copy as cp
 import recipe
@@ -53,17 +53,19 @@ class myMainWindow(QMainWindow):
 # Button methods
 #================
     def start_recipe_button_clicked(self):
+        # BROCKEN FOR NOW
         # enable widgets
-        self._enable_all_receipe_widgets(True)
+        #self._enable_all_receipe_widgets(True)
         # create a new temporary recipe
         #self.temp_recipe = recipe.recipe()
-        self.temp_recipe = recipe.recipe()
+        #self.temp_recipe = recipe.recipe()
 
 #================
     # define signal slot interaction here
     def add_new_ingredient_button_clicked(self):
         # get a popup
-        self.new_ingredient_popup = newIngredientPopup(self.temp_recipe._ingredient_list)
+        pass
+        #self.new_ingredient_popup = newIngredientPopup(self.temp_recipe._ingredient_list)
 
 
 #================
