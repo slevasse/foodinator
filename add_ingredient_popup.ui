@@ -63,41 +63,11 @@
        <item>
         <widget class="QComboBox" name="comboBox_unit">
          <property name="currentText">
-          <string>Piece</string>
+          <string/>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>-1</number>
          </property>
-         <item>
-          <property name="text">
-           <string>Piece</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Milli-litre (ml)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Gram (g)</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Table spoon</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Tea spoon</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>New Item</string>
-          </property>
-         </item>
         </widget>
        </item>
       </layout>
@@ -112,33 +82,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox_season">
-         <item>
-          <property name="text">
-           <string>Spring</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Summer</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Autumn</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Winter</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Not relevant</string>
-          </property>
-         </item>
-        </widget>
+        <widget class="QComboBox" name="comboBox_season"/>
        </item>
       </layout>
      </item>
@@ -152,58 +96,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox_type">
-         <item>
-          <property name="text">
-           <string>Fruit</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Veggy</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Spice</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Dairy</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Dry food</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Condiment</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Fish</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Red meat</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>White meat</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Pink meat</string>
-          </property>
-         </item>
-        </widget>
+        <widget class="QComboBox" name="comboBox_type"/>
        </item>
       </layout>
      </item>

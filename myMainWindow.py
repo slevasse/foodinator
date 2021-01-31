@@ -4,12 +4,14 @@ from PyQt5.QtCore import QTime
 from newIngredientPopup import newIngredientPopup
 from editRecipePopup import editRecipePopup
 from all_definition import recipe_defs
+from recipe import recipe
 import food_list as fl
 import copy as cp
 import recipe
 import logging
 import copy
 from custom_table_items import recipe_table_item
+from all_definition import recipe_defs
 
 class myMainWindow(QMainWindow):
     def __init__(self):
@@ -19,85 +21,29 @@ class myMainWindow(QMainWindow):
         self.existing_ingredient_popup = None
         self.temp_recipe = None
         #Connect bbuttons
-        self.pushButton_start_new_receipe.clicked.connect(self.start_recipe_button_clicked)
-        self.pushButton_addnew_ingredient.clicked.connect(self.add_new_ingredient_button_clicked)
-        #self.pushButton_add_existing_ingredients.clicked.connect(self.add_existing_ingredient_button_clicked)
-        self.pushButton_add_recipe_to_list.clicked.connect(self.pushButton_add_recipe_to_list_clicked)
         self.pushButton_select_food_list.clicked.connect(self.pushButton_select_food_list_clicked)
-        self.pushButton_select_ingredient_list.clicked.connect(self.pushButton_select_ingredient_list_clicked)
         # connect sorting option in recipe display
-        self.checkBox_sort_appetizer.toggled.connect(self.recipe_display_sorting_updated)
-        self.checkBox_sort_main.toggled.connect(self.recipe_display_sorting_updated)
-        self.checkBox_sort_dessert.toggled.connect(self.recipe_display_sorting_updated)
-        self.checkBox_sort_fika.toggled.connect(self.recipe_display_sorting_updated)
-        self.checkBox_sort_smoothie.toggled.connect(self.recipe_display_sorting_updated)
-        self.checkBox_sort_vege.toggled.connect(self.recipe_display_sorting_updated)
-        self.checkBox_sort_vegan.toggled.connect(self.recipe_display_sorting_updated)
-        self.checkBox_sort_baby.toggled.connect(self.recipe_display_sorting_updated)
-        self.checkBox_sort_high_prot.toggled.connect(self.recipe_display_sorting_updated)
-        self.checkBox_sort_burger.toggled.connect(self.recipe_display_sorting_updated)
-        self.checkBox_sort_breakfast.toggled.connect(self.recipe_display_sorting_updated)
         self.tableWidget_recipe.cellDoubleClicked.connect(self.open_edit_recipe_popup)
+        self.init_tag_list()
+        self.init_meal_type_list()
+        self.listWidget_meal_type_list.itemClicked.connect(self.recipe_display_sorting_updated)
+        self.listWidget_tag_list.itemClicked.connect(self.recipe_display_sorting_updated)
+        self.pushButton_add_new_recipe.clicked.connect(self.new_recipe)
+        self.pushButton_delete_recipes.clicked.connect(self.delete_recipes)
+        self.checkBox_display_all_meal_type.toggled.connect(self.recipe_display_sorting_updated)
+        self.checkBox_display_all_tags.toggled.connect(self.recipe_display_sorting_updated)
         # get the foodlist
         self.foodlist = fl.food_list()
         # load the recipe list
         self.foodlist.set_recipe_db_path('recipe_list_db.json')
-        self.foodlist.set_ingredient_db_path('ingredient_list_db.json')
         # if the list was imported correctly
         self._import_recipe_list()
-        self.foodlist.import_ingredient_list()
         # update the foodlist
         self.table_row_count = 0
         self._init_recipe_table()
 #===============================================================================
 # Button methods
 #================
-    def start_recipe_button_clicked(self):
-        # BROCKEN FOR NOW
-        # enable widgets
-        #self._enable_all_receipe_widgets(True)
-        # create a new temporary recipe
-        #self.temp_recipe = recipe.recipe()
-        #self.temp_recipe = recipe.recipe()
-
-#================
-    # define signal slot interaction here
-    def add_new_ingredient_button_clicked(self):
-        # get a popup
-        pass
-        #self.new_ingredient_popup = newIngredientPopup(self.temp_recipe._ingredient_list)
-
-
-#================
-    def pushButton_add_recipe_to_list_clicked(self):
-        if self._can_I_save_recipe():
-            # add receipe fields
-            self.temp_recipe.set_name(self.lineEdit_dishname.text())
-            # add meta
-            self.temp_recipe.update_meta_data(preptime = self.spinBox_preptime.value(),
-                                              cooktime = self.spinBox_cooktime.value(),
-                                              serve = self.spinBox_serve.value(),
-                                              type = self._get_meal_type(),
-                                              tags = self._get_tags())
-            # add tags
-            self.temp_recipe._instruction = self.plainTextEdit_instructions.toPlainText()
-            # clear fields
-            self._clear_recipe_field()
-            # disable fields
-            self._enable_all_receipe_widgets(False)
-            # add to fooddlist
-            self.temp_recipe.print_recipe()
-            self.foodlist.add_recipe(self.temp_recipe)
-            # clear the temp recipe
-            #self.temp_recipe._ingredient_list.clear()
-            self.temp_recipe.clear_recipe()
-            # update the recipe counter
-            self.label_number_of_recipe.setText(str(self.foodlist.recipe_count))
-            # update the table of recipes
-            self._insert_recipe_line(self.foodlist._recipe_list[-1])
-        else:
-            QMessageBox.about(self, "Information", "You cannot save a recipe with this few information.")
-
 #================
     def pushButton_select_food_list_clicked(self):
         # ask the user where he wants the folder to be
@@ -109,19 +55,6 @@ class myMainWindow(QMainWindow):
         #
         self.label_current_food_list_path.setText(filepath)
 
-
-    def pushButton_select_ingredient_list_clicked(self):
-        filepath = str(QFileDialog.getOpenFileName(self, "Select the new ingredient list location Directory")[0])
-        # load the new list
-        if self.foodlist.check_if_list_path_is_correct(filepath):
-            # load the new list
-            self.foodlist.set_ingredient_db_path(filepath)
-            #
-            self.foodlist.import_ingredient_list()
-            #
-            self.label_ingredient_list_path.setText(filepath)
-        else:
-            QMessageBox.about(self, "Error", "The file selected is not a valid ingredient-list. Please retry.")
 
 #===============================================================================
 # Recipe display
@@ -145,28 +78,17 @@ class myMainWindow(QMainWindow):
 
     def get_sorting_criteria_list(self):
         sorting_criteria = {'type': [], 'tags': []}
-        if self.checkBox_sort_appetizer.isChecked():
-            sorting_criteria['type'].append("Appetizer")
-        if self.checkBox_sort_main.isChecked():
-            sorting_criteria['type'].append("Main")
-        if self.checkBox_sort_dessert.isChecked():
-            sorting_criteria['type'].append("Dessert")
-        if self.checkBox_sort_fika.isChecked():
-            sorting_criteria['type'].append("Fika")
-        if self.checkBox_sort_breakfast.isChecked():
-            sorting_criteria['type'].append("Breakfast")
-        if self.checkBox_sort_smoothie.isChecked():
-            sorting_criteria['type'].append("Smoothie")
-        if self.checkBox_sort_vege.isChecked():
-            sorting_criteria['tags'].append("Vegetarian")
-        if self.checkBox_sort_vegan.isChecked():
-            sorting_criteria['tags'].append("Vegan")
-        if self.checkBox_sort_baby.isChecked():
-            sorting_criteria['tags'].append("Baby")
-        if self.checkBox_sort_high_prot.isChecked():
-            sorting_criteria['tags'].append("High_Protein")
-        if self.checkBox_sort_burger.isChecked():
-            sorting_criteria['tags'].append("Burger")
+        if not self.checkBox_display_all_meal_type.isChecked():
+            for item in self.listWidget_meal_type_list.selectedItems():
+                sorting_criteria['type'].append(item.text())
+        else:
+            sorting_criteria['type'] = recipe_defs().types
+
+        if not self.checkBox_display_all_tags.isChecked():
+            for item in self.listWidget_tag_list.selectedItems():
+                sorting_criteria['tags'].append(item.text())
+        else:
+            sorting_criteria['tags'] = recipe_defs().tags
         return sorting_criteria
 
     def get_matching_recipe(self, criteria_dict):
@@ -212,6 +134,57 @@ class myMainWindow(QMainWindow):
     def open_edit_recipe_popup(self, row, col):
         self.editRecipePop = editRecipePopup(self.tableWidget_recipe.item(row,0).recipe)
         self.editRecipePop.updated_recipe.connect(self.update_recipe)
+
+    def new_recipe(self):
+        new_recipe = recipe.recipe()
+        new_recipe.update_meta_data()
+        self.editRecipePop = editRecipePopup(new_recipe)
+        self.editRecipePop.updated_recipe.connect(self.add_recipe_to_list)
+
+    def init_tag_list(self):
+        for tag in recipe_defs().tags:
+            self.listWidget_tag_list.addItem(tag)
+
+    def init_meal_type_list(self):
+        for type in recipe_defs().types:
+            self.listWidget_meal_type_list.addItem(type)
+
+    def delete_recipes(self):
+        selected_recipes = self.tableWidget_recipe.selectedItems()
+        if len(selected_recipes) > 0:
+            if self.showDialog_delete_recipe():
+                for recipe in selected_recipes:
+                    if type(recipe) == recipe_table_item:
+                        # remove from the recipe list
+                        self.foodlist.remove_recipe(recipe.recipe._id)
+                        # upadate the saved list
+                        self.foodlist.store_recipe_list()
+                        # update display
+                        self.recipe_display_sorting_updated()
+                        # update number of recipes
+                        self.update_recipe_number_label()
+
+    def add_recipe_to_list(self, recipe):
+        self.foodlist.add_recipe(recipe)
+        # save to file
+        self.foodlist.store_recipe_list()
+        # update the main display
+        self.recipe_display_sorting_updated()
+        #
+        self.update_recipe_number_label()
+
+    def showDialog_delete_recipe(self):
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Warning)
+        msgBox.setText("Are you sure you want too delete these recipes?")
+        msgBox.setWindowTitle("Warning")
+        msgBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        retval = msgBox.exec()
+        if retval == QMessageBox.Yes:
+            return True
+        else:
+            return False
+
 #------------------------------------------------------------
 # Update_recipe
 #------------------------------------------------------------
@@ -226,45 +199,6 @@ class myMainWindow(QMainWindow):
 #===============================================================================
 # Other methods
 #================
-    def _enable_all_receipe_widgets(self, enable):
-        if (enable):
-            self.pushButton_add_recipe_to_list.setEnabled(True)
-            self.lineEdit_dishname.setEnabled(True)
-            self.spinBox_preptime.setEnabled(True)
-            self.spinBox_cooktime.setEnabled(True)
-            self.spinBox_serve.setEnabled(True)
-            self.plainTextEdit_instructions.setEnabled(True)
-            self.pushButton_addnew_ingredient.setEnabled(True)
-            self.checkBox_type_breakfast.setEnabled(True)
-            self.checkBox_type_main.setEnabled(True)
-            self.checkBox_type_dessert.setEnabled(True)
-            self.checkBox_type_appetizer.setEnabled(True)
-            self.checkBox_type_fika.setEnabled(True)
-            self.checkBox_type_smoothie.setEnabled(True)
-            self.checkBox_tag_vege.setEnabled(True)
-            self.checkBox_tag_vegan.setEnabled(True)
-            self.checkBox_tag_baby.setEnabled(True)
-            self.checkBox_tag_protein.setEnabled(True)
-            self.checkBox_tag_burger.setEnabled(True)
-        else:
-            self.pushButton_add_recipe_to_list.setDisabled(True)
-            self.lineEdit_dishname.setDisabled(True)
-            self.spinBox_preptime.setDisabled(True)
-            self.spinBox_cooktime.setDisabled(True)
-            self.spinBox_serve.setDisabled(True)
-            self.plainTextEdit_instructions.setDisabled(True)
-            self.pushButton_addnew_ingredient.setDisabled(True)
-            self.checkBox_type_breakfast.setDisabled(True)
-            self.checkBox_type_main.setDisabled(True)
-            self.checkBox_type_dessert.setDisabled(True)
-            self.checkBox_type_appetizer.setDisabled(True)
-            self.checkBox_type_fika.setDisabled(True)
-            self.checkBox_type_smoothie.setDisabled(True)
-            self.checkBox_tag_vege.setDisabled(True)
-            self.checkBox_tag_vegan.setDisabled(True)
-            self.checkBox_tag_baby.setDisabled(True)
-            self.checkBox_tag_protein.setDisabled(True)
-            self.checkBox_tag_burger.setDisabled(True)
 
     def _import_recipe_list(self):
         import_res = self.foodlist.import_recipe_list()
@@ -273,51 +207,6 @@ class myMainWindow(QMainWindow):
         else:
             QMessageBox.about(self, "Error", import_res[1])
 
-    def _clear_recipe_field(self):
-        self.lineEdit_dishname.clear()
-        self.spinBox_preptime.setValue(0)
-        self.spinBox_cooktime.setValue(0)
-        self.spinBox_serve.setValue(1)
-        self.plainTextEdit_instructions.clear()
-
-    def _can_I_save_recipe(self):
-        if (self.spinBox_preptime.value() == 0) and (self.spinBox_cooktime.value() == 0):
-            return False
-        if len(self.lineEdit_dishname.text()) == 0:
-            return False
-        if len(self.temp_recipe._ingredient_list) == 0:
-            return False
-        if len(self._get_meal_type()) == 0:
-            return False
-        # if recipe has no type
-        return True
-
-    def _get_meal_type(self):
-        type_list = []
-        if self.checkBox_type_breakfast.isChecked():
-            type_list.append("Breakfast")
-        if self.checkBox_type_main.isChecked():
-            type_list.append("Main")
-        if self.checkBox_type_dessert.isChecked():
-            type_list.append("Dessert")
-        if self.checkBox_type_appetizer.isChecked():
-            type_list.append("Appetizer")
-        if self.checkBox_type_fika.isChecked():
-            type_list.append("Fika")
-        if self.checkBox_type_smoothie.isChecked():
-            type_list.append("Smoothie")
-        return type_list
-
-    def _get_tags(self):
-        tag_list = []
-        if self.checkBox_tag_vege.isChecked():
-            tag_list.append("Vegetarian")
-        if self.checkBox_tag_vegan.isChecked():
-            tag_list.append("Vegan")
-        if self.checkBox_tag_baby.isChecked():
-            tag_list.append("Baby")
-        if self.checkBox_tag_protein.isChecked():
-            tag_list.append("High_Protein")
-        if self.checkBox_tag_burger.isChecked():
-            tag_list.append("Burger")
-        return tag_list
+    def update_recipe_number_label(self):
+        self.foodlist._update_recipe_count()
+        self.label_number_of_recipe.setText(str(self.foodlist.recipe_count))

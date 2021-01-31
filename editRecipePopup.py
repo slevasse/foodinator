@@ -48,34 +48,61 @@ class editRecipePopup(QWidget):
 # Save the modified data
 #==========================
     def save_recipe(self):
-        # name
-        self.recipe._name = self.lineEdit_edit_name.text()
-        # times
-        self.recipe._meta_data['preptime'] = self.spinBox_edit_prep_time.value()
-        self.recipe._meta_data['cooktime'] = self.spinBox_edit_cook_time.value()
-        # serve
-        self.recipe._meta_data['serve'] = self.spinBox_edit_portion.value()
-        # ingredients
-        self.recipe._ingredient_list = []
-        for row in range(0, self.tableWidget_edit_ingredient.rowCount()):
-            new_ingredient = ingredient(self.tableWidget_edit_ingredient.item(row,0).text(),
-                                        int(self.tableWidget_edit_ingredient.item(row,1).text()),
-                                        self.tableWidget_edit_ingredient.item(row,2).text(),
-                                        self.tableWidget_edit_ingredient.item(row,3).text(),
-                                        self.tableWidget_edit_ingredient.item(row,4).text())
-            self.recipe._ingredient_list.append(new_ingredient)
-        # tags
-        self.recipe._meta_data['tags'] = []
-        for row in range(self.listWidget_edit_tags.count()):
-            self.recipe._meta_data['tags'].append(self.listWidget_edit_tags.item(row).text())
-        # type
-        self.recipe._meta_data['type'] = []
-        for row in range(self.listWidget_edit_types.count()):
-            self.recipe._meta_data['type'].append(self.listWidget_edit_types.item(row).text())
-        # instructions
-        self.recipe._instruction = self.plainTextEdit_edit_instruction.toPlainText()
-        self.updated_recipe.emit(self.recipe)
-        self.close()
+        if self.can_i_save_the_recipe():
+            # name
+            self.recipe._name = self.lineEdit_edit_name.text()
+            # times
+            self.recipe._meta_data['preptime'] = self.spinBox_edit_prep_time.value()
+            self.recipe._meta_data['cooktime'] = self.spinBox_edit_cook_time.value()
+            # serve
+            self.recipe._meta_data['serve'] = self.spinBox_edit_portion.value()
+            # ingredients
+            self.recipe._ingredient_list = []
+            for row in range(0, self.tableWidget_edit_ingredient.rowCount()):
+                new_ingredient = ingredient(self.tableWidget_edit_ingredient.item(row,0).text(),
+                                            int(self.tableWidget_edit_ingredient.item(row,1).text()),
+                                            self.tableWidget_edit_ingredient.item(row,2).text(),
+                                            self.tableWidget_edit_ingredient.item(row,3).text(),
+                                            self.tableWidget_edit_ingredient.item(row,4).text())
+                self.recipe._ingredient_list.append(new_ingredient)
+            # tags
+            self.recipe._meta_data['tags'] = []
+            for row in range(self.listWidget_edit_tags.count()):
+                self.recipe._meta_data['tags'].append(self.listWidget_edit_tags.item(row).text())
+            # type
+            self.recipe._meta_data['type'] = []
+            for row in range(self.listWidget_edit_types.count()):
+                self.recipe._meta_data['type'].append(self.listWidget_edit_types.item(row).text())
+            # instructions
+            self.recipe._instruction = self.plainTextEdit_edit_instruction.toPlainText()
+            self.updated_recipe.emit(self.recipe)
+            self.close()
+        else:
+            self.showDialog()
+
+    def can_i_save_the_recipe(self):
+        test = True
+        if self.listWidget_edit_tags.count() == 0:
+            test = False
+        if self.listWidget_edit_types.count() == 0:
+            test = False
+        if self.tableWidget_edit_ingredient.rowCount() == 0:
+            test = False
+        if (self.spinBox_edit_prep_time.value() == 0) and (self.spinBox_edit_cook_time.value() == 0):
+            test = False
+        if self.spinBox_edit_portion.value() == 0:
+            test = False
+        if len(self.lineEdit_edit_name.text()) == 0:
+            test = False
+        return test
+
+    def showDialog(self):
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Warning)
+        msgBox.setText("Cannot save recipe if fields are missing.")
+        msgBox.setWindowTitle("Warning")
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        msgBox.exec()
 
 #==========================
 # edit tags

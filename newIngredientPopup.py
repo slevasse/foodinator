@@ -6,6 +6,7 @@ from recipe import recipe
 from ingredient import ingredient
 import logging
 from custom_table_items import ingredient_table_item
+from all_definition import ingredient_def
 
 class newIngredientPopup(QWidget):
 #==========================
@@ -30,25 +31,28 @@ class newIngredientPopup(QWidget):
         self.tableWidget_ingredient_list.setHorizontalHeaderLabels(["Name", "Quantity", "Unit", "Type", "Season"])
         self.tableWidget_ingredient_list.horizontalHeader().setStretchLastSection(True)
         self.tableWidget_ingredient_list.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.init_comboboxes()
         self.show()
 
     def add_ingredient_button_clicked(self):
-        # Add a new row
-        self.row = self.row + 1
-        self.tableWidget_ingredient_list.insertRow(self.row)
-        # add data to table
-        new_ingredient = ingredient(self.lineEdit_ingredient_name.text(),
-                                    self.spinBox_quantity.value(),
-                                    self.comboBox_unit.currentText(),
-                                    self.comboBox_type.currentText(),
-                                    self.comboBox_season.currentText())
+        if self.can_i_save_the_ingredient():
+            # Add a new row
+            self.row = self.row + 1
+            self.tableWidget_ingredient_list.insertRow(self.row)
+            # add data to table
+            new_ingredient = ingredient(self.lineEdit_ingredient_name.text(),
+                                        self.spinBox_quantity.value(),
+                                        self.comboBox_unit.currentText(),
+                                        self.comboBox_type.currentText(),
+                                        self.comboBox_season.currentText())
 
-        self.tableWidget_ingredient_list.setItem(self.row,0, ingredient_table_item(new_ingredient))
-        self.tableWidget_ingredient_list.setItem(self.row,1, QTableWidgetItem(str(new_ingredient.quantity)))
-        self.tableWidget_ingredient_list.setItem(self.row,2, QTableWidgetItem(new_ingredient.unit))
-        self.tableWidget_ingredient_list.setItem(self.row,3, QTableWidgetItem(new_ingredient.type))
-        self.tableWidget_ingredient_list.setItem(self.row,4, QTableWidgetItem(new_ingredient.season))
-
+            self.tableWidget_ingredient_list.setItem(self.row,0, ingredient_table_item(new_ingredient))
+            self.tableWidget_ingredient_list.setItem(self.row,1, QTableWidgetItem(str(new_ingredient.quantity)))
+            self.tableWidget_ingredient_list.setItem(self.row,2, QTableWidgetItem(new_ingredient.unit))
+            self.tableWidget_ingredient_list.setItem(self.row,3, QTableWidgetItem(new_ingredient.type))
+            self.tableWidget_ingredient_list.setItem(self.row,4, QTableWidgetItem(new_ingredient.season))
+        else:
+            self.showDialog()
 
     def pushButton_remove_ingredient_clicked(self):
         self.row = self.row - 1
@@ -64,3 +68,26 @@ class newIngredientPopup(QWidget):
         self.updated_ingredients.emit(self.ingredient_list)
         # close the window
         self.close()
+
+
+    def init_comboboxes(self):
+        self.comboBox_season.addItems(ingredient_def().seasons)
+        self.comboBox_unit.addItems(ingredient_def().units)
+        self.comboBox_type.addItems(ingredient_def().types)
+
+
+    def can_i_save_the_ingredient(self):
+        test = True
+        if self.spinBox_quantity.value() == 0:
+            test = False
+        if len(self.lineEdit_ingredient_name.text()) == 0:
+            test = False
+        return test
+
+    def showDialog(self):
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Warning)
+        msgBox.setText("Cannot add ingredient without name or quantity.")
+        msgBox.setWindowTitle("Warning")
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        msgBox.exec()

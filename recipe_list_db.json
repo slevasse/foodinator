@@ -1,90 +1,21 @@
 {
     "recipe_list": [
         {
-            "_name": "beef potato with moose",
-            "_id": 0,
-            "_meta_data": {
-                "preptime": 5,
-                "cooktime": 10,
-                "serve": 1,
-                "type": [
-                    "Breakfast"
-                ],
-                "tags": [
-                    "Vegetarian"
-                ]
-            },
-            "_ingredient_list": [
-                {
-                    "name": "banana",
-                    "quantity": 1,
-                    "unit": "Piece",
-                    "type": "Fruit",
-                    "season": "Spring"
-                },
-                {
-                    "name": "apple",
-                    "quantity": 1,
-                    "unit": "Piece",
-                    "type": "Fruit",
-                    "season": "Spring"
-                }
-            ],
-            "_instruction": ""
-        },
-        {
-            "_name": "potato mush",
-            "_id": 1,
-            "_meta_data": {
-                "preptime": 15,
-                "cooktime": 30,
-                "serve": 4,
-                "type": [
-                    "Main"
-                ],
-                "tags": [
-                    "Vegetarian",
-                    "super cool"
-                ]
-            },
-            "_ingredient_list": [
-                {
-                    "name": "potato",
-                    "quantity": 3,
-                    "unit": "Piece",
-                    "type": "Veggy",
-                    "season": "Autumn"
-                },
-                {
-                    "name": "milk",
-                    "quantity": 200,
-                    "unit": "Milli-litre (ml)",
-                    "type": "Dairy",
-                    "season": "Not relevant"
-                },
-                {
-                    "name": "bananator",
-                    "quantity": 1400,
-                    "unit": "Piece",
-                    "type": "Fruit",
-                    "season": "Spring"
-                }
-            ],
-            "_instruction": ""
-        },
-        {
             "_name": "super dessert",
             "_id": 2,
             "_meta_data": {
-                "preptime": 1,
+                "preptime": 10,
                 "cooktime": 1,
                 "serve": 1,
                 "type": [
-                    "Fika"
+                    "Fika",
+                    "Dessert"
                 ],
                 "tags": [
+                    "Vegetarian",
                     "super cool",
-                    "Vegetarian"
+                    "Burger",
+                    "High protein"
                 ]
             },
             "_ingredient_list": [
@@ -100,6 +31,13 @@
                     "quantity": 5,
                     "unit": "Piece",
                     "type": "Fruit",
+                    "season": "Spring"
+                },
+                {
+                    "name": "pion",
+                    "quantity": 2,
+                    "unit": "Piece",
+                    "type": "Spice",
                     "season": "Spring"
                 }
             ],
@@ -198,6 +136,31 @@
                 }
             ],
             "_instruction": "put fish in water and blend"
+        },
+        {
+            "_name": "lalalala",
+            "_id": 6,
+            "_meta_data": {
+                "preptime": 123,
+                "cooktime": 13,
+                "serve": 41,
+                "type": [
+                    "Dessert"
+                ],
+                "tags": [
+                    "High protein"
+                ]
+            },
+            "_ingredient_list": [
+                {
+                    "name": "asdaf",
+                    "quantity": 12,
+                    "unit": "Piece",
+                    "type": "Fruit",
+                    "season": "Spring"
+                }
+            ],
+            "_instruction": ""
         }
     ]
 }
