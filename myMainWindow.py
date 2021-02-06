@@ -12,6 +12,7 @@ import logging
 import copy
 from custom_table_items import recipe_table_item
 from all_definition import recipe_defs
+from recipe_list_generator import recipe_list_generator
 
 class myMainWindow(QMainWindow):
     def __init__(self):
@@ -41,6 +42,10 @@ class myMainWindow(QMainWindow):
         # update the foodlist
         self.table_row_count = 0
         self._init_recipe_table()
+        #========
+        # Recipe generator stuff
+        self.connect_all()
+        self.init_recipe_generator()
 #===============================================================================
 # Button methods
 #================
@@ -195,6 +200,67 @@ class myMainWindow(QMainWindow):
         self.foodlist.store_recipe_list()
         # update the main display
         self.recipe_display_sorting_updated()
+
+#===============================================================================
+# Recipe list generator related
+#===============================================================================
+
+    def init_recipe_generator(self):
+        #add the generator object
+        self.recipe_list_generator = recipe_list_generator()
+        # selected food list table
+        self.tableWidget_selected_recipe.clear()
+        self.tableWidget_selected_recipe.setColumnCount(3)
+        self.tableWidget_selected_recipe.setHorizontalHeaderLabels(["Count", "recipe name", "Tag"])
+        self.tableWidget_selected_recipe.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_selected_recipe.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableWidget_selected_recipe.setSortingEnabled(False)
+        #
+        self.tableWidget_fixed_breakfast.clear()
+        self.tableWidget_fixed_breakfast.setColumnCount(2)
+        self.tableWidget_fixed_breakfast.setHorizontalHeaderLabels(["Count", "recipe name"])
+        self.tableWidget_fixed_breakfast.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_fixed_breakfast.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableWidget_fixed_breakfast.setSortingEnabled(False)
+        #
+        self.tableWidget_required_tags.clear()
+        self.tableWidget_required_tags.setColumnCount(2)
+        self.tableWidget_required_tags.setHorizontalHeaderLabels(["Count", "Tags"])
+        self.tableWidget_required_tags.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_required_tags.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableWidget_required_tags.setSortingEnabled(False)
+
+    def connect_all(self):
+        self.spinBox_adult_count.valueChanged.connect(self.update_generator_configuration)
+        self.spinBox_baby_count.valueChanged.connect(self.update_generator_configuration)
+        self.spinBox_day_count.valueChanged.connect(self.update_generator_configuration)
+        self.checkBox_breakfast.stateChanged.connect(self.update_generator_configuration)
+        self.checkBox_lunch.stateChanged.connect(self.update_generator_configuration)
+        self.checkBox_dinner.stateChanged.connect(self.update_generator_configuration)
+        self.checkBox_fika.stateChanged.connect(self.update_generator_configuration)
+
+    def update_generator_configuration(self, configuration):
+        configuration = {'name': 'temp',
+                         'adult count': self.spinBox_adult_count.value(),
+                         'baby count': self.spinBox_baby_count.value(),
+                         'day count': self.spinBox_day_count.value(),
+                         'breakfast': self.checkBox_breakfast.isChecked(),
+                         'lunch': self.checkBox_lunch.isChecked(),
+                         'dinner': self.checkBox_dinner.isChecked(),
+                         'fika': self.checkBox_fika.isChecked()}
+                         #'fixed breakfast': [],
+                         #'default tag': [],
+                         #'requested tag': []}
+        # gather the breakfast list
+        #temp_bf_list = []
+        #for row in range(0, self.tableWidget_fixed_breakfast.rowCount()):
+        #    temp_bf_list.append((self.tableWidget_fixed_breakfast.item(row,0), self.tableWidget_fixed_breakfast.item(row,1).recipe))
+
+
+        self.recipe_list_generator.configuration = configuration
+        print(self.recipe_list_generator.configuration)
+
+
 
 #===============================================================================
 # Other methods

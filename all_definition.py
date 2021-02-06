@@ -5,7 +5,12 @@ class recipe_defs:
                    "Burger",
                    "Baby",
                    "High protein",
-                   "super cool"]
+                   "Gluten free",
+                   "Meat",
+                   "Fish",
+                   "Cold",
+                   "Hot",
+                   "Take away"]
 
       self.types = ["Breakfast",
                    "Main",
@@ -13,7 +18,8 @@ class recipe_defs:
                    "Fika",
                    "Starter",
                    "Juice",
-                   "Smoothie"]
+                   "Smoothie",
+                   "Soup"]
 
 class ingredient_def:
     def __init__(self):
