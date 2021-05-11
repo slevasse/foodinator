@@ -93,6 +93,17 @@ class food_list:
         if not index is None:
             del self._recipe_list[index]
 
+    def reorder_recipe_id(self):
+        # for each recipes, check their id and rewrite it to something correct.
+        for recipe in self._recipe_list:
+            pass
+
+    def replace_recipe(self, recipe_id, recipe):
+        # search in the list for the existing recipe and replace it with the given one if it exist
+        for i in range(len(self._recipe_list)):
+            if self._recipe_list[i]._id == recipe_id:
+                self._recipe_list[i] = recipe
+                break  # exit the loop
 
 
     def set_recipe_db_path(self, path):

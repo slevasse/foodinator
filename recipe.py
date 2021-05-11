@@ -2,9 +2,7 @@ import ingredient
 import copy
 
 class recipe:
-    """
-        A  class representing a recipe.
-    """
+    """ A  class representing a recipe. """
     def __init__(self, name = None,
                  id = 0,
                  meta_data = {'preptime':0, 'cooktime':0, 'serve':0, 'type':[], 'tags':[]},

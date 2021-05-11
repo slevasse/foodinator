@@ -11,8 +11,11 @@ import recipe
 import logging
 import copy
 from custom_table_items import recipe_table_item
+from custom_table_items import search_configuration_table_item
 from all_definition import recipe_defs
+from all_definition import search_configuration_def
 from recipe_list_generator import recipe_list_generator
+from random import sample
 
 class myMainWindow(QMainWindow):
     def __init__(self):
@@ -46,6 +49,10 @@ class myMainWindow(QMainWindow):
         # Recipe generator stuff
         self.connect_all()
         self.init_recipe_generator()
+        self.search_configuration_table_row_count = 0
+        self.search_results_table_row_count = 0
+
+
 #===============================================================================
 # Button methods
 #================
@@ -62,7 +69,7 @@ class myMainWindow(QMainWindow):
 
 
 #===============================================================================
-# Recipe display
+# Recipe tab
 #================
     def recipe_display_sorting_updated(self):
         # make a list of sorting criterias
@@ -195,7 +202,8 @@ class myMainWindow(QMainWindow):
 #------------------------------------------------------------
     def update_recipe(self, recipe):
         #replace the recipe by the updated one
-        self.foodlist._recipe_list[recipe._id] = recipe
+        self.foodlist.replace_recipe(recipe._id, recipe)
+        #self.foodlist._recipe_list[recipe._id] = recipe
         # save to file
         self.foodlist.store_recipe_list()
         # update the main display
@@ -209,58 +217,111 @@ class myMainWindow(QMainWindow):
         #add the generator object
         self.recipe_list_generator = recipe_list_generator()
         # selected food list table
-        self.tableWidget_selected_recipe.clear()
-        self.tableWidget_selected_recipe.setColumnCount(3)
-        self.tableWidget_selected_recipe.setHorizontalHeaderLabels(["Count", "recipe name", "Tag"])
-        self.tableWidget_selected_recipe.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget_selected_recipe.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.tableWidget_selected_recipe.setSortingEnabled(False)
-        #
-        self.tableWidget_fixed_breakfast.clear()
-        self.tableWidget_fixed_breakfast.setColumnCount(2)
-        self.tableWidget_fixed_breakfast.setHorizontalHeaderLabels(["Count", "recipe name"])
-        self.tableWidget_fixed_breakfast.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget_fixed_breakfast.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.tableWidget_fixed_breakfast.setSortingEnabled(False)
-        #
-        self.tableWidget_required_tags.clear()
-        self.tableWidget_required_tags.setColumnCount(2)
-        self.tableWidget_required_tags.setHorizontalHeaderLabels(["Count", "Tags"])
-        self.tableWidget_required_tags.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget_required_tags.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.tableWidget_required_tags.setSortingEnabled(False)
+        self.tableWidget_search_configurations.clear()
+        self.tableWidget_search_configurations.setColumnCount(5)
+        self.tableWidget_search_configurations.setHorizontalHeaderLabels(["How many people", "How many days","Lunch and dinner", "Meal type(s)", "with tag(s)"])
+        self.tableWidget_search_configurations.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_search_configurations.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableWidget_search_configurations.setSortingEnabled(False)
+
+        # tag list
+        self.init_search_tag_list()
+        # type list
+        self.init_search_meal_type_list()
+        # search ressult table
+        self.tableWidget_search_results.clear()
+        self.tableWidget_search_results.setColumnCount(2)
+        self.tableWidget_search_results.setHorizontalHeaderLabels(["Name", "Meal type"])
+        self.tableWidget_search_results.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_search_results.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableWidget_search_results.setSortingEnabled(False)
+
+
+    def init_search_tag_list(self):
+        for tag in recipe_defs().tags:
+            self.listWidget_search_meal_tags.addItem(tag)
+
+    def init_search_meal_type_list(self):
+        for type in recipe_defs().types:
+            self.listWidget_search_meal_type.addItem(type)
 
     def connect_all(self):
-        self.spinBox_adult_count.valueChanged.connect(self.update_generator_configuration)
-        self.spinBox_baby_count.valueChanged.connect(self.update_generator_configuration)
-        self.spinBox_day_count.valueChanged.connect(self.update_generator_configuration)
-        self.checkBox_breakfast.stateChanged.connect(self.update_generator_configuration)
-        self.checkBox_lunch.stateChanged.connect(self.update_generator_configuration)
-        self.checkBox_dinner.stateChanged.connect(self.update_generator_configuration)
-        self.checkBox_fika.stateChanged.connect(self.update_generator_configuration)
+        self.pushButton_add_search_configuration.clicked.connect(self.add_new_search_configuration)
+        self.pushButton_delete_selected_configurations.clicked.connect(self.delete_selected_search_configuration)
+        self.pushButton_make_food_list.clicked.connect(self.make_food_list)
 
-    def update_generator_configuration(self, configuration):
-        configuration = {'name': 'temp',
-                         'adult count': self.spinBox_adult_count.value(),
-                         'baby count': self.spinBox_baby_count.value(),
-                         'day count': self.spinBox_day_count.value(),
-                         'breakfast': self.checkBox_breakfast.isChecked(),
-                         'lunch': self.checkBox_lunch.isChecked(),
-                         'dinner': self.checkBox_dinner.isChecked(),
-                         'fika': self.checkBox_fika.isChecked()}
-                         #'fixed breakfast': [],
-                         #'default tag': [],
-                         #'requested tag': []}
-        # gather the breakfast list
-        #temp_bf_list = []
-        #for row in range(0, self.tableWidget_fixed_breakfast.rowCount()):
-        #    temp_bf_list.append((self.tableWidget_fixed_breakfast.item(row,0), self.tableWidget_fixed_breakfast.item(row,1).recipe))
+    def add_new_search_configuration(self):
+        # get types and and tags
+        types = []
+        tags = []
+        for item in self.listWidget_search_meal_type.selectedItems():
+            types.append(item.text())
+        for item in self.listWidget_search_meal_tags.selectedItems():
+            tags.append(item.text())
+        config = search_configuration_def(self.spinBox_search_how_many_people.value(),
+                                          self.spinBox_how_many_days.value(),
+                                          self.checkBox_main_count_as_lunch_and_dinner.isChecked(),
+                                          types,
+                                          tags)
+
+        self.insert_search_configuration_line(config)
+
+    def insert_search_configuration_line(self, configuration):
+        self.tableWidget_search_configurations.insertRow(self.search_configuration_table_row_count)
+        self.tableWidget_search_configurations.setItem(self.search_configuration_table_row_count,0, search_configuration_table_item(configuration))
+        self.tableWidget_search_configurations.setItem(self.search_configuration_table_row_count,1, QTableWidgetItem(str(self.spinBox_how_many_days.value())))
+        self.tableWidget_search_configurations.setItem(self.search_configuration_table_row_count,2, QTableWidgetItem(str(self.checkBox_main_count_as_lunch_and_dinner.isChecked())))
+        self.tableWidget_search_configurations.setItem(self.search_configuration_table_row_count,3, QTableWidgetItem(','.join(configuration.configuration['type'])))
+        self.tableWidget_search_configurations.setItem(self.search_configuration_table_row_count,4, QTableWidgetItem(','.join(configuration.configuration['tags'])))
+        self.search_configuration_table_row_count = self.search_configuration_table_row_count + 1
+
+    def delete_selected_search_configuration(self):
+        selected_configs = self.tableWidget_search_configurations.selectedItems()
+        for conf in selected_configs:
+            self.tableWidget_search_configurations.removeRow(self.tableWidget_search_configurations.row(conf))
+            self.search_configuration_table_row_count = self.search_configuration_table_row_count - 1
 
 
-        self.recipe_list_generator.configuration = configuration
-        print(self.recipe_list_generator.configuration)
+    def make_food_list(self):
+        # for each search search configuration
+        for row in range(self.tableWidget_search_configurations.rowCount()):
+            # get the configuration from the table
+            config = self.tableWidget_search_configurations.item(row, 0).configuration.configuration
+            # find how many recipe we have to select
+            search_result = self.get_matching_random_recipe(config, config["day count"])
+            # display
+            self.add_new_search_result(search_result)
 
+    def get_matching_random_recipe(self, search_config, N):
+        crit_dict = {'type': search_config["type"], 'tags': search_config["tags"]}
+        recipe_list = []
+        count = 0
+        foodlist_rand = sample(self.foodlist._recipe_list, len(self.foodlist._recipe_list))
+        for rec in foodlist_rand:
+            if count < N:
+                if self.is_recipe_matching_criterias(rec, crit_dict):
+                    recipe_list.append(rec)
+                    count += 1
+            else:
+                break
+        return recipe_list
+        # get a randomised food list
 
+    def add_new_search_result(self, recipe_list):
+        for recipe in recipe_list:
+            self.insert_search_result_line(recipe)
+
+    def insert_search_result_line(self, recipe):
+        self.tableWidget_search_results.insertRow(self.search_results_table_row_count)
+        self.tableWidget_search_results.setItem(self.search_results_table_row_count,0, recipe_table_item(recipe))
+        self.tableWidget_search_results.setItem(self.search_results_table_row_count,1, QTableWidgetItem(','.join(recipe._meta_data['type'])))
+        self.search_results_table_row_count = self.search_results_table_row_count + 1
+
+    def delete_selected_search_result(self):
+        selected_configs = self.tableWidget_search_results.selectedItems()
+        for conf in selected_configs:
+            self.tableWidget_search_results.removeRow(self.tableWidget_search_results.row(conf))
+            self.search_results_table_row_count = self.search_results_table_row_count - 1
 
 #===============================================================================
 # Other methods
@@ -269,10 +330,10 @@ class myMainWindow(QMainWindow):
     def _import_recipe_list(self):
         import_res = self.foodlist.import_recipe_list()
         if import_res[0]:
-            self.label_number_of_recipe.setText(str(self.foodlist.recipe_count))
+            self.label_number_of_recipe.display(self.foodlist.recipe_count)
         else:
             QMessageBox.about(self, "Error", import_res[1])
 
     def update_recipe_number_label(self):
         self.foodlist._update_recipe_count()
-        self.label_number_of_recipe.setText(str(self.foodlist.recipe_count))
+        self.label_number_of_recipe.display(self.foodlist.recipe_count)

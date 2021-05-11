@@ -2,7 +2,7 @@
     "recipe_list": [
         {
             "_name": "super dessert",
-            "_id": 2,
+            "_id": 0,
             "_meta_data": {
                 "preptime": 10,
                 "cooktime": 1,
@@ -41,14 +41,14 @@
                     "season": "Spring"
                 }
             ],
-            "_instruction": "Tada!"
+            "_instruction": "Tada!dd"
         },
         {
             "_name": "potato oiled",
-            "_id": 3,
+            "_id": 1,
             "_meta_data": {
                 "preptime": 20,
-                "cooktime": 100,
+                "cooktime": 101,
                 "serve": 20,
                 "type": [
                     "Main",
@@ -70,94 +70,57 @@
             "_instruction": "bla"
         },
         {
-            "_name": "Air",
-            "_id": 4,
+            "_name": "dasd",
+            "_id": 2,
             "_meta_data": {
-                "preptime": 15,
-                "cooktime": 15,
+                "preptime": 1,
+                "cooktime": 1,
                 "serve": 1,
                 "type": [
+                    "Dessert",
                     "Fika",
                     "Starter"
                 ],
                 "tags": [
-                    "Vegan",
-                    "Baby"
-                ]
-            },
-            "_ingredient_list": [
-                {
-                    "name": "nitrogen",
-                    "quantity": 700,
-                    "unit": "Milli-litre (ml)",
-                    "type": "Condiment",
-                    "season": "Not relevant"
-                },
-                {
-                    "name": "oxygen",
-                    "quantity": 300,
-                    "unit": "Milli-litre (ml)",
-                    "type": "Condiment",
-                    "season": "Not relevant"
-                }
-            ],
-            "_instruction": "* doo the thing \n* And do this too"
-        },
-        {
-            "_name": "fish in water",
-            "_id": 5,
-            "_meta_data": {
-                "preptime": 5,
-                "cooktime": 5,
-                "serve": 2,
-                "type": [
-                    "Smoothie"
-                ],
-                "tags": [
-                    "Vegan",
+                    "Gluten free",
+                    "Burger",
                     "Baby",
-                    "Burger"
-                ]
-            },
-            "_ingredient_list": [
-                {
-                    "name": "fish",
-                    "quantity": 2,
-                    "unit": "Piece",
-                    "type": "Fish",
-                    "season": "Not relevant"
-                },
-                {
-                    "name": "water",
-                    "quantity": 1000,
-                    "unit": "Milli-litre (ml)",
-                    "type": "Dairy",
-                    "season": "Not relevant"
-                }
-            ],
-            "_instruction": "put fish in water and blend"
-        },
-        {
-            "_name": "lalalala",
-            "_id": 6,
-            "_meta_data": {
-                "preptime": 123,
-                "cooktime": 13,
-                "serve": 41,
-                "type": [
-                    "Dessert"
-                ],
-                "tags": [
                     "High protein"
                 ]
             },
             "_ingredient_list": [
                 {
-                    "name": "asdaf",
-                    "quantity": 12,
+                    "name": "das",
+                    "quantity": 2,
                     "unit": "Piece",
                     "type": "Fruit",
                     "season": "Spring"
+                }
+            ],
+            "_instruction": ""
+        },
+        {
+            "_name": "lunch 1",
+            "_id": 3,
+            "_meta_data": {
+                "preptime": 1,
+                "cooktime": 1,
+                "serve": 1,
+                "type": [
+                    "Main"
+                ],
+                "tags": [
+                    "Vegetarian",
+                    "Hot"
+                ]
+            },
+            "_ingredient_list": [
+                {
+                    "name": "fox",
+                    "quantity": 1,
+                    "unit": "Piece",
+                    "type": "Wild meat",
+                    "season": "Summer"
                 }
             ],
             "_instruction": ""
