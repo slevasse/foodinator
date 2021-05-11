@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
+
 @dataclass
-class ingredient():
+class Ingredient:
     """ A  class representing an ingredient. """
     name: str
     quantity: float

@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from PyQt5 import uic
 from myMainWindow import myMainWindow
-import ingredient
-import food_list as fl
 from PyQt5.QtWidgets import *
 import logging
 

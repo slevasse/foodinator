@@ -13,13 +13,14 @@ class recipe_defs:
                    "Take away"]
 
       self.types = ["Breakfast",
-                   "Main",
-                   "Dessert",
-                   "Fika",
-                   "Starter",
-                   "Juice",
-                   "Smoothie",
-                   "Soup"]
+                    "Main",
+                    "Dessert",
+                    "Fika",
+                    "Starter",
+                    "Juice",
+                    "Smoothie",
+                    "Soup"]
+
 
 class ingredient_def:
     def __init__(self):
@@ -30,18 +31,18 @@ class ingredient_def:
                       "Not applicable"]
 
       self.types = ["Fruit",
-                   "Vegy",
-                   "Spice",
-                   "Condiment",
-                   "Dairy",
-                   "Canned",
-                   "Dry",
-                   "Fish",
-                   "Bird",
-                   "Cow",
-                   "Pig",
-                   "Wild meat",
-                   "Other"]
+                    "Vegy",
+                    "Spice",
+                    "Condiment",
+                    "Dairy",
+                    "Canned",
+                    "Dry",
+                    "Fish",
+                    "Bird",
+                    "Cow",
+                    "Pig",
+                    "Wild meat",
+                    "Other"]
 
       self.units = ["Piece",
                     "milli Litre (mL)",
@@ -50,6 +51,7 @@ class ingredient_def:
                     "kilo Gram (kg)",
                     "Table spoon",
                     "Tea spoon"]
+
 
 class search_configuration_def:
     def __init__(self, person_count, day_count, lunch_and_dinner, types, tags):

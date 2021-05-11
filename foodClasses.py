@@ -1,17 +1,26 @@
+import dataclasses
+
 import copy
 
-class recipe:
+
+@dataclasses.dataclass
+class Ingredient:
+    """ A  class representing an ingredient. """
+    name: str
+    quantity: float
+    unit: str
+    type: str
+    season: str
+
+
+@dataclasses.dataclass
+class Recipe:
     """ A  class representing a recipe. """
-    def __init__(self, name = None,
-                 id = 0,
-                 meta_data = {'preptime':0, 'cooktime':0, 'serve':0, 'type':[], 'tags':[]},
-                 ingredient_list = [],
-                 instruction = ''):
-        self._name = name  # the name
-        self._id = id
-        self._meta_data = meta_data  # preptime, cooktime, serve N,
-        self._ingredient_list = ingredient_list  # a list of ingredients ingredient name, (quantity, unit), type (meat, veg, spice, etc), season.
-        self._instruction = instruction # the instruction as a text, optional
+    name: str  # the name
+    id: int
+    meta_data: dataclasses.field(default_factory=dict)  # preptime, cooktime, serve N,
+    ingredient_list: dataclasses.field(default_factory=list)  # a list of ingredients ingredient name, (quantity, unit), type (meat, veg, spice, etc), season.
+    instruction: str  # the instruction as a text, optional
 
     def add_ingredient(self, ingredient_obj):
         self._ingredient_list.append(ingredient_obj)
@@ -58,3 +67,4 @@ class recipe:
         self._meta_data = {'preptime':0, 'cooktime':0, 'serve':0}
         self._ingredient_list = []
         self._instruction = ''
+
