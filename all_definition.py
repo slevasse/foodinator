@@ -31,20 +31,25 @@ class ingredient_def:
                       "Not applicable"]
 
       self.types = ["Fruit",
-                    "Vegy",
+                    "Root-Vegy",
+                    "Salad-Vegy",
+                    "Stem-Vegy",
+                    "Sea-Vegy",
                     "Spice",
                     "Condiment",
                     "Dairy",
                     "Canned",
                     "Dry",
                     "Fish",
-                    "Bird",
-                    "Cow",
+                    "poultry",
+                    "Beef",
                     "Pig",
                     "Wild meat",
                     "Other"]
 
       self.units = ["Piece",
+                    "Clove",
+                    "Leaf",
                     "milli Litre (mL)",
                     "Litre (L)",
                     "Gram (m)",

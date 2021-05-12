@@ -1,0 +1,653 @@
+﻿Name,Type,Season
+Apple,Fruit,
+Apricot,Fruit,
+Avocado,Fruit,
+Banana,Fruit,
+Bilberry,Fruit,
+Blackberry,Fruit,
+Blackcurrant,Fruit,
+Blueberry,Fruit,
+Boysenberry,Fruit,
+Caper,Fruit,
+Currant,Fruit,
+Cherry,Fruit,
+Cherimoya,Fruit,
+Chico fruit,Fruit,
+Cloudberry,Fruit,
+Coconut,Fruit,
+Cranberry,Fruit,
+Cucumber,Fruit,
+Custard apple,Fruit,
+Damson,Fruit,
+Date,Fruit,
+Dragonfruit,Fruit,
+Durian,Fruit,
+Elderberry,Fruit,
+Feijoa,Fruit,
+Fig,Fruit,
+Goji berry,Fruit,
+Gooseberry,Fruit,
+Grape,Fruit,
+Raisin,Fruit,
+Grapefruit,Fruit,
+Guava,Fruit,
+Honeyberry,Fruit,
+Huckleberry,Fruit,
+Jabuticaba,Fruit,
+Jackfruit,Fruit,
+Jambul,Fruit,
+Jujube,Fruit,
+Juniper berry,Fruit,
+Kiwano,Fruit,
+Kiwifruit,Fruit,
+Kumquat,Fruit,
+Lemon,Fruit,
+Lime,Fruit,
+Loquat,Fruit,
+Longan,Fruit,
+Lychee,Fruit,
+Mango,Fruit,
+Mangosteen,Fruit,
+Marionberry,Fruit,
+Melon,Fruit,
+Cantaloupe,Fruit,
+Honeydew,Fruit,
+Watermelon,Fruit,
+Miracle fruit,Fruit,
+Mulberry,Fruit,
+Nectarine,Fruit,
+Nance,Fruit,
+Olive,Fruit,
+Orange,Fruit,
+Blood orange,Fruit,
+Clementine,Fruit,
+Mandarine,Fruit,
+Tangerine,Fruit,
+Papaya,Fruit,
+Passionfruit,Fruit,
+Peach,Fruit,
+Pear,Fruit,
+Persimmon,Fruit,
+Physalis,Fruit,
+Plantain,Fruit,
+Plum,Fruit,
+Prune,Fruit,
+Pineapple,Fruit,
+Plumcot,Fruit,
+Pomegranate,Fruit,
+Pomelo,Fruit,
+Purple mangosteen,Fruit,
+Quince,Fruit,
+Raspberry,Fruit,
+Salmonberry,Fruit,
+Rambutan,Fruit,
+Redcurrant,Fruit,
+Salal berry,Fruit,
+Salak,Fruit,
+Satsuma,Fruit,
+Soursop,Fruit,
+Star fruit,Fruit,
+Solanum quitoense,Fruit,
+Strawberry,Fruit,
+Tamarillo,Fruit,
+Tamarind,Fruit,
+Ugli fruit,Fruit,
+Yuzu,Fruit,
+Ahipa,Root-vegetables,
+Arracacha,Root-vegetables,
+Bamboo shoot,Root-vegetables,
+Beetroot,Root-vegetables,
+Burdock,Root-vegetables,
+Broadleaf arrowhead,Root-vegetables,
+Camas,Root-vegetables,
+Canna,Root-vegetables,
+Carrot,Root-vegetables,
+Cassava,Root-vegetables,
+Chinese artichoke,Root-vegetables,
+Daikon,Root-vegetables,
+Earthnut pea,Root-vegetables,
+Elephant foot yam,Root-vegetables,
+Ensete,Root-vegetables,
+Galangal,Root-vegetables,
+Ginger,Root-vegetables,
+Hamburg parsley,Root-vegetables,
+Horseradish,Root-vegetables,
+Jerusalem artichoke,Root-vegetables,
+Jícama,Root-vegetables,
+Mashua,Root-vegetables,
+Parsnip,Root-vegetables,
+Pignut,Root-vegetables,
+Potato,Root-vegetables,
+Prairie turnip,Root-vegetables,
+Radish,Root-vegetables,
+Rutabaga (swede),Root-vegetables,
+Salsify,Root-vegetables,
+Scorzonera,Root-vegetables,
+Skirret,Root-vegetables,
+Swede,Root-vegetables,
+Sweet potato,Root-vegetables,
+Taro,Root-vegetables,
+Ti,Root-vegetables,
+Tigernut,Root-vegetables,
+Turmeric,Root-vegetables,
+Turnip,Root-vegetables,
+Ulluco,Root-vegetables,
+Wasabi,Root-vegetables,
+Water caltrop,Root-vegetables,
+Water chestnut,Root-vegetables,
+Yacón,Root-vegetables,
+Yam,Root-vegetables,
+Amaranth,Salad-vegetables,
+Arugula,Salad-vegetables,
+Beet (greens),Salad-vegetables,
+Bok choy,Salad-vegetables,
+Borage greens,Salad-vegetables,
+Broccoli (leaves / stalks),Salad-vegetables,
+Brooklime,Salad-vegetables,
+Brussels sprouts,Salad-vegetables,
+Cabbage,Salad-vegetables,
+Catsear,Salad-vegetables,
+Celery,Salad-vegetables,
+Celtuce,Salad-vegetables,
+Chaya,Salad-vegetables,
+Chickweed,Salad-vegetables,
+Chicory,Salad-vegetables,
+Chinese mallow,Salad-vegetables,
+Garland Chrysanthemum,Salad-vegetables,
+Collard greens,Salad-vegetables,
+Common purslane,Salad-vegetables,
+Corn salad,Salad-vegetables,
+Cress,Salad-vegetables,
+Dandelion,Salad-vegetables,
+Dill,Salad-vegetables,
+Endive,Salad-vegetables,
+Fat hen,Salad-vegetables,
+Fiddlehead,Salad-vegetables,
+Fluted pumpkin,Salad-vegetables,
+Golden samphire,Salad-vegetables,
+Good King Henry,Salad-vegetables,
+Grape (leaves),Salad-vegetables,
+Greater plantain,Salad-vegetables,
+Kai-lan,Salad-vegetables,
+Kale,Salad-vegetables,
+Komatsuna,Salad-vegetables,
+Kuka,Salad-vegetables,
+Lagos bologi,Salad-vegetables,
+Lamb’s lettuce,Salad-vegetables,
+Lamb’s quarters,Salad-vegetables,
+Land cress,Salad-vegetables,
+Lettuce,Salad-vegetables,
+Lizard’s tail,Salad-vegetables,
+Malabar spinach,Salad-vegetables,
+Mallow,Salad-vegetables,
+Melokhia,Salad-vegetables,
+Miner’s lettuce (Winter purslane),Salad-vegetables,
+Mizuna greens,Salad-vegetables,
+Mustard,Salad-vegetables,
+Napa cabbage,Salad-vegetables,
+New Zealand Spinach,Salad-vegetables,
+Orache,Salad-vegetables,
+Pak choy,Salad-vegetables,
+Paracress,Salad-vegetables,
+Pea (sprouts / leaves),Salad-vegetables,
+Poke,Salad-vegetables,
+Radicchio,Salad-vegetables,
+Rapini (broccoli rabe),Salad-vegetables,
+Samphire,Salad-vegetables,
+Sculpit,Salad-vegetables,
+Sea beet,Salad-vegetables,
+Sea kale,Salad-vegetables,
+Shepherd’s purse,Salad-vegetables,
+Sierra Leone bologi,Salad-vegetables,
+Soko,Salad-vegetables,
+Sorrel,Salad-vegetables,
+Sour cabbage,Salad-vegetables,
+Spinach,Salad-vegetables,
+Summer purslane,Salad-vegetables,
+Swiss chard,Salad-vegetables,
+Tatsoi,Salad-vegetables,
+Turnip greens,Salad-vegetables,
+Watercress,Salad-vegetables,
+Water spinach,Salad-vegetables,
+Wheatgrass,Salad-vegetables,
+Yarrow,Salad-vegetables,
+Aonori,Sea-vegetables,
+Arame,Sea-vegetables,
+Carola,Sea-vegetables,
+Dabberlocks,Sea-vegetables,
+Dulse,Sea-vegetables,
+Hijiki,Sea-vegetables,
+Kombu,Sea-vegetables,
+Laver / Gim,Sea-vegetables,
+Mozuku,Sea-vegetables,
+Nori,Sea-vegetables,
+Ogonori,Sea-vegetables,
+Sea grape,Sea-vegetables,
+Sea lettuce,Sea-vegetables,
+Wakame,Sea-vegetables,
+Asparagus,Stem-vegetables,
+Cardoon,Stem-vegetables,
+Celeriac,Stem-vegetables,
+Celery,Stem-vegetables,
+Chives,Stem-vegetables,
+Elephant garlic,Stem-vegetables,
+Florence fennel,Stem-vegetables,
+Garlic,Stem-vegetables,
+Garlic chives,Stem-vegetables,
+Kohlrabi,Stem-vegetables,
+Kurrat,Stem-vegetables,
+Lemongrass,Stem-vegetables,
+Leek,Stem-vegetables,
+Lotus root,Stem-vegetables,
+Nopal,Stem-vegetables,
+Onion,Stem-vegetables,
+Pearl onion,Stem-vegetables,
+Potato onion,Stem-vegetables,
+Prussian asparagus,Stem-vegetables,
+Spring onion / Scallion,Stem-vegetables,
+Shallot,Stem-vegetables,
+Tree onion / Welsh onion,Stem-vegetables,
+Wild leek,Stem-vegetables,
+Manchurian wild rice,Stem-vegetables,
+Adzuki Beans,Bean,
+Anasazi Beans,Bean,
+Black Beans,Bean,
+Black-Eyed Peas,Bean,
+Borlotti/Cranberry/Roman,Bean,
+Butter Beans,Bean,
+Cannellini Beans,Bean,
+Christmas Lima Bean/Chestnut Lima,Bean,
+Corona Beans,Bean,
+Fava Beans/Broad Beans,Bean,
+Flageolet Beans,Bean,
+Garbanzo Beans/Chickpeas,Bean,
+Desi/Bengal Gram,Bean,
+Chana Dal(split),Bean,
+Great Northern Beans,Bean,
+Kidney Beans,Bean,
+Lentils,Bean,
+Lima Beans/Butter Beans,Bean,
+Lupini Beans,Bean,
+Marrow Beans,Bean,
+Moth Beans,Bean,
+Mung Beans,Bean,
+Navy Beans,Bean,
+Pigeon Pea,Bean,
+Pink Beans,Bean,
+Pinto Beans,Bean,
+Red Beans/Small Red Beans,Bean,
+Rice Beans,Bean,
+Scarlet Runner Beans,Bean,
+Soybean/Soya Bean,Bean,
+Spanish Tolosana Beans,Bean,
+Split Peas,Bean,
+"Green, Yellow",Bean,
+Tepary Beans,Bean,
+Urad,Bean,
+Almond,Nut,
+Australian Nut,Nut,
+Beech,Nut,
+Black Walnut,Nut,
+Blanched Almond,Nut,
+Brazil Nut,Nut,
+Butternut,Nut,
+Candle Nut,Nut,
+Candlenut,Nut,
+Cashew,Nut,
+Chestnuts,Nut,
+Chinese Almond,Nut,
+Chinese Chestnut,Nut,
+Chinkapin,Nut,
+Chufa Nut,Nut,
+Cobnut,Nut,
+Colocynth,Nut,
+Country Walnut,Nut,
+Cream Nut,Nut,
+Cucurbita Ficifolia,Nut,
+Earth Almond,Nut,
+Earth Nut,Nut,
+English Walnuts,Nut,
+Filbert,Nut,
+Florida Almond,Nut,
+Gevuina Avellana,Nut,
+Gingko Nut,Nut,
+Hazelnut,Nut,
+Heartnut,Nut,
+Hickory Nut,Nut,
+Horned Water Chestnut,Nut,
+Indian Beech,Nut,
+Indian Nut,Nut,
+Japanese Walnut,Nut,
+Java Almond,Nut,
+Jesuit Nut,Nut,
+Juniper Berry,Nut,
+Kluwak Nuts,Nut,
+Kola Nut,Nut,
+Macadamia,Nut,
+Malabar Chestnut,Nut,
+Mamoncillo,Nut,
+Maya Nut,Nut,
+Mongongo,Nut,
+Oak Acorns,Nut,
+Ogbono Nut,Nut,
+Para Nut,Nut,
+Paradise Nut,Nut,
+Pecan,Nut,
+Persian Walnuts,Nut,
+Pili Nut,Nut,
+Pine Nut,Nut,
+Pine Nut,Nut,
+Pinyon,Nut,
+Pistachio Nut,Nut,
+Pistacia,Nut,
+Polynesian Chestnut,Nut,
+Queensland Nut,Nut,
+Royal Walnuts,Nut,
+Rush Nut,Nut,
+Sapucaya Nut,Nut,
+Sapucia Nut,Nut,
+Shagbark Hickory,Nut,
+Sliced Almonds,Nut,
+Slivered Almond,Nut,
+Sweet Almond,Nut,
+Sweet Chestnut,Nut,
+Terminalia Catappa,Nut,
+Tiger Nut,Nut,
+Walnut,Nut,
+Water Caltrop,Nut,
+White Nut,Nut,
+White Walnut,Nut,
+Chia seeds,Seed,
+Flaxseed,Seed,
+Hemp seeds,Seed,
+Poppy seed,Seed,
+Pumpkin seeds,Seed,
+Sesame seed,Seed,
+Safflower,Seed,
+Sunflower,Seed,
+Barley,Cereal,
+Fonio,Cereal,
+Kamut,Cereal,
+Maize (corn),Cereal,
+Pearl Millet,Cereal,
+Oats,Cereal,
+Palmer's grass,Cereal,
+Rice,Cereal,
+Rye,Cereal,
+Sorghum,Cereal,
+Spelt,Cereal,
+Teff,Cereal,
+Triticale,Cereal,
+Wheat,Cereal,
+Wild rice,Cereal,
+allspice (Pimenta dioica),Spice,All
+angelica (Angelica archangelica),Spice,All
+anise (Pimpinella anisum),Spice,All
+asafoetida (Ferula assa-foetida),Spice,All
+bay leaf (Laurus nobilis),Spice,All
+basil (Ocimum basilicum),Spice,All
+bergamot (Monarda species),Spice,All
+black cumin (Nigella sativa),Spice,All
+black mustard (Brassica nigra),Spice,All
+black pepper (Piper nigrum),Spice,All
+borage (Borago officinalis),Spice,All
+brown mustard (Brassica juncea),Spice,All
+burnet (Sanguisorba minor and S. officinalis),Spice,All
+caraway (Carum carvi),Spice,All
+cardamom (Elettaria cardamomum),Spice,All
+cassia (Cinnamomum cassia),Spice,All
+catnip (Nepeta cataria),Spice,All
+cayenne pepper (Capsicum annuum),Spice,All
+"celery seed (Apium graveolens, variety dulce)",Spice,All
+chervil (Anthriscus cerefolium),Spice,All
+chicory (Cichorium intybus),Spice,All
+chili pepper (Capsicum species),Spice,All
+chives (Allium schoenoprasum),Spice,All
+cicely (Myrrhis odorata),Spice,All
+cilantro (Coriandrum sativum),Spice,All
+cinnamon (Cinnamomum verum),Spice,All
+clove (Syzygium aromaticum),Spice,All
+coriander (Coriandrum sativum),Spice,All
+ costmary (Tanacetum balsamita),Spice,All
+cumin (Cuminum cyminum),Spice,All
+curry,Spice,All
+dill (Anethum graveolens),Spice,All
+fennel (Foeniculum vulgare),Spice,All
+fenugreek (Trigonella foenum-graecum),Spice,All
+filé (Sassafras albidum),Spice,All
+ginger (Zingiber officinale),Spice,All
+grains of paradise (Aframomum melegueta),Spice,All
+holy basil (Ocimum tenuiflorum),Spice,All
+horehound (Marrubium vulgare),Spice,All
+horseradish (Armoracia rusticana),Spice,All
+hyssop (Hyssopus officinalis),Spice,All
+lavender (Lavandula species),Spice,All
+lemon balm (Melissa officinalis),Spice,All
+lemon grass (Cymbopogon citratus),Spice,All
+lemon verbena (Aloysia citrodora),Spice,All
+licorice (Glycyrrhiza glabra),Spice,All
+lovage (Levisticum officinale),Spice,All
+mace (Myristica fragrans),Spice,All
+marjoram (Origanum majorana),Spice,All
+nutmeg (Myristica fragrans),Spice,All
+oregano (Origanum vulgare),Spice,All
+paprika (Capsicum annuum),Spice,All
+parsley (Petroselinum crispum),Spice,All
+peppermint (Mentha ×piperita),Spice,All
+poppy seed (Papaver somniferum),Spice,All
+rosemary (Rosmarinus officinalis),Spice,All
+rue (Ruta graveolens),Spice,All
+saffron (Crocus sativus),Spice,All
+sage (Salvia officinalis),Spice,All
+savory (Satureja hortensis and S. montana),Spice,All
+sesame (Sesamum indicum),Spice,All
+sorrel (Rumex species),Spice,All
+star anise (Illicium verum),Spice,All
+spearmint (Mentha spicata),Spice,All
+tarragon (Artemisia dracunculus),Spice,All
+thyme (Thymus vulgaris),Spice,All
+turmeric (Curcuma longa),Spice,All
+vanilla (Vanilla planifolia and V. tahitensis),Spice,All
+wasabi (Eutrema japonicum),Spice,All
+white mustard (Sinapis alba),Spice,All
+Beef,Meat,
+Chiken,Poultry,
+Gambas,seafood,
+Salmon,Fish,
+Anchovy,Fish,
+Milk,Dairy,
+Greek yogurt,Dairy,
+Chiken egg,Egg,
+Soy milk,Soy based,
+Soy cream,Soy based,
+Tofu (silky),Soy based,
+Tofu (firm),Soy based,
+Spaghettoni,Noodle Pasta,All
+Spaghetti,Noodle Pasta,All
+Spaghettini,Noodle Pasta,All
+Fedelini,Noodle Pasta,All
+Vermicelloni,Noodle Pasta,All
+Vermicelli,Noodle Pasta,All
+Capellini,Noodle Pasta,All
+Capelli d'angelo,Noodle Pasta,All
+Barbina,Noodle Pasta,All
+Bucatini,Noodle Pasta,All
+Perciatelli,Noodle Pasta,All
+Fusilli lunghi,Noodle Pasta,All
+Fusilli bucati,Noodle Pasta,All
+Pici,Noodle Pasta,All
+Soba (Japanese),Noodle Pasta,All
+Udon (Japanese),Noodle Pasta,All
+Cu mian (Chinese),Noodle Pasta,All
+Ziti,Noodle Pasta,All
+Zitoni,Noodle Pasta,All
+Spaghetti alla chitarra,Ribbon Pasta,All
+Ciriole,Ribbon Pasta,All
+Bavette,Ribbon Pasta,All
+Bavettine,Ribbon Pasta,All
+Fettuce,Ribbon Pasta,All
+Fettuccine,Ribbon Pasta,All
+Fettucelle,Ribbon Pasta,All
+Lagane,Ribbon Pasta,All
+Lasagne,Ribbon Pasta,All
+Lasagnette,Ribbon Pasta,All
+Lasagnotte,Ribbon Pasta,All
+Linguettine,Ribbon Pasta,All
+Linguine,Ribbon Pasta,All
+Mafalde,Ribbon Pasta,All
+Mafaldine,Ribbon Pasta,All
+Pappardelle,Ribbon Pasta,All
+Pillus,Ribbon Pasta,All
+Pizzoccheri,Ribbon Pasta,All
+Sagnarelli,Ribbon Pasta,All
+Scialatelli or scilatielli,Ribbon Pasta,All
+Stringozzi,Ribbon Pasta,All
+Tagliatelle,Ribbon Pasta,All
+Taglierini,Ribbon Pasta,All
+Trenette,Ribbon Pasta,All
+Tripoline,Ribbon Pasta,All
+Shahe fen (Chinese),Ribbon Pasta,All
+Biáng biáng noodles Chinese),Ribbon Pasta,All
+Calamarata,Short Pasta,All
+Calamaretti,Short Pasta,All
+Cannelloni,Short Pasta,All
+Cavatappi,Short Pasta,All
+Cellentani,Short Pasta,All
+Crozet,Short Pasta,All
+Chifferi,Short Pasta,All
+Ditalini,Short Pasta,All
+Fideuà,Short Pasta,All
+Gomito,Short Pasta,All
+Elicoidali,Short Pasta,All
+Fagioloni,Short Pasta,All
+Fusilli,Short Pasta,All
+Garganelli,Short Pasta,All
+Gemelli,Short Pasta,All
+Maccheroncelli,Short Pasta,All
+Maltagliati,Short Pasta,All
+Manicotti,Short Pasta,All
+Marziani,Short Pasta,All
+Mezzani pasta,Short Pasta,All
+Mezze penne,Short Pasta,All
+Mezzi bombardoni,Short Pasta,All
+Mostaccioli,Short Pasta,All
+Paccheri,Short Pasta,All
+Pasta al ceppo,Short Pasta,All
+Penne,Short Pasta,All
+Penne rigate,Short Pasta,All
+Penne lisce,Short Pasta,All
+Penne zita,Short Pasta,All
+Pennette,Short Pasta,All
+Pennoni,Short Pasta,All
+Rigatoncini,Short Pasta,All
+Rigatoni,Short Pasta,All
+Sagne 'ncannulate,Short Pasta,All
+Spirali,Short Pasta,All
+Spiralini,Short Pasta,All
+Trenne,Short Pasta,All
+Trennette,Short Pasta,All
+Tortiglioni,Short Pasta,All
+Tuffoli,Short Pasta,All
+Campanelle,Odd Pasta,All
+Capunti,Odd Pasta,All
+Casarecce,Odd Pasta,All
+Cavatelli,Odd Pasta,All
+Cencioni,Odd Pasta,All
+Conchiglie,Odd Pasta,All
+Conchiglioni,Odd Pasta,All
+Corzetti,Odd Pasta,All
+Creste di galli,Odd Pasta,All
+Croxetti,Odd Pasta,All
+Farfalle,Odd Pasta,All
+Farfalloni,Odd Pasta,All
+Fiorentine,Odd Pasta,All
+Fiori,Odd Pasta,All
+Foglie d'ulivo,Odd Pasta,All
+Gigli,Odd Pasta,All
+Gramigna,Odd Pasta,All
+Lanterne,Odd Pasta,All
+Lumache,Odd Pasta,All
+Lumaconi,Odd Pasta,All
+Maltagliati,Odd Pasta,All
+Mandala,Odd Pasta,All
+Marille,Odd Pasta,All
+Orecchiette,Odd Pasta,All
+Pipe,Odd Pasta,All
+Quadrefiore,Odd Pasta,All
+Radiatori,Odd Pasta,All
+Ricciolini,Odd Pasta,All
+Ricciutelle,Odd Pasta,All
+Rotelle,Odd Pasta,All
+Rotini,Odd Pasta,All
+Strozzapreti,Odd Pasta,All
+Torchio,Odd Pasta,All
+Trofie,Odd Pasta,All
+Gnocchi,Odd Pasta,All
+Passatelli,Odd Pasta,All
+Spätzle,Odd Pasta,All
+Agnolotti,Stuffed Pasta,All
+Cannelloni,Stuffed Pasta,All
+Casoncelli or casonsèi,Stuffed Pasta,All
+Casunziei,Stuffed Pasta,All
+Fagottini,Stuffed Pasta,All
+Maultasche,Stuffed Pasta,All
+Mezzelune,Stuffed Pasta,All
+Occhi di lupo,Stuffed Pasta,All
+Pelmeni,Stuffed Pasta,All
+Pierogi,Stuffed Pasta,All
+Ravioli,Stuffed Pasta,All
+Sacchettini,Stuffed Pasta,All
+Sacchettoni,Stuffed Pasta,All
+Tortellini,Stuffed Pasta,All
+Tortelloni,Stuffed Pasta,All
+Gluten flour,Flour,All
+whole-wheat flour,Flour,All
+white-wheat flour,Flour,All
+buckwheat flour,Flour,All
+Raisins,Dryed Fruit,All
+Dried apricots,Dryed Fruit,All
+Prunes,Dryed Fruit,All
+Dried figs,Dryed Fruit,All
+Dates,Dryed Fruit,All
+Mustard,Condiment,All
+Salt,Condiment,All
+Soy sauce,Condiment,All
+Ketchup,Condiment,All
+Mayonnaise,Condiment,All
+Tabasco,Condiment,All
+Wasabi,Condiment,All
+Tahini,Condiment,All
+Hummus,Condiment,All
+Chutney,Condiment,All
+Miso,Condiment,All
+Aioli,Condiment,All
+Harissa,Condiment,All
+Sriracha,Condiment,All
+Pesto,Condiment,All
+Olive oil,Condiment,All
+Sunflower oil,Condiment,All
+Sesame oil,Condiment,All
+Rapeseed oil,Condiment,All
+Penut oil,Condiment,All
+Vinegar ,Condiment,All
+Garlic semoule,Condiment,All
+Honey,Condiment,All
+Maple syrup,Condiment,All
+Nutritional yeast,Condiment,All
+Pickled onion,Condiment,All
+Pickled pepper ,Condiment,All
+Cornichons,Condiment,All
+Cristal Sugar,Condiment,All
+Flour Sugar,Condiment,All
+Brown sugar,Condiment,All
+Pistou,Condiment,All
+Coconut milk,Condiment,All
+Dryed tomatoes,Condiment,All
+Kimchi,Condiment,All
+Rice vinegar,Condiment,All
+Salsa,Condiment,All
+Black Chocolate,Others,All
+White Chocolate,Others,All
+Milk Chocolate,Others,All
+Powdered Chocolate,Others,All
+Yeast,Others,All

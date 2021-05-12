@@ -2,30 +2,45 @@ import dataclasses
 
 import copy
 
+@dataclasses.dataclass
+class FoodItem:
+    """ A  class representing a food item. """
+    name: str = None
+    type: str = None
+    season: str = None
 
 @dataclasses.dataclass
 class Ingredient:
     """ A  class representing an ingredient. """
-    name: str
-    quantity: float
-    unit: str
-    type: str
-    season: str
+    quantity: float = None
+    unit: str = None
+    food_item: FoodItem = None
+
+# @dataclasses.dataclass
+# class Ingredient:
+#     """ A  class representing an ingredient. """
+#     name: str = None
+#     quantity: float = None
+#     unit: str = None
+#     type: str = None
+#     season: str = None
 
 
 @dataclasses.dataclass
 class Recipe:
     """ A  class representing a recipe. """
-    name: str  # the name
-    id: int
-    meta_data: dataclasses.field(default_factory=dict)  # preptime, cooktime, serve N,
-    ingredient_list: dataclasses.field(default_factory=list)  # a list of ingredients ingredient name, (quantity, unit), type (meat, veg, spice, etc), season.
-    instruction: str  # the instruction as a text, optional
+    name: str = None  # the recipe name
+    id: int = None  # a unique ID for that recipe
+    meta_data: dict = dataclasses.field(default_factory=dict)  # preptime, cooktime, serve N,
+    ingredient_list: list[Ingredient] = dataclasses.field(default_factory=list)  # a list of ingredients ingredient name, (quantity, unit), type (meat, veg, spice, etc), season.
+    instruction: str = None  # the instruction as a text, optional
 
-    def add_ingredient(self, ingredient_obj):
-        self._ingredient_list.append(ingredient_obj)
+    def append(self, ingredient_obj):
+        if type(ingredient_obj) != Ingredient:
+            raise TypeError('Expected class Ingredient, got ', type(ingredient_obj))
+        self.ingredient_list.append(ingredient_obj)
 
-    def remove_ingredient(self, ingredient_name):
+    def remove_ingredient(self, ingredient_name_or_obj):
         pass
 
     def add_tag(self, tag):
