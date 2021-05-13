@@ -1,51 +1,56 @@
-from recipe import recipe
+from food_item_library.foodLibrary import FoodLibrary
+from dataclasses import *
+from foodClasses import *
+
 import json
-import os.path
-import logging
 
-from ingredient import ingredient
+test_file = "recipe_list.json"
 
-ing_list = [ingredient("potato", 12, "unit", "veg", "autumn"), ingredient("banana", 5, "unit", "fruit", "summer")]
-myrec = recipe("test", 3, {'preptime':120, 'cooktime':45, 'serve':6}, ing_list, "make it rain.", ["fresh", "baby"])
-myrec2 = recipe("test", 3, {'preptime':120, 'cooktime':45, 'serve':6}, ing_list, "make it rain.", ["fresh", "baby"])
-
-listo = [myrec, myrec2]
-diclist = []
-for obj in listo:
-    diclist.append(obj.dictify())
-
-dicted = myrec.dictify()
-
-testo = {"recipe_list": [dicted, dicted, dicted]}
-
-with open('ingredient_list_db.json', 'w') as outfile:
-    json.dump(dicted, outfile, sort_keys=False, indent=4)
-
-with open('recipe_list_db.json', 'w') as outfile:
-    json.dump(testo, outfile,sort_keys=False, indent=4)
+lib = FoodLibrary()
+ing0 = Ingredient()
+ing1 = Ingredient(0,0,lib[0])
+ing2 = Ingredient(0,0,lib[30])
+ing3 = Ingredient(0,0,lib[40])
+ings = [ing1, ing2, ing3]
 
 
+ing1_dict = ing1.dict
+ing0.from_dict(ing1_dict)
 
+rec = Recipe("hoy", 0, 12, 12, 1)
 
-with open("recipe_list_db.jsn", "r") as read_file:
-    # load the file as a dict
-    data = json.load(read_file)
-    #
-    myrecipelist = []
-    # iterate through the dict
-    for a_recipe in data["recipe_list"]:
-        # get the ingredients
-        ingredient_list = []
-        for a_ing in a_recipe["_ingredient_list"]:
-            ingredient_list.append(ingredient(a_ing["name"],
-                                              a_ing["quantity"],
-                                              a_ing["unit"],
-                                              a_ing["type"],
-                                              a_ing["season"],))
-        # write the new object list
-        myrecipelist.append(recipe(a_recipe["_name"],
-                                   a_recipe["_id"],
-                                   a_recipe["_meta_data"],
-                                   ingredient_list,
-                                   a_recipe["_instruction"],
-                                   a_recipe["_tags"]))
+rec.append_ingredient(ing1)
+
+rec.append_ingredient(ings)
+
+rec.remove_ingredient(['apple', ing2])
+rec.append_recipe_type(['main', 'breakfast'])
+rec.append_recipe_tag(['cold', 'vegan'])
+rec.remove_recipe_type(['main'])
+rec.remove_recipe_tag(['vegan'])
+
+auto_dict = rec.dict
+
+rec2 = Recipe()
+rec2.from_dict(auto_dict)
+rec3 = Recipe("paota", 0, 12, 56, 1, ['hum'], ['drumm'])
+
+book = RecipeBook()
+book.append([rec,rec2])
+book.name = "my_super_cookbook"
+book._path = "cookbooks/"
+book.to_file()
+book.auto_save = True
+book.append(rec3)
+book.append(rec3)
+book.append(rec3)
+book.append(rec3)
+book.append(rec3)
+book_dicted = book.dict
+new_book = RecipeBook()
+new_book.from_dict(book_dicted)
+new_book == book
+book2 = RecipeBook()
+book2.name = "my_super_cookbook"
+book2._path = "cookbooks/"
+book2.from_file()
