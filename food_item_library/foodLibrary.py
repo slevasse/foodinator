@@ -12,6 +12,9 @@ class FoodLibrary:
         # open the library and load it into the dict
         self.load_library()
 
+    def __len__(self):
+        return len(self.library)
+
     def __getitem__(self, key):
         return self.library[key]
 
@@ -24,28 +27,40 @@ class FoodLibrary:
             for row in reader:
                 self.library.append(row)
 
-    def find_matching_name(self, name: str):
+    def find_matching_name(self, name: str, perfect_match: bool = False):
         """Return a list of dict with all food item with names matching the name given by the user."""
         temp = []
         for item in self.library:
-            if re.search(name, item['Name'], re.IGNORECASE):
-                temp.append(item)
+            if perfect_match:
+                if name.lower() == item['Name'].lower():
+                    temp.append(item)
+            else:
+                if re.search(name, item['Name'], re.IGNORECASE):
+                    temp.append(item)
         return temp
 
-    def find_matching_type(self, food_type: str):
+    def find_matching_type(self, food_type: str, perfect_match: bool = False):
         """Return a list of dict with all food item with type matching the type given by the user."""
         temp = []
         for item in self.library:
-            if re.search(food_type, item['Type'], re.IGNORECASE):
-                temp.append(item)
+            if perfect_match:
+                if food_type.lower() == item['Type'].lower():
+                    temp.append(item)
+            else:
+                if re.search(food_type, item['Type'], re.IGNORECASE):
+                    temp.append(item)
         return temp
 
-    def find_matching_season(self, season: str):
+    def find_matching_season(self, season: str, perfect_match: bool = False):
         """Return a list of dict with all food item with season matching the season given by the user."""
         temp = []
         for item in self.library:
-            if re.search(season, item['Season'], re.IGNORECASE):
-                temp.append(item)
+            if perfect_match:
+                if season.lower() == item['Season'].lower():
+                    temp.append(item)
+            else:
+                if re.search(season, item['Season'], re.IGNORECASE):
+                    temp.append(item)
         return temp
 
     def does_it_exist(self, food_item: dict):
