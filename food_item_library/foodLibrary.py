@@ -27,41 +27,40 @@ class FoodLibrary:
             for row in reader:
                 self.library.append(row)
 
-    def find_matching_name(self, name: str, perfect_match: bool = False):
-        """Return a list of dict with all food item with names matching the name given by the user."""
-        temp = []
-        for item in self.library:
-            if perfect_match:
-                if name.lower() == item['Name'].lower():
-                    temp.append(item)
-            else:
-                if re.search(name, item['Name'], re.IGNORECASE):
-                    temp.append(item)
-        return temp
+    def sort_items_alphabetically(self, reverse=False):
+        """Sort the item in alphabetical order based on their name. If the optional parameter 'reverse' is set to
+        True, the list will be sorted in anti-alphabetical order."""
+        self.library.sort(key=lambda x: x['Name'], reverse=reverse)
 
-    def find_matching_type(self, food_type: str, perfect_match: bool = False):
-        """Return a list of dict with all food item with type matching the type given by the user."""
-        temp = []
+    def find(self, search_form: list) -> list:
+        method_library = {"item_name": self.check_name,
+                          "item_type": self.check_type,
+                          "item_season": self.check_type}
+        result = []
+        test = False
         for item in self.library:
-            if perfect_match:
-                if food_type.lower() == item['Type'].lower():
-                    temp.append(item)
-            else:
-                if re.search(food_type, item['Type'], re.IGNORECASE):
-                    temp.append(item)
-        return temp
+            for form in search_form:
+                test = method_library[form['search_mode']](form['key'], item)
+                if not test:
+                    break  # if we get there, this recipe is not matching all criteria and we can move on
+            if test:
+                result.append(item)
+        return result
 
-    def find_matching_season(self, season: str, perfect_match: bool = False):
-        """Return a list of dict with all food item with season matching the season given by the user."""
-        temp = []
-        for item in self.library:
-            if perfect_match:
-                if season.lower() == item['Season'].lower():
-                    temp.append(item)
-            else:
-                if re.search(season, item['Season'], re.IGNORECASE):
-                    temp.append(item)
-        return temp
+    def check_name(self, key: str, item: dict):
+        if re.search(key, item['Name'], re.IGNORECASE):
+            return True
+        return False
+
+    def check_type(self, key: str, item: dict):
+        if re.search(key, item['Type'], re.IGNORECASE):
+            return True
+        return False
+
+    def check_season(self, key: str, item: dict):
+        if re.search(key, item['Season'], re.IGNORECASE):
+            return True
+        return False
 
     def does_it_exist(self, food_item: dict):
         """Return True if the given food_item exit in the library."""

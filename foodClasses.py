@@ -50,7 +50,6 @@ class Ingredient:
 class Recipe:
     """ A  class representing a recipe. """
     name: str = None  # the recipe name
-    id: int = None  # a unique ID for that recipe
     prep_time: int = None
     cook_time: int = None
     serve: int = None
@@ -180,7 +179,6 @@ class Recipe:
     def from_dict(self, recipe_dict):
         """Fill the class from a dict version of a similar class"""
         self.name = recipe_dict['name']
-        self.id = recipe_dict['id']
         self.prep_time = recipe_dict['prep_time']
         self.cook_time = recipe_dict['cook_time']
         self.serve = recipe_dict['serve']
@@ -222,6 +220,7 @@ class RecipeBook:
     def _update_meta(self):
         self.recipe_count = len(self.recipe_list)
         self.last_updated = str(date.today())
+        self.sort_recipes_alphabetically()
 
 # add and remove recipes
     def _append_single_recipe(self, recipe):
@@ -375,8 +374,7 @@ class RecipeBook:
                 return True
         return False
 
-    # TODO, add function to order recipes in alphabetical order
     def sort_recipes_alphabetically(self, reverse=False):
         """Sort the recipes in alphabetical order based on their name. If the optional parameter 'reverse' is set to
         True, the list will be sorted in anti-alphabetical order."""
-        self.recipe_list.sort(key = lambda x: x.name, reverse = reverse)
+        self.recipe_list.sort(key=lambda x: x.name, reverse=reverse)

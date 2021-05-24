@@ -7,12 +7,11 @@ import logging
 def main():
     """ Main program """
     # start the logger
-    logging.basicConfig(filename='foodinator_log.log',format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO) # use INFO in release
+    logging.basicConfig(filename='cookbook_log.log',format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO) # use INFO in release
     logging.info('App Started')
 
     # load the ui
     app = QApplication([])
-    #window = QMainWindow()
     window = myMainWindow()
 
     # run the gui
@@ -22,6 +21,7 @@ def main():
     logging.info('Program exited normaly')
     # Code goes over here.
     return 0
+
 
 if __name__ == "__main__":
     main()

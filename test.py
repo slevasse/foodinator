@@ -66,25 +66,12 @@ def rand_recipes():
     return res
 
 
-get_name = lambda recipe: recipe.name
-
 book = RecipeBook("my_super_cookbook", "cookbooks/", recipe_list = rand_recipes())
 
 search = {'search_mode': 'recipe_author', 'key': 'swann'}
 search_list = [{'search_mode': 'recipe_author', 'key': 'swann'}, {'search_mode': 'ingredient_type', 'key': 'bean'}, {'search_mode': 'recipe_tag', 'key': 'vegan'}, {'search_mode': 'recipe_type', 'key': 'Dessert'}]
 r = book.find(search_list)
-
-hel = book.find_matching_name('hel')
-kiwi = book.find_with_ingredient_name('kiwi')
-crozet = book.find_with_ingredient_name('crozet')
-dif = book.find_with_difficulty('hard')
-aut = book.find_with_author('swann')
-types = book.find_with_ingredient_type('soy')
-tag = book.find_with_tag('baby')
-typ = book.find_with_type('soup')
-seas = book.find_with_ingredient_season('all')
-
-detailed = book.find_with_tag('baby', book.find_with_author('julia'))
+book.sort_recipes_alphabetically()
 
 rec = Recipe("hoy", 0, 12, 12, 1)
 
@@ -99,6 +86,8 @@ rec.remove_recipe_type(['main'])
 rec.remove_recipe_tag(['vegan'])
 
 auto_dict = rec.dict
+
+search_list = [{'search_mode': 'item_name', 'key': 'ap'}, {'search_mode': 'item_type', 'key': 'fruit'}
 
 rec2 = Recipe()
 rec2.from_dict(auto_dict)
