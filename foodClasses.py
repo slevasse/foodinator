@@ -188,6 +188,10 @@ class Recipe:
         self.prep_time = recipe_dict['prep_time']
         self.cook_time = recipe_dict['cook_time']
         self.serve = recipe_dict['serve']
+        # clear existing
+        self.types = []
+        self.tags = []
+        self.ingredient_list = []
         self.append_recipe_type(recipe_dict['types'])
         self.append_recipe_tag(recipe_dict['tags'])
         self.append_ingredient(recipe_dict['ingredient_list'])
@@ -244,6 +248,7 @@ class RecipeBook:
         else:
             raise TypeError('Expected class Recipe or dict, got ', type(recipe))
 
+    # TODO add check for if recipe name already exist
     def append(self, recipe_or_list, auto_save: bool = True):
         if isinstance(recipe_or_list, list):
             for recipe in recipe_or_list:
@@ -273,8 +278,17 @@ class RecipeBook:
                 if recipe_or_name.lower() == recipe.name.lower():
                     self.recipe_list.remove(recipe)
         else:
-            raise TypeError('Expected class Ingredient or string, got ', type(recipe_or_name))
+            raise TypeError('Expected class Recipe or string, got ', type(recipe_or_name))
 
+    # def edit_recipe(self, recipe_dict):
+    #     if isinstance(recipe_dict, dict):
+    #         for recipe in self.recipe_list:
+    #             if recipe_dict['name'].lower() == recipe.name.lower():
+    #                 recipe.from_dict(recipe_dict)
+    #         self._update_meta()
+    #         #self._auto_save()
+    #     else:
+    #         raise TypeError('Expected class dict , got ', type(recipe_or_name))
 # save and load the book
     @property
     def dict(self):
@@ -290,6 +304,7 @@ class RecipeBook:
         self.backup_interval = recipe_book_dict['backup_interval']
         self.backup_cnt = recipe_book_dict['backup_cnt']
         self.backup_history_length = recipe_book_dict['backup_history_length']
+        self.recipe_list = []
         self.append(recipe_book_dict['recipe_list'], auto_save = False)
 
     def from_file(self, filepath: str = None):

@@ -59,13 +59,14 @@ def rand_recipe():
 
 def rand_recipes():
     res = []
-    for _ in range(randint(500, 1000)):
+    for _ in range(randint(5, 10)):
         res.append(rand_recipe())
     return res
 
 
 book = RecipeBook("my_super_cookbook", "cookbooks/", recipe_list = rand_recipes())
-
+d = book.recipe_list[0].dict
+book.edit_recipe(d)
 search = {'search_mode': 'recipe_author', 'key': 'swann'}
 search_list = [{'search_mode': 'recipe_author', 'key': 'swann'}, {'search_mode': 'ingredient_type', 'key': 'bean'}, {'search_mode': 'recipe_tag', 'key': 'vegan'}, {'search_mode': 'recipe_type', 'key': 'Dessert'}]
 r = book.find(search_list)

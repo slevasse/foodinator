@@ -15,3 +15,9 @@ class IngredientTableItem(QTableWidgetItem):
         self.setText(ingredient.food_item['Name'])
         self.ingredient = ingredient
 
+
+class FoodItemListItem(QListWidgetItem):
+    def __init__(self, food_item: dict):
+        super().__init__()
+        self.setText(food_item['Name'])
+        self.food_item = food_item

@@ -53,6 +53,7 @@ class myMainWindow(QMainWindow):
 # Recipe display
 # ================
     def _init_recipe_table(self):
+        # clear the table
         self.tableWidget_recipe_display.clear()
         self.recipe_display_table_row_count = 0
         self.tableWidget_recipe_display.setColumnCount(6)
@@ -62,6 +63,7 @@ class myMainWindow(QMainWindow):
         self.tableWidget_recipe_display.setSortingEnabled(False)
         for rec in self.cookbook.recipe_list:
             self._insert_recipe_line(rec)
+        self.tableWidget_recipe_display.setRowCount(len(self.cookbook.recipe_list))
 
     def _insert_recipe_line(self, recipe: Recipe):
         self.tableWidget_recipe_display.insertRow(self.recipe_display_table_row_count)
@@ -80,7 +82,8 @@ class myMainWindow(QMainWindow):
                 for recipe in selected_recipes:
                     if type(recipe) == RecipeTableItem:
                         self.cookbook.remove_recipe(recipe.recipe)
-        self._refresh_recipe_display()
+                        self.tableWidget_recipe_display.removeRow(self.tableWidget_recipe_display.row(recipe))
+                        self.recipe_display_table_row_count -= 1
 
     def _refresh_recipe_display(self):
         self._init_recipe_table()
@@ -97,27 +100,32 @@ class myMainWindow(QMainWindow):
         else:
             return False
 
+# ===============================================================================
+# Add or edit a recipe
+# ================
+
     def open_edit_recipe_popup(self, row, col):
         self.edit_recipe_pop = EditRecipePopup(self.tableWidget_recipe_display.item(row, 0).recipe)
         self.edit_recipe_pop.updated_recipe.connect(self.update_recipe)
 
-    def update_recipe(self, recipe: Recipe):
-        pass
+    def update_recipe(self, recipe_dict: dict):
+        self.edit_recipe_pop = None
+        self.cookbook.sort_recipes_alphabetically()
+        self.cookbook._auto_save()
+        self._refresh_recipe_display()
 
     def _add_recipe(self):
         self.edit_recipe_pop = EditRecipePopup()
         self.edit_recipe_pop.updated_recipe.connect(self.add_recipe_to_list)
 
-    def add_recipe_to_list(self, recipe: Recipe):
-        pass
-    #         self.foodlist.add_recipe(recipe)
-    #         # save to file
-    #         self.foodlist.store_recipe_list()
-    #         # update the main display
-    #         self.recipe_display_sorting_updated()
-    #         #
-    #         self.update_recipe_number_label()
+    def add_recipe_to_list(self, recipe_dict: dict):
+        self.edit_recipe_pop = None
+        self.cookbook.append(recipe_dict)
+        self._refresh_recipe_display()
 
+# ===============================================================================
+# Recipe sorting
+# ================
 
 # #================
 #     def pushButton_select_food_list_clicked(self):
