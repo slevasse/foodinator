@@ -1,5 +1,5 @@
 import dataclasses
-
+from all_definition import *
 import json
 
 import re
@@ -50,9 +50,9 @@ class Ingredient:
 class Recipe:
     """ A  class representing a recipe. """
     name: str = None  # the recipe name
-    prep_time: int = None
-    cook_time: int = None
-    serve: int = None
+    prep_time: int = 0
+    cook_time: int = 0
+    serve: int = 0
     difficulty: str = None
     author: str = None
     last_updated: str = dataclasses.field(init=False, default=None)
@@ -66,6 +66,12 @@ class Recipe:
 
 #
     def __post_init__(self):
+        if self.name is None:
+            self.name = "Insert name here"
+        if self.author is None:
+            self.author = "insert author name here"
+        if self.difficulty is None:
+            self.difficulty = Definitions().difficulties[0]
         self._update_meta()
 
     def _update_meta(self):
@@ -213,7 +219,7 @@ class RecipeBook:
 
     def __post_init__(self):
         self._update_meta()
-#
+
     def __len__(self):
         return len(self.recipe_list)
 
@@ -221,6 +227,11 @@ class RecipeBook:
         self.recipe_count = len(self.recipe_list)
         self.last_updated = str(date.today())
         self.sort_recipes_alphabetically()
+
+    def open(self, path):
+        self.name = path.split('/')[-1]
+        self._path = path
+        self.from_file(self._path)
 
 # add and remove recipes
     def _append_single_recipe(self, recipe):
@@ -378,3 +389,44 @@ class RecipeBook:
         """Sort the recipes in alphabetical order based on their name. If the optional parameter 'reverse' is set to
         True, the list will be sorted in anti-alphabetical order."""
         self.recipe_list.sort(key=lambda x: x.name, reverse=reverse)
+
+#######################################
+## Definitions ##
+#######################################
+
+
+@dataclasses.dataclass(frozen=True)
+class Definitions:
+    difficulties: list[str] = dataclasses.field(default=("I'm too young to die",
+                                                          "Hurt me plenty",
+                                                          "Ultra-Violence",
+                                                          "Nightmare",
+                                                          "Ultra-Nightmare"))
+    tags: list[str] = dataclasses.field(default=("Vegetarian",
+                                                          "Vegan",
+                                                          "Burger",
+                                                          "Baby",
+                                                          "High protein",
+                                                          "Gluten free",
+                                                          "Meat",
+                                                          "Fish",
+                                                          "Cold",
+                                                          "Hot",
+                                                          "Take away"))
+    units: list[str] = dataclasses.field(default=("Piece",
+                                                  "Clove",
+                                                  "Leaf",
+                                                  "milli Litre (mL)",
+                                                  "Litre (L)",
+                                                  "Gram (m)",
+                                                  "kilo Gram (kg)",
+                                                  "Table spoon",
+                                                  "Tea spoon"))
+    types: list[str] = dataclasses.field(default=("Breakfast",
+                                                  "Main",
+                                                  "Dessert",
+                                                  "Fika",
+                                                  "Starter",
+                                                  "Juice",
+                                                  "Smoothie",
+                                                  "Soup"))

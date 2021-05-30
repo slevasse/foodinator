@@ -75,7 +75,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_4">
+               <widget class="QLineEdit" name="lineEdit_recipe_name_seach">
                 <property name="maximumSize">
                  <size>
                   <width>130</width>
@@ -85,10 +85,13 @@
                 <property name="maxLength">
                  <number>100</number>
                 </property>
+                <property name="placeholderText">
+                 <string>name</string>
+                </property>
                </widget>
               </item>
               <item>
-               <widget class="QListWidget" name="listWidget_meal_type_list">
+               <widget class="QListWidget" name="listWidget_recipe_name_search">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -130,17 +133,20 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_6">
+               <widget class="QLineEdit" name="lineEdit_recipe_author_name_search">
                 <property name="maximumSize">
                  <size>
                   <width>130</width>
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="placeholderText">
+                 <string>author</string>
+                </property>
                </widget>
               </item>
               <item>
-               <widget class="QListWidget" name="listWidget_3">
+               <widget class="QListWidget" name="listWidget_recipe_author_search">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -179,7 +185,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_5">
+               <widget class="QLineEdit" name="lineEdit_recipe_dificulty_search">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -192,10 +198,13 @@
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="placeholderText">
+                 <string>difficulty</string>
+                </property>
                </widget>
               </item>
               <item>
-               <widget class="QListWidget" name="listWidget_4">
+               <widget class="QListWidget" name="listWidget_recipe_difficulty_search">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -234,7 +243,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_3">
+               <widget class="QLineEdit" name="lineEdit_recipe_tag_search">
                 <property name="maximumSize">
                  <size>
                   <width>130</width>
@@ -244,10 +253,13 @@
                 <property name="maxLength">
                  <number>100</number>
                 </property>
+                <property name="placeholderText">
+                 <string>tag</string>
+                </property>
                </widget>
               </item>
               <item>
-               <widget class="QListWidget" name="listWidget_tag_list">
+               <widget class="QListWidget" name="listWidget_recipe_tag_search">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -292,17 +304,20 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_7">
+               <widget class="QLineEdit" name="lineEdit_recipe_type_search">
                 <property name="maximumSize">
                  <size>
                   <width>130</width>
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="placeholderText">
+                 <string>type</string>
+                </property>
                </widget>
               </item>
               <item>
-               <widget class="QListWidget" name="listWidget_5">
+               <widget class="QListWidget" name="listWidget_recipe_type_search">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -341,17 +356,20 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_8">
+               <widget class="QLineEdit" name="lineEdit_ingredient_name_search">
                 <property name="maximumSize">
                  <size>
                   <width>130</width>
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="placeholderText">
+                 <string>name</string>
+                </property>
                </widget>
               </item>
               <item>
-               <widget class="QListWidget" name="listWidget_6">
+               <widget class="QListWidget" name="listWidget_ingredient_name_search">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -390,7 +408,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit">
+               <widget class="QLineEdit" name="lineEdit_ingredient_type_search">
                 <property name="maximumSize">
                  <size>
                   <width>130</width>
@@ -403,10 +421,13 @@
                 <property name="maxLength">
                  <number>100</number>
                 </property>
+                <property name="placeholderText">
+                 <string>type</string>
+                </property>
                </widget>
               </item>
               <item>
-               <widget class="QListWidget" name="listWidget">
+               <widget class="QListWidget" name="listWidget_ingredient_type_search">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -445,7 +466,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_2">
+               <widget class="QLineEdit" name="lineEdit_ingredient_season_search">
                 <property name="maximumSize">
                  <size>
                   <width>130</width>
@@ -455,10 +476,13 @@
                 <property name="maxLength">
                  <number>100</number>
                 </property>
+                <property name="placeholderText">
+                 <string>season</string>
+                </property>
                </widget>
               </item>
               <item>
-               <widget class="QListWidget" name="listWidget_2">
+               <widget class="QListWidget" name="listWidget_ingredient_season_search">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                   <horstretch>0</horstretch>
@@ -503,26 +527,41 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QTableWidget" name="tableWidget">
+            <widget class="QTableWidget" name="tableWidget_recipe_display">
              <property name="frameShape">
               <enum>QFrame::NoFrame</enum>
              </property>
              <property name="frameShadow">
               <enum>QFrame::Sunken</enum>
              </property>
+             <property name="editTriggers">
+              <set>QAbstractItemView::DoubleClicked</set>
+             </property>
+             <property name="showDropIndicator" stdset="0">
+              <bool>false</bool>
+             </property>
+             <property name="dragDropOverwriteMode">
+              <bool>false</bool>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectRows</enum>
+             </property>
             </widget>
            </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout">
              <item>
-              <widget class="QPushButton" name="pushButton_2">
+              <widget class="QPushButton" name="pushButton_add_recipe">
                <property name="text">
                 <string>Add recipe to cookbook</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_3">
+              <widget class="QPushButton" name="pushButton_delete_recipes">
                <property name="text">
                 <string>Delete section from cookcook</string>
                </property>

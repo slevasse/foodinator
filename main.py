@@ -3,11 +3,12 @@
 from myMainWindow import myMainWindow
 from PyQt5.QtWidgets import *
 import logging
+from foodClasses import *
 
 def main():
     """ Main program """
     # start the logger
-    logging.basicConfig(filename='cookbook_log.log',format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO) # use INFO in release
+    logging.basicConfig(filename='app_files/cookbook_log.log',format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO) # use INFO in release
     logging.info('App Started')
 
     # load the ui

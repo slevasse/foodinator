@@ -26,7 +26,6 @@ def rand_ingredients():
 
 def rand_recipe():
     name = random_string(randint(1, 20))
-    id = randint(1, 3000)
     prep_time = randint(1, 100)
     cook_time = randint(1, 100)
     serve = randint(1, 10)
@@ -56,8 +55,7 @@ def rand_recipe():
     type_r = sample(types, randint(1, len(types)))
     tag = sample(tags, randint(1, len(tags)))
     ingredients = rand_ingredients()
-
-    return Recipe(name, id, prep_time, cook_time, serve, dif, aut, type_r, tag, ingredients)
+    return Recipe(name=name, prep_time=prep_time, cook_time=cook_time, serve=serve, difficulty=dif, author=aut, types=type_r, tags=tag, ingredient_list=ingredients)
 
 def rand_recipes():
     res = []
