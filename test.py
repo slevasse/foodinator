@@ -68,6 +68,7 @@ book = RecipeBook("my_super_cookbook", "cookbooks/", recipe_list = rand_recipes(
 d = book.recipe_list[0].dict
 book.edit_recipe(d)
 search = {'search_mode': 'recipe_author', 'key': 'swann'}
+res = book.find([search])[0]
 search_list = [{'search_mode': 'recipe_author', 'key': 'swann'}, {'search_mode': 'ingredient_type', 'key': 'bean'}, {'search_mode': 'recipe_tag', 'key': 'vegan'}, {'search_mode': 'recipe_type', 'key': 'Dessert'}]
 r = book.find(search_list)
 book.sort_recipes_alphabetically()

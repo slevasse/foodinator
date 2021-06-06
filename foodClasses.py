@@ -335,6 +335,58 @@ class RecipeBook:
 
 # find recipes in the cookbook
 
+    def find_unique_difficulty(self, recipe_list: list) -> list:
+        # return a list of all unique authors contained in input list
+        unique_result = []
+        for recipe in recipe_list:
+            test = True
+            for val in unique_result:
+                if recipe.difficulty == val:
+                    test = False
+            if test:
+                unique_result.append(recipe.difficulty)
+        return unique_result
+
+    def find_unique_author(self, recipe_list: list) -> list:
+        # return a list of all unique authors contained in input list
+        unique_result = []
+        for recipe in recipe_list:
+            test = True
+            for val in unique_result:
+                if recipe.author == val:
+                    test = False
+            if test:
+                unique_result.append(recipe.author)
+        return unique_result
+
+    def find_unique_tag(self, recipe_list: list) -> list:
+        # return a list of all unique authors contained in input list
+        unique_result = []
+        for recipe in recipe_list:
+            test = True
+            for tag in recipe.tags:
+                test = True
+                for val in unique_result:
+                    if tag == val:
+                        test = False
+                if test:
+                    unique_result.append(tag)
+        return unique_result
+
+    def find_unique_types(self, recipe_list: list) -> list:
+        # return a list of all unique authors contained in input list
+        unique_result = []
+        for recipe in recipe_list:
+            test = True
+            for typ in recipe.types:
+                test = True
+                for val in unique_result:
+                    if typ == val:
+                        test = False
+                if test:
+                    unique_result.append(typ)
+        return unique_result
+
     def find(self, search_form: list) -> list:
         method_library = {"recipe_name": self.check_recipe_name,
                           "recipe_tag": self.check_recipe_tag,

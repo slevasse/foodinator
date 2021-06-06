@@ -1,12 +1,12 @@
 {
     "name": "my_super_cookbook",
     "_path": "cookbooks/",
-    "recipe_count": 595,
+    "recipe_count": 594,
     "last_updated": "2021-06-06",
     "auto_save": true,
     "auto_backup": true,
     "backup_interval": 5,
-    "backup_cnt": 3,
+    "backup_cnt": 0,
     "backup_history_length": 5,
     "recipe_list": [
         {
@@ -14,7 +14,7 @@
             "prep_time": 10,
             "cook_time": 10,
             "serve": 7,
-            "difficulty": "Hurt me plenty",
+            "difficulty": "I'm too young to die",
             "author": "swann",
             "last_updated": "2021-06-06",
             "recipe_length": 3,
@@ -141,46 +141,6 @@
             "instruction": ""
         },
         {
-            "name": "AAA",
-            "prep_time": 5,
-            "cook_time": 5,
-            "serve": 1,
-            "difficulty": "Ultra-Violence",
-            "author": "mahalo",
-            "last_updated": "2021-06-06",
-            "recipe_length": 2,
-            "types": [
-                "Main"
-            ],
-            "tags": [
-                "Take away",
-                "Fish"
-            ],
-            "ingredient_list": [
-                {
-                    "quantity": 2.0,
-                    "unit": "kilo Gram (kg)",
-                    "food_item": {
-                        "Name": "Bilberry",
-                        "Type": "Fruit",
-                        "Season": ""
-                    },
-                    "comment": ""
-                },
-                {
-                    "quantity": 7.0,
-                    "unit": "Table spoon",
-                    "food_item": {
-                        "Name": "Mustard",
-                        "Type": "Salad-vegetables",
-                        "Season": ""
-                    },
-                    "comment": ""
-                }
-            ],
-            "instruction": "nice my man"
-        },
-        {
             "name": "AQIATxStegnOV",
             "prep_time": 51,
             "cook_time": 69,
@@ -258,14 +218,13 @@
             "serve": 1,
             "difficulty": "Ultra-Violence",
             "author": "super carrot",
-            "last_updated": "2021-06-06",
-            "recipe_length": 3,
+            "last_updated": "2021-05-30",
+            "recipe_length": 2,
             "types": [
                 "Fika"
             ],
             "tags": [
-                "Cold",
-                "Meat"
+                "Cold"
             ],
             "ingredient_list": [
                 {
@@ -283,16 +242,6 @@
                     "unit": "Piece",
                     "food_item": {
                         "Name": "Banana",
-                        "Type": "Fruit",
-                        "Season": ""
-                    },
-                    "comment": ""
-                },
-                {
-                    "quantity": 1.0,
-                    "unit": "Piece",
-                    "food_item": {
-                        "Name": "Avocado",
                         "Type": "Fruit",
                         "Season": ""
                     },
