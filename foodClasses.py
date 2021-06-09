@@ -280,21 +280,12 @@ class RecipeBook:
         else:
             raise TypeError('Expected class Recipe or string, got ', type(recipe_or_name))
 
-    # def edit_recipe(self, recipe_dict):
-    #     if isinstance(recipe_dict, dict):
-    #         for recipe in self.recipe_list:
-    #             if recipe_dict['name'].lower() == recipe.name.lower():
-    #                 recipe.from_dict(recipe_dict)
-    #         self._update_meta()
-    #         #self._auto_save()
-    #     else:
-    #         raise TypeError('Expected class dict , got ', type(recipe_or_name))
 # save and load the book
     @property
     def dict(self):
         return dataclasses.asdict(self)
 
-    def from_dict(self, recipe_book_dict):
+    def from_dict(self, recipe_book_dict: dict):
         self.name = recipe_book_dict['name']
         self._path = recipe_book_dict['_path']
         self.last_updated = recipe_book_dict['last_updated']
@@ -305,7 +296,7 @@ class RecipeBook:
         self.backup_cnt = recipe_book_dict['backup_cnt']
         self.backup_history_length = recipe_book_dict['backup_history_length']
         self.recipe_list = []
-        self.append(recipe_book_dict['recipe_list'], auto_save = False)
+        self.append(recipe_book_dict['recipe_list'], auto_save=False)
 
     def from_file(self, filepath: str = None):
         if filepath is None:
@@ -334,58 +325,29 @@ class RecipeBook:
             self.to_file()
 
 # find recipes in the cookbook
-
-    def find_unique_difficulty(self, recipe_list: list) -> list:
-        # return a list of all unique authors contained in input list
-        unique_result = []
+# make lists of all
+    def find_unique_attributes(self, recipe_list: list) -> tuple:
+        # TODO see how to improve even more the speed
+        dif_set = set()
+        name_set = set()
+        author_set = set()
+        tag_set = set()
+        type_set = set()
+        ingredient_name_set = set()
+        ingredient_type_set = set()
+        ingredient_season_set = set()
         for recipe in recipe_list:
-            test = True
-            for val in unique_result:
-                if recipe.difficulty == val:
-                    test = False
-            if test:
-                unique_result.append(recipe.difficulty)
-        return unique_result
+            name_set.add(recipe.name)
+            author_set.add(recipe.author)
+            dif_set.add(recipe.difficulty)
+            tag_set = tag_set | set(recipe.tags)
+            type_set = type_set | set(recipe.types)
+            for val in recipe.ingredient_list:
+                ingredient_name_set.add(val.name)
+                ingredient_type_set.add(val.type)
+                ingredient_season_set.add(val.season)
 
-    def find_unique_author(self, recipe_list: list) -> list:
-        # return a list of all unique authors contained in input list
-        unique_result = []
-        for recipe in recipe_list:
-            test = True
-            for val in unique_result:
-                if recipe.author == val:
-                    test = False
-            if test:
-                unique_result.append(recipe.author)
-        return unique_result
-
-    def find_unique_tag(self, recipe_list: list) -> list:
-        # return a list of all unique authors contained in input list
-        unique_result = []
-        for recipe in recipe_list:
-            test = True
-            for tag in recipe.tags:
-                test = True
-                for val in unique_result:
-                    if tag == val:
-                        test = False
-                if test:
-                    unique_result.append(tag)
-        return unique_result
-
-    def find_unique_types(self, recipe_list: list) -> list:
-        # return a list of all unique authors contained in input list
-        unique_result = []
-        for recipe in recipe_list:
-            test = True
-            for typ in recipe.types:
-                test = True
-                for val in unique_result:
-                    if typ == val:
-                        test = False
-                if test:
-                    unique_result.append(typ)
-        return unique_result
+        return name_set, author_set, dif_set, tag_set, type_set, ingredient_name_set, ingredient_type_set, ingredient_season_set
 
     def find(self, search_form: list) -> list:
         method_library = {"recipe_name": self.check_recipe_name,
@@ -470,16 +432,16 @@ class Definitions:
                                                           "Nightmare",
                                                           "Ultra-Nightmare"))
     tags: list[str] = dataclasses.field(default=("Vegetarian",
-                                                          "Vegan",
-                                                          "Burger",
-                                                          "Baby",
-                                                          "High protein",
-                                                          "Gluten free",
-                                                          "Meat",
-                                                          "Fish",
-                                                          "Cold",
-                                                          "Hot",
-                                                          "Take away"))
+                                                 "Vegan",
+                                                 "Burger",
+                                                 "Baby",
+                                                 "High protein",
+                                                 "Gluten free",
+                                                 "Meat",
+                                                 "Fish",
+                                                 "Cold",
+                                                 "Hot",
+                                                 "Take away"))
     units: list[str] = dataclasses.field(default=("Piece",
                                                   "Clove",
                                                   "Leaf",
