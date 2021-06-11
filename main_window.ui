@@ -777,7 +777,7 @@
        <item>
         <widget class="QTabWidget" name="tab">
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="tab_recipes">
           <attribute name="title">
@@ -886,7 +886,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButton_2">
+                <widget class="QPushButton" name="pushButton_add_new_to_selection">
                  <property name="text">
                   <string>Add new to selection</string>
                  </property>

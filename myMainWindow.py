@@ -76,6 +76,7 @@ class myMainWindow(QMainWindow):
         self.pushButton_add_parametric_selection_to_mael_planner.clicked.connect(self.add_parametric_search_result)
         self.pushButton_re_suffle_parametric_selection.clicked.connect(self.re_shuffle_parametric_item)
         self.tableWidget_meal_planner_recipes.itemSelectionChanged.connect(self.update_planer_info_view)
+        self.pushButton_add_new_to_selection.clicked.connect(self.add_new_recipe_to_selection)
 
     def _setup_advanced_search(self):
         pass
@@ -396,12 +397,13 @@ class myMainWindow(QMainWindow):
                 self.tableWidget_meal_planner_recipes.removeRow(self.tableWidget_meal_planner_recipes.row(recipe))
 
     def re_shuffle_parametric_item(self):
+        # TODO clean by using generic function
         selected_items = self.tableWidget_meal_planner_recipes.selectedItems()
         for item in selected_items:
             if type(item) == SearchResultTableItem:
-                # if selected a manual recipe, we cannot do anyting here
+                # if selected a manual recipe, we cannot do anything here so we pass
                 if item.mode != "auto":
-                    return
+                    continue
                 # if we have not filter, use all recipes
                 if len(item.search_form) == 0:
                     # if we have more than one recipe try to get new one, if we have one recipe only, do not do anything
@@ -410,6 +412,24 @@ class myMainWindow(QMainWindow):
                         # check that we don't have the same, try again if we do
                         while filtered_recipe == item.recipe:
                             filtered_recipe = choice(self.cookbook.recipe_list)
+                        item.recipe = filtered_recipe
+                        item.setText(filtered_recipe.name)
+                        self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item),
+                                                                      1,
+                                                                      QTableWidgetItem(str(item.servings)))
+                        self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item),
+                                                                      2,
+                                                                      QTableWidgetItem(item.recipe.difficulty))
+                        self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item),
+                                                                      3,
+                                                                      QTableWidgetItem(
+                                                                          str(item.recipe.prep_time + item.recipe.cook_time)))
+                        self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item),
+                                                                      4,
+                                                                      QTableWidgetItem(','.join(item.recipe.types)))
+                        self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item),
+                                                                      5,
+                                                                      QTableWidgetItem(','.join(item.recipe.types)))
                 else:
                     lot = self.cookbook.find(item.search_form)
                     # if we have more than one recipe try to get new one, if we have one recipe only, do not do anything
@@ -418,18 +438,24 @@ class myMainWindow(QMainWindow):
                         # check that we don't have the same, try again if we do
                         while filtered_recipe == item.recipe:
                             filtered_recipe = choice(lot)
-                item.recipe = filtered_recipe
-                item.setText(filtered_recipe.name)
-                self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item), 1,
-                                                              QTableWidgetItem(str(item.servings)))
-                self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item), 2,
-                                                              QTableWidgetItem(item.recipe.difficulty))
-                self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item), 3,
-                                                              QTableWidgetItem(str(item.recipe.prep_time + item.recipe.cook_time)))
-                self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item), 4,
-                                                              QTableWidgetItem(','.join(item.recipe.types)))
-                self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item), 5,
-                                                              QTableWidgetItem(','.join(item.recipe.types)))
+                        item.recipe = filtered_recipe
+                        item.setText(filtered_recipe.name)
+                        self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item),
+                                                                      1,
+                                                                      QTableWidgetItem(str(item.servings)))
+                        self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item),
+                                                                      2,
+                                                                      QTableWidgetItem(item.recipe.difficulty))
+                        self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item),
+                                                                      3,
+                                                                      QTableWidgetItem(
+                                                                          str(item.recipe.prep_time + item.recipe.cook_time)))
+                        self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item),
+                                                                      4,
+                                                                      QTableWidgetItem(','.join(item.recipe.types)))
+                        self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item),
+                                                                      5,
+                                                                      QTableWidgetItem(','.join(item.recipe.types)))
         self.update_search_form_view()
 
     def update_planer_info_view(self):
@@ -454,7 +480,39 @@ class myMainWindow(QMainWindow):
                         self.listWidget_search_form_view.addItem(gap + "- " + param["search_mode"] + " -> " + param["key"])
                 self.listWidget_search_form_view.addItem("---------------------")
 
+    def add_new_recipe_to_selection(self):
+        selected_items = self.tableWidget_meal_planner_recipes.selectedItems()
+        for item in selected_items:
+            if type(item) == SearchResultTableItem:
+                if item.mode == "manual":
+                    continue
+                else:
+                    # if the search form is blanc
+                    if len(item.search_form) == 0:
+                        # if we have more than one recipe try to get new one, if we have one recipe only, do not do anything
+                        if len(self.cookbook.recipe_list) > 1:
+                            filtered_recipe = choice(self.cookbook.recipe_list)
+                            # check that we don't have the same, try again if we do
+                            while filtered_recipe == item.recipe:
+                                filtered_recipe = choice(self.cookbook.recipe_list)
+                            new_item = SearchResultTableItem(filtered_recipe, "auto", item.servings,
+                                                             search_form=list(item.search_form))
+                            self.generic_add_search_result_line(new_item, self.tableWidget_meal_planner_recipes)
+                    else:
+                        lot = self.cookbook.find(item.search_form)
+                        # if we have more than one recipe try to get new one, if we have one recipe only, do not do anything
+                        if len(lot) > 1:
+                            filtered_recipe = choice(lot)
+                            # check that we don't have the same, try again if we do
+                            while filtered_recipe == item.recipe:
+                                filtered_recipe = choice(lot)
+                            new_item = SearchResultTableItem(filtered_recipe, "auto", item.servings,
+                                                             search_form=list(item.search_form))
+                            self.generic_add_search_result_line(new_item, self.tableWidget_meal_planner_recipes)
+
+
     def update_ingredient_view(self):
+        # TODO
         pass
         # self.listWidget_ingredient_view.clear()
         # selected = self.tableWidget_meal_planner_recipes.selectedItems()
@@ -462,6 +520,7 @@ class myMainWindow(QMainWindow):
         #     if type(item) == SearchResultTableItem:
 
     def update_aggregated_ingredient_list(self):
+        # TODO
         pass
         # # make a single list of ingredient from all recipes.
         # selected_recipes = self.tableWidget_meal_planner_recipes.selectedItems()
