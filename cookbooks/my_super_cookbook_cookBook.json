@@ -1,12 +1,12 @@
 {
     "name": "my_super_cookbook",
     "_path": "cookbooks/",
-    "recipe_count": 595,
-    "last_updated": "2021-06-08",
+    "recipe_count": 596,
+    "last_updated": "2021-06-09",
     "auto_save": true,
     "auto_backup": true,
     "backup_interval": 5,
-    "backup_cnt": 0,
+    "backup_cnt": 2,
     "backup_history_length": 5,
     "recipe_list": [
         {
@@ -67,22 +67,18 @@
             "serve": 4,
             "difficulty": "I'm too young to die",
             "author": "swann",
-            "last_updated": "2021-05-30",
+            "last_updated": "2021-06-09",
             "recipe_length": 5,
             "types": [
                 "Dessert",
                 "Starter",
-                "Fika",
                 "Breakfast"
             ],
             "tags": [
-                "Meat",
-                "High protein",
                 "Vegetarian",
                 "Baby",
                 "Vegan",
                 "Take away",
-                "Gluten free",
                 "Fish",
                 "Hot"
             ],
@@ -42257,6 +42253,100 @@
                 }
             ],
             "instruction": null
+        },
+        {
+            "name": "swann super morning smoothie",
+            "prep_time": 5,
+            "cook_time": 0,
+            "serve": 1,
+            "difficulty": "I'm too young to die",
+            "author": "swann",
+            "last_updated": "2021-06-09",
+            "recipe_length": 7,
+            "types": [
+                "Breakfast",
+                "Fika",
+                "Smoothie"
+            ],
+            "tags": [
+                "Take away",
+                "Cold",
+                "High protein",
+                "Vegan"
+            ],
+            "ingredient_list": [
+                {
+                    "quantity": 1.0,
+                    "unit": "Piece",
+                    "food_item": {
+                        "Name": "Apple",
+                        "Type": "Fruit",
+                        "Season": ""
+                    },
+                    "comment": ""
+                },
+                {
+                    "quantity": 1.0,
+                    "unit": "Piece",
+                    "food_item": {
+                        "Name": "Banana",
+                        "Type": "Fruit",
+                        "Season": ""
+                    },
+                    "comment": ""
+                },
+                {
+                    "quantity": 1.0,
+                    "unit": "Piece",
+                    "food_item": {
+                        "Name": "Kiwifruit",
+                        "Type": "Fruit",
+                        "Season": ""
+                    },
+                    "comment": ""
+                },
+                {
+                    "quantity": 0.5,
+                    "unit": "Piece",
+                    "food_item": {
+                        "Name": "Lemon",
+                        "Type": "Fruit",
+                        "Season": ""
+                    },
+                    "comment": ""
+                },
+                {
+                    "quantity": 100.0,
+                    "unit": "Gram (m)",
+                    "food_item": {
+                        "Name": "Oats",
+                        "Type": "Cereal",
+                        "Season": ""
+                    },
+                    "comment": ""
+                },
+                {
+                    "quantity": 500.0,
+                    "unit": "milli Litre (mL)",
+                    "food_item": {
+                        "Name": "Soy milk",
+                        "Type": "Soy based",
+                        "Season": ""
+                    },
+                    "comment": ""
+                },
+                {
+                    "quantity": 30.0,
+                    "unit": "Gram (m)",
+                    "food_item": {
+                        "Name": "Blueberry",
+                        "Type": "Fruit",
+                        "Season": ""
+                    },
+                    "comment": "frozen"
+                }
+            ],
+            "instruction": ""
         },
         {
             "name": "sxqYuiMB",

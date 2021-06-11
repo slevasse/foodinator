@@ -5,6 +5,7 @@ import logging
 import json
 from custom_table_items import *
 from editRecipePopup import *
+from random import *
 import re
 
 class myMainWindow(QMainWindow):
@@ -17,6 +18,8 @@ class myMainWindow(QMainWindow):
         self.recipe_display_table_row_count = 0
         self.edit_recipe_pop = None
         self.filtered_recipes = None
+        self.search_filter = None
+        self.aggregated_ingredient_list = None
         # setup the UI
         self._setup_recipe_display()
         self._setup_searchbar()
@@ -67,7 +70,12 @@ class myMainWindow(QMainWindow):
         self.search_recipes()
 
     def _setup_meal_planner(self):
-        pass
+        self._init_recipe_selection_table()
+        self.pushButton_delete_selected_search_result.clicked.connect(self.delete_selected_search_results)
+        self.pushButton_add_selection_to_meal_planner.clicked.connect(self.add_manual_search_result)
+        self.pushButton_add_parametric_selection_to_mael_planner.clicked.connect(self.add_parametric_search_result)
+        self.pushButton_re_suffle_parametric_selection.clicked.connect(self.re_shuffle_parametric_item)
+        self.tableWidget_meal_planner_recipes.itemSelectionChanged.connect(self.update_planer_info_view)
 
     def _setup_advanced_search(self):
         pass
@@ -292,44 +300,44 @@ class myMainWindow(QMainWindow):
         self.listWidget_ingredient_season_search.clear()
 
     def update_search_filter(self):
-        search_filter = []
-        search_filter += self.generic_get_filter("recipe_name",
+        self.search_filter = []
+        self.search_filter += self.generic_get_filter("recipe_name",
                                                  self.lineEdit_recipe_name_seach,
                                                  self.listWidget_recipe_name_selection)
 
-        search_filter += self.generic_get_filter("recipe_author",
+        self.search_filter += self.generic_get_filter("recipe_author",
                                                  self.lineEdit_recipe_author_name_search,
                                                  self.listWidget_recipe_author_selection)
 
-        search_filter += self.generic_get_filter("recipe_tag",
+        self.search_filter += self.generic_get_filter("recipe_tag",
                                                  self.lineEdit_recipe_tag_search,
                                                  self.listWidget_recipe_tag_selection)
 
-        search_filter += self.generic_get_filter("recipe_type",
+        self.search_filter += self.generic_get_filter("recipe_type",
                                                  self.lineEdit_recipe_type_search,
                                                  self.listWidget_recipe_type_selection)
 
-        search_filter += self.generic_get_filter("recipe_difficulty",
+        self.search_filter += self.generic_get_filter("recipe_difficulty",
                                                  self.lineEdit_recipe_dificulty_search,
                                                  self.listWidget_recipe_difficulty_selection)
 
-        search_filter += self.generic_get_filter("ingredient_name",
+        self.search_filter += self.generic_get_filter("ingredient_name",
                                                  self.lineEdit_ingredient_name_search,
                                                  self.listWidget_recipe_ingredient_name_selection)
 
-        search_filter += self.generic_get_filter("ingredient_type",
+        self.search_filter += self.generic_get_filter("ingredient_type",
                                                  self.lineEdit_ingredient_type_search,
                                                  self.listWidget_recipe_ingredient_type_selection)
 
-        search_filter += self.generic_get_filter("ingredient_season",
+        self.search_filter += self.generic_get_filter("ingredient_season",
                                                  self.lineEdit_ingredient_season_search,
                                                  self.listWidget_recipe_ingredient_season_selection)
 
-        print(search_filter)
-        if len(search_filter) == 0:
+        print(self.search_filter)
+        if len(self.search_filter) == 0:
             self.filtered_recipes = self.cookbook.recipe_list
         else:
-            self.filtered_recipes = self.cookbook.find(search_filter)
+            self.filtered_recipes = self.cookbook.find(self.search_filter)
 
     def generic_get_filter(self, search_mode: str, line_edit: QLineEdit, list_widget: QListWidget):
         selected = list_widget.selectedItems()
@@ -342,4 +350,130 @@ class myMainWindow(QMainWindow):
             search_from_list.append({'search_mode': search_mode, 'key': list_widget.item(index).text()})
         return search_from_list
 
-# #================
+# ===============================================================================
+# Meal planner
+# ================
+    def _init_meal_planner(self):
+        self._init_recipe_selection_table()
+
+    def _init_recipe_selection_table(self):
+        # clear the table
+        self.tableWidget_meal_planner_recipes.clear()
+        #self.recipe_display_table_row_count = 0
+        self.tableWidget_meal_planner_recipes.setColumnCount(6)
+        self.tableWidget_meal_planner_recipes.setHorizontalHeaderLabels(["Name", "Servings", "Difficulty", "Prep Time",
+                                                                         "Type", "Tag"])
+        self.tableWidget_meal_planner_recipes.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_meal_planner_recipes.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableWidget_meal_planner_recipes.setSortingEnabled(False)
+
+    def add_manual_search_result(self):
+        selected_recipes = self.tableWidget_recipe_display.selectedItems()
+        for recipe in selected_recipes:
+            if type(recipe) == RecipeTableItem:
+                new_item = SearchResultTableItem(recipe.recipe, "manual", self.spinBox_servings_selector.value())
+                self.generic_add_search_result_line(new_item, self.tableWidget_meal_planner_recipes)
+
+    def add_parametric_search_result(self):
+        selected_recipes = sample(self.filtered_recipes, self.spinBox_quantity_selector.value())
+        for recipe in selected_recipes:
+                new_item = SearchResultTableItem(recipe, "auto", self.spinBox_servings_selector.value(), search_form=list(self.search_filter))
+                self.generic_add_search_result_line(new_item, self.tableWidget_meal_planner_recipes)
+
+    def generic_add_search_result_line(self, new_item: SearchResultTableItem, table_widget):
+        table_widget.insertRow(table_widget.rowCount())
+        table_widget.setItem(table_widget.rowCount() - 1, 0, new_item)
+        table_widget.setItem(table_widget.rowCount() - 1, 1, QTableWidgetItem(str(new_item.servings)))
+        table_widget.setItem(table_widget.rowCount() - 1, 2, QTableWidgetItem(new_item.recipe.difficulty))
+        table_widget.setItem(table_widget.rowCount() - 1, 3, QTableWidgetItem(str(new_item.recipe.prep_time + new_item.recipe.cook_time)))
+        table_widget.setItem(table_widget.rowCount() - 1, 4, QTableWidgetItem(','.join(new_item.recipe.types)))
+        table_widget.setItem(table_widget.rowCount() - 1, 5, QTableWidgetItem(','.join(new_item.recipe.tags)))
+
+    def delete_selected_search_results(self):
+        selected_recipes = self.tableWidget_meal_planner_recipes.selectedItems()
+        for recipe in selected_recipes:
+            if type(recipe) == SearchResultTableItem:
+                self.tableWidget_meal_planner_recipes.removeRow(self.tableWidget_meal_planner_recipes.row(recipe))
+
+    def re_shuffle_parametric_item(self):
+        selected_items = self.tableWidget_meal_planner_recipes.selectedItems()
+        for item in selected_items:
+            if type(item) == SearchResultTableItem:
+                # if selected a manual recipe, we cannot do anyting here
+                if item.mode != "auto":
+                    return
+                # if we have not filter, use all recipes
+                if len(item.search_form) == 0:
+                    # if we have more than one recipe try to get new one, if we have one recipe only, do not do anything
+                    if len(self.cookbook.recipe_list) > 1:
+                        filtered_recipe = choice(self.cookbook.recipe_list)
+                        # check that we don't have the same, try again if we do
+                        while filtered_recipe == item.recipe:
+                            filtered_recipe = choice(self.cookbook.recipe_list)
+                else:
+                    lot = self.cookbook.find(item.search_form)
+                    # if we have more than one recipe try to get new one, if we have one recipe only, do not do anything
+                    if len(lot) > 1:
+                        filtered_recipe = choice(lot)
+                        # check that we don't have the same, try again if we do
+                        while filtered_recipe == item.recipe:
+                            filtered_recipe = choice(lot)
+                item.recipe = filtered_recipe
+                item.setText(filtered_recipe.name)
+                self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item), 1,
+                                                              QTableWidgetItem(str(item.servings)))
+                self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item), 2,
+                                                              QTableWidgetItem(item.recipe.difficulty))
+                self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item), 3,
+                                                              QTableWidgetItem(str(item.recipe.prep_time + item.recipe.cook_time)))
+                self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item), 4,
+                                                              QTableWidgetItem(','.join(item.recipe.types)))
+                self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item), 5,
+                                                              QTableWidgetItem(','.join(item.recipe.types)))
+        self.update_search_form_view()
+
+    def update_planer_info_view(self):
+        self.update_ingredient_view()
+        self.update_search_form_view()
+
+    def update_search_form_view(self):
+        self.listWidget_search_form_view.clear()
+        selected = self.tableWidget_meal_planner_recipes.selectedItems()
+        for item in selected:
+            if type(item) == SearchResultTableItem:
+                gap = "    "
+                self.listWidget_search_form_view.addItem("Recipe: " + item.text())
+                # if we got a manual recipe
+                if item.mode == "manual":
+                    self.listWidget_search_form_view.addItem(gap + "- Manual selection")
+                # if we have no search params
+                elif len(item.search_form) == 0:
+                    self.listWidget_search_form_view.addItem(gap + "- All recipes")
+                else:
+                    for param in item.search_form:
+                        self.listWidget_search_form_view.addItem(gap + "- " + param["search_mode"] + " -> " + param["key"])
+                self.listWidget_search_form_view.addItem("---------------------")
+
+    def update_ingredient_view(self):
+        pass
+        # self.listWidget_ingredient_view.clear()
+        # selected = self.tableWidget_meal_planner_recipes.selectedItems()
+        # for item in selected:
+        #     if type(item) == SearchResultTableItem:
+
+    def update_aggregated_ingredient_list(self):
+        pass
+        # # make a single list of ingredient from all recipes.
+        # selected_recipes = self.tableWidget_meal_planner_recipes.selectedItems()
+        # # if recipes are selected, display for those, else display for all recipes in table
+        # if len(selected_recipes) > 0:
+        #     for item in selected_recipes:
+        #         if type(item) == SearchResultTableItem:
+        #
+        # else:
+        #     for row in range(self.tableWidget_meal_planner_recipes.rowCount()):
+        #         item = self.tableWidget_meal_planner_recipes.item(row, 1)
+
+    def append_to_ingredient_list(self, ingredient: Ingredient):
+        pass
+        #self.aggregated_ingredient_list

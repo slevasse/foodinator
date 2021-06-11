@@ -340,8 +340,8 @@ class RecipeBook:
             name_set.add(recipe.name)
             author_set.add(recipe.author)
             dif_set.add(recipe.difficulty)
-            tag_set = tag_set | set(recipe.tags)
-            type_set = type_set | set(recipe.types)
+            tag_set.update(recipe.tags)
+            type_set.update(recipe.types)
             for val in recipe.ingredient_list:
                 ingredient_name_set.add(val.name)
                 ingredient_type_set.add(val.type)

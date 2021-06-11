@@ -26,7 +26,6 @@ class EditRecipePopup(QWidget):
             self.recipe = Recipe()
         elif isinstance(recipe, Recipe):
             self.recipe = recipe
-            print(len(self.recipe.ingredient_list))
         # load the recipe onscreen
         self._update_display()
         # connects signals to callbacks

@@ -11,6 +11,7 @@ class FoodLibrary:
     def __post_init__(self):
         # open the library and load it into the dict
         self.load_library()
+        self.sort_items_alphabetically()
 
     def __len__(self):
         return len(self.library)

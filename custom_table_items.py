@@ -21,3 +21,13 @@ class FoodItemListItem(QListWidgetItem):
         super().__init__()
         self.setText(food_item['Name'])
         self.food_item = food_item
+
+
+class SearchResultTableItem(QTableWidgetItem):
+    def __init__(self, recipe: Recipe, mode: str, servings: int, search_form=None):
+        super().__init__()
+        self.setText(recipe.name)
+        self.recipe: Recipe = recipe
+        self.servings: int = servings
+        self.mode: str = mode
+        self.search_form: dict = search_form
