@@ -681,7 +681,16 @@
              </widget>
             </item>
             <item>
-             <widget class="QSlider" name="horizontalSlider">
+             <widget class="QSlider" name="horizontalSlider_prep_time_filter">
+              <property name="maximum">
+               <number>500</number>
+              </property>
+              <property name="singleStep">
+               <number>5</number>
+              </property>
+              <property name="value">
+               <number>500</number>
+              </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -697,7 +706,14 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_2"/>
+             <widget class="QSpinBox" name="spinBox_2">
+              <property name="maximum">
+               <number>500</number>
+              </property>
+              <property name="singleStep">
+               <number>5</number>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="Line" name="line_2">
@@ -864,6 +880,9 @@
              </item>
              <item>
               <widget class="QTableWidget" name="tableWidget_meal_planner_recipes">
+               <property name="sizeAdjustPolicy">
+                <enum>QAbstractScrollArea::AdjustToContents</enum>
+               </property>
                <property name="selectionBehavior">
                 <enum>QAbstractItemView::SelectRows</enum>
                </property>
@@ -881,14 +900,14 @@
                <item>
                 <widget class="QPushButton" name="pushButton_re_suffle_parametric_selection">
                  <property name="text">
-                  <string>Re-shuffle selection</string>
+                  <string>Re-roll selection</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButton_add_new_to_selection">
+                <widget class="QPushButton" name="pushButton_add_new_from_selection">
                  <property name="text">
-                  <string>Add new to selection</string>
+                  <string>Add new based on selection</string>
                  </property>
                 </widget>
                </item>
@@ -917,8 +936,11 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="toolTip">
+              <string/>
+             </property>
              <property name="currentIndex">
-              <number>1</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="page">
               <property name="geometry">
@@ -926,7 +948,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>500</width>
-                <height>334</height>
+                <height>329</height>
                </rect>
               </property>
               <attribute name="label">
@@ -934,7 +956,17 @@
               </attribute>
               <layout class="QVBoxLayout" name="verticalLayout_16">
                <item>
-                <widget class="QListWidget" name="listWidget_ingredient_view"/>
+                <widget class="QTableWidget" name="tableWidget_ingredient_view">
+                 <property name="sizeAdjustPolicy">
+                  <enum>QAbstractScrollArea::AdjustToContents</enum>
+                 </property>
+                 <property name="editTriggers">
+                  <set>QAbstractItemView::NoEditTriggers</set>
+                 </property>
+                 <property name="selectionMode">
+                  <enum>QAbstractItemView::NoSelection</enum>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -964,34 +996,6 @@
               </layout>
              </widget>
             </widget>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="tab_advanced_search">
-          <attribute name="title">
-           <string>Advanced search</string>
-          </attribute>
-          <layout class="QVBoxLayout" name="verticalLayout_13">
-           <item>
-            <widget class="QTableWidget" name="tableWidget_4"/>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
-             <item>
-              <widget class="QPushButton" name="pushButton_8">
-               <property name="text">
-                <string>PushButton</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_7">
-               <property name="text">
-                <string>PushButton</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
            </item>
           </layout>
          </widget>
@@ -1092,7 +1096,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>horizontalSlider</sender>
+   <sender>horizontalSlider_prep_time_filter</sender>
    <signal>valueChanged(int)</signal>
    <receiver>spinBox_2</receiver>
    <slot>setValue(int)</slot>

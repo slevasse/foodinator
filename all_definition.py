@@ -37,23 +37,3 @@ class Definitions:
                       "kilo Gram (kg)",
                       "Table spoon",
                       "Tea spoon"]
-
-
-class ingredient_def:
-    def __init__(self):
-      self.seasons = ["Spring",
-                      "Autumn",
-                      "Summer",
-                      "Winter",
-                      "Not applicable"]
-
-
-
-
-class search_configuration_def:
-    def __init__(self, person_count, day_count, lunch_and_dinner, types, tags):
-        self.configuration = {'person count': person_count,
-                              'day count': day_count,
-                              'lunch and dinner': lunch_and_dinner,
-                              'type': types,
-                              'tags': tags}

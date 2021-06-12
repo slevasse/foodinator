@@ -19,7 +19,7 @@ class myMainWindow(QMainWindow):
         self.edit_recipe_pop = None
         self.filtered_recipes = None
         self.search_filter = None
-        self.aggregated_ingredient_list = None
+        self.aggregated_ingredient_list = []
         # setup the UI
         self._setup_recipe_display()
         self._setup_searchbar()
@@ -34,9 +34,13 @@ class myMainWindow(QMainWindow):
         self._init_recipe_table()
         self.pushButton_add_recipe.clicked.connect(self._add_recipe)
         self.pushButton_delete_recipes.clicked.connect(self._del_recipe)
+
         self.tableWidget_recipe_display.cellDoubleClicked.connect(self.open_edit_recipe_popup)
 
     def _setup_searchbar(self):
+        # duration
+        self.horizontalSlider_prep_time_filter.valueChanged.connect(self.search_recipes)
+        self.horizontalSlider_prep_time_filter.setMaximum(self.cookbook.longest)
         # name
         self.lineEdit_recipe_name_seach.textChanged.connect(self.search_recipes)
         self.listWidget_recipe_name_search.itemDoubleClicked.connect(self.add_to_selected_recipe_name_list)
@@ -70,13 +74,13 @@ class myMainWindow(QMainWindow):
         self.search_recipes()
 
     def _setup_meal_planner(self):
-        self._init_recipe_selection_table()
+        self._init_meal_planner()
         self.pushButton_delete_selected_search_result.clicked.connect(self.delete_selected_search_results)
         self.pushButton_add_selection_to_meal_planner.clicked.connect(self.add_manual_search_result)
         self.pushButton_add_parametric_selection_to_mael_planner.clicked.connect(self.add_parametric_search_result)
         self.pushButton_re_suffle_parametric_selection.clicked.connect(self.re_shuffle_parametric_item)
         self.tableWidget_meal_planner_recipes.itemSelectionChanged.connect(self.update_planer_info_view)
-        self.pushButton_add_new_to_selection.clicked.connect(self.add_new_recipe_to_selection)
+        self.pushButton_add_new_from_selection.clicked.connect(self.add_new_recipe_from_selection)
 
     def _setup_advanced_search(self):
         pass
@@ -133,7 +137,7 @@ class myMainWindow(QMainWindow):
                         self.recipe_display_table_row_count -= 1
 
     def _refresh_recipe_display(self):
-        self._init_recipe_table()
+        self.search_recipes()
 
     def _showDialog_delete_recipe(self):
         msg_box = QMessageBox()
@@ -334,6 +338,9 @@ class myMainWindow(QMainWindow):
                                                  self.lineEdit_ingredient_season_search,
                                                  self.listWidget_recipe_ingredient_season_selection)
 
+        if self.horizontalSlider_prep_time_filter.value() != self.cookbook.longest:
+            self.search_filter.append({"search_mode": "recipe_duration", "key": str(self.horizontalSlider_prep_time_filter.value())})
+
         print(self.search_filter)
         if len(self.search_filter) == 0:
             self.filtered_recipes = self.cookbook.recipe_list
@@ -356,6 +363,7 @@ class myMainWindow(QMainWindow):
 # ================
     def _init_meal_planner(self):
         self._init_recipe_selection_table()
+        self.init_ingredient_view_table()
 
     def _init_recipe_selection_table(self):
         # clear the table
@@ -368,18 +376,28 @@ class myMainWindow(QMainWindow):
         self.tableWidget_meal_planner_recipes.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.tableWidget_meal_planner_recipes.setSortingEnabled(False)
 
+    def init_ingredient_view_table(self):
+        self.tableWidget_ingredient_view.setColumnCount(3)
+        self.tableWidget_ingredient_view.setHorizontalHeaderLabels(["Name", "Quantity", "Unit"])
+        self.tableWidget_ingredient_view.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget_ingredient_view.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableWidget_ingredient_view.setSortingEnabled(False)
+        print("init"+ str(self.tableWidget_ingredient_view.rowCount()))
+
     def add_manual_search_result(self):
         selected_recipes = self.tableWidget_recipe_display.selectedItems()
         for recipe in selected_recipes:
             if type(recipe) == RecipeTableItem:
                 new_item = SearchResultTableItem(recipe.recipe, "manual", self.spinBox_servings_selector.value())
                 self.generic_add_search_result_line(new_item, self.tableWidget_meal_planner_recipes)
+        self.update_planer_info_view()
 
     def add_parametric_search_result(self):
         selected_recipes = sample(self.filtered_recipes, self.spinBox_quantity_selector.value())
         for recipe in selected_recipes:
                 new_item = SearchResultTableItem(recipe, "auto", self.spinBox_servings_selector.value(), search_form=list(self.search_filter))
                 self.generic_add_search_result_line(new_item, self.tableWidget_meal_planner_recipes)
+        self.update_planer_info_view()
 
     def generic_add_search_result_line(self, new_item: SearchResultTableItem, table_widget):
         table_widget.insertRow(table_widget.rowCount())
@@ -480,7 +498,7 @@ class myMainWindow(QMainWindow):
                         self.listWidget_search_form_view.addItem(gap + "- " + param["search_mode"] + " -> " + param["key"])
                 self.listWidget_search_form_view.addItem("---------------------")
 
-    def add_new_recipe_to_selection(self):
+    def add_new_recipe_from_selection(self):
         selected_items = self.tableWidget_meal_planner_recipes.selectedItems()
         for item in selected_items:
             if type(item) == SearchResultTableItem:
@@ -510,29 +528,48 @@ class myMainWindow(QMainWindow):
                                                              search_form=list(item.search_form))
                             self.generic_add_search_result_line(new_item, self.tableWidget_meal_planner_recipes)
 
-
     def update_ingredient_view(self):
-        # TODO
-        pass
-        # self.listWidget_ingredient_view.clear()
-        # selected = self.tableWidget_meal_planner_recipes.selectedItems()
-        # for item in selected:
-        #     if type(item) == SearchResultTableItem:
+        self.update_aggregated_ingredient_list()
+        self.clear_ingredient_view_table()
+        for ingredient in self.aggregated_ingredient_list:
+            print(self.tableWidget_ingredient_view.rowCount())
+            self.tableWidget_ingredient_view.insertRow(self.tableWidget_ingredient_view.rowCount())
+            self.tableWidget_ingredient_view.setItem(self.tableWidget_ingredient_view.rowCount() - 1, 0, QTableWidgetItem(ingredient.name))
+            self.tableWidget_ingredient_view.setItem(self.tableWidget_ingredient_view.rowCount() - 1, 1, QTableWidgetItem(str(ingredient.quantity)))
+            self.tableWidget_ingredient_view.setItem(self.tableWidget_ingredient_view.rowCount() - 1, 2, QTableWidgetItem(ingredient.unit))
+
+    def clear_ingredient_view_table(self):
+        #print(self.tableWidget_ingredient_view.rowCount())
+        self.tableWidget_ingredient_view.setRowCount(0)
+        #self.tableWidget_ingredient_view.clear()
+        #for index in range(self.tableWidget_ingredient_view.rowCount()):
+            #self.tableWidget_ingredient_view.removeRow(index)
 
     def update_aggregated_ingredient_list(self):
-        # TODO
-        pass
-        # # make a single list of ingredient from all recipes.
-        # selected_recipes = self.tableWidget_meal_planner_recipes.selectedItems()
-        # # if recipes are selected, display for those, else display for all recipes in table
-        # if len(selected_recipes) > 0:
-        #     for item in selected_recipes:
-        #         if type(item) == SearchResultTableItem:
-        #
-        # else:
-        #     for row in range(self.tableWidget_meal_planner_recipes.rowCount()):
-        #         item = self.tableWidget_meal_planner_recipes.item(row, 1)
+        self.aggregated_ingredient_list.clear()
+        # make a single list of ingredient from all recipes.
+        selected_recipes = self.tableWidget_meal_planner_recipes.selectedItems()
+        # if recipes are selected, display for those, else display for all recipes in table
+        if len(selected_recipes) > 0:
+            for item in selected_recipes:
+                if type(item) == SearchResultTableItem:
+                    for ingredient in item.recipe.ingredient_list:
+                        self.append_to_ingredient_list(ingredient)
+        else:
+            for row in range(self.tableWidget_meal_planner_recipes.rowCount()):
+                item = self.tableWidget_meal_planner_recipes.item(row, 0)
+                for ingredient in item.recipe.ingredient_list:
+                    self.append_to_ingredient_list(ingredient)
 
     def append_to_ingredient_list(self, ingredient: Ingredient):
-        pass
-        #self.aggregated_ingredient_list
+        # check if the ingredient already exist.
+        for ing in self.aggregated_ingredient_list:
+            # if ingredient name and unit are the same, then ingredient is the same
+            if (ingredient.name == ing.name) and (ingredient.unit == ing.unit):
+                # add quantity from existing
+                ing.quantity += ingredient.quantity
+                return
+        # if we get here, we did not find an already existing ingredient matching, thus we add one.
+        new_ingredient = Ingredient(ingredient.quantity, ingredient.unit, ingredient.food_item, ingredient.comment)
+        self.aggregated_ingredient_list.append(new_ingredient)
+

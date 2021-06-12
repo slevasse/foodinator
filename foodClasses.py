@@ -237,6 +237,15 @@ class RecipeBook:
         self._path = path
         self.from_file(self._path)
 
+    @property
+    def longest(self):
+        duration = 0
+        for recipe in self.recipe_list:
+            total = recipe.cook_time + recipe.prep_time
+            if total > duration:
+                duration = total
+        return duration
+
 # add and remove recipes
     def _append_single_recipe(self, recipe):
         if isinstance(recipe, Recipe):
@@ -354,6 +363,7 @@ class RecipeBook:
                           "recipe_tag": self.check_recipe_tag,
                           "recipe_type": self.check_recipe_type,
                           "recipe_author": self.check_recipe_author,
+                          "recipe_duration": self.check_recipe_duration,
                           "recipe_difficulty": self.check_recipe_difficulty,
                           "ingredient_name": self.check_recipe_ingredient_name,
                           "ingredient_type": self.check_recipe_ingredient_type,
@@ -376,6 +386,11 @@ class RecipeBook:
 
     def check_recipe_author(self, key: str, recipe: Recipe) -> bool:
         if re.search(key, recipe.author, re.IGNORECASE):
+            return True
+        return False
+
+    def check_recipe_duration(self, key: str, recipe: Recipe) -> bool:
+        if (recipe.prep_time + recipe.cook_time) <= int(key):
             return True
         return False
 
@@ -417,7 +432,7 @@ class RecipeBook:
     def sort_recipes_alphabetically(self, reverse=False):
         """Sort the recipes in alphabetical order based on their name. If the optional parameter 'reverse' is set to
         True, the list will be sorted in anti-alphabetical order."""
-        self.recipe_list.sort(key=lambda x: x.name, reverse=reverse)
+        self.recipe_list.sort(key=lambda x: x.name.lower(), reverse=reverse)
 
 #######################################
 ## Definitions ##
