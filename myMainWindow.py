@@ -2,6 +2,7 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import *
 from foodClasses import *
 import logging
+from AppDefaults import AppDefaults
 import json
 from custom_table_items import *
 from editRecipePopup import *
@@ -13,17 +14,22 @@ class myMainWindow(QMainWindow):
         super().__init__()
         uic.loadUi('main_window.ui', self)
         # class variables
-        self.path_app_settings = "app_files/app_setings.json"
-        self.cookbook = self._setup_cookbook()
+        self.path_app_settings = AppDefaults().application_settings_path
+        self.cookbook_path = None
+        self.cookbook_backup_folder_path = None
+        self.food_library_path = None
+        self.cookbook = None
         self.edit_recipe_pop = None
         self.filtered_recipes = None
         self.search_filter = None
         self.aggregated_ingredient_list = []
+        self._setup_application()
         # setup the UI
         self._setup_recipe_display()
         self._setup_searchbar()
         self._setup_meal_planner()
         self._setup_advanced_search()
+        self.new_cookbook_popup = None
 
 #===============================================================================
 # setup
@@ -84,15 +90,101 @@ class myMainWindow(QMainWindow):
     def _setup_advanced_search(self):
         pass
 
-    def _setup_cookbook(self):
-        # TODO include a case for when the file is missing.
-        # Manage the input path
-        with open(self.path_app_settings, "r") as read_file:
-            path = json.load(read_file)['cookbook_path']
-        cookbook = RecipeBook()
-        # TODO when opening, all settings are copied from the file, if autosave is false, no way to turn it on after...
-        cookbook.open(path)
-        return cookbook
+    def _setup_application(self):
+        # logger
+        logging.basicConfig(filename=AppDefaults().logging_path, format=AppDefaults().logging_format, level=logging.INFO)  # use INFO in release
+        logging.info('App Started.')
+        # read parameter from setting file.
+        self._load_application_settings()
+        # application menubar
+        self.actionOpen.triggered.connect(self.action_open)
+        self.actionNew_cookook.triggered.connect(self.action_new)
+
+# ===============================================================================
+# Application settings and management
+# ================
+
+    def _load_application_settings(self):
+        # read parameter from setting file.
+        # If we fail, notify the user and create a new one.
+        try:
+            with open(self.path_app_settings, "r") as read_file:
+                settings = json.load(read_file)
+                self.cookbook_path = settings["cookbook_path"]
+                self.cookbook_backup_folder_path = settings["cookbook_backup_folder_path"]
+                self._open_cookbook(self.cookbook_path)
+        except (OSError, IOError) as err:
+            logging.warning("In _load_application_settings, {0}".format(err))
+            # TODO
+            logging.warning("In _load_application_settings, create a new application setting file at :" + AppDefaults().application_settings_path)
+            self._showDialog_user_info("The setting file required to start the program was not found. Starting with default settings",
+                                       "Application settings not found!")
+            # default settings
+            self._set_cookbook_to_default()
+
+    def _open_cookbook(self, path: str):
+        self.cookbook = RecipeBook()
+        try:
+            self.cookbook.open(path)
+        except TypeError as err:
+            logging.error("In '_open_cookbook', TypeError: {0}".format(err))
+            self._showDialog_user_info(
+                "The file provided does not have the right file extension. Please try again.",
+                "Cookbook file extension is wrong!")
+            self._set_cookbook_to_default()
+        except (OSError, IOError) as err:
+            logging.error("In '_open_cookbook', {0}".format(err))
+            self._showDialog_user_info("Cookbook file not found. If it is the first time you open this program, ignore this message.", "Cookbook file not found!")
+            self._set_cookbook_to_default()
+
+    def _set_cookbook_to_default(self):
+        self.cookbook = RecipeBook(AppDefaults().default_cookbook_name,
+                                   AppDefaults().default_cookbook_path,
+                                   auto_save=AppDefaults().default_cookbook_autosave_state,
+                                   auto_backup=AppDefaults().default_cookbook_autosave_state,
+                                   backup_interval=AppDefaults().default_cookbook_backup_interval,
+                                   backup_history_length=AppDefaults().default_cookbook_backup_history_length)
+
+    def _write_application_settings(self):
+        # TODO
+        pass
+
+    def _showDialog_user_info(self, message: str, title: str):
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.Warning)
+        msg_box.setText(message)
+        msg_box.setWindowTitle(title)
+        msg_box.setStandardButtons(QMessageBox.Ok)
+        msg_box.exec()
+
+    def action_open(self):
+        filename = QFileDialog.getOpenFileName(self, 'Open cookbook file', '', "Cookbook file (*" + Definitions().cookbook_file_extention + ")")[0]
+        self._open_cookbook(filename)
+
+    def action_new(self):
+        self.new_cookbook_popup = None
+        self.new_cookbook_popup = QWidget()
+        uic.loadUi('new_cookbook_popup.ui', self.new_cookbook_popup)
+        self.new_cookbook_popup.spinBox_backup_history.setValue(AppDefaults().default_cookbook_backup_history_length)
+        self.new_cookbook_popup.spinBox_backup_interval.setValue(AppDefaults().default_cookbook_backup_interval)
+        self.new_cookbook_popup.checkBox_autosave.setChecked(AppDefaults().default_cookbook_autosave_state)
+        self.new_cookbook_popup.checkBox_backup.setChecked(AppDefaults().default_cookbook_autosave_state)
+        self.new_cookbook_popup.pushButton_ok.clicked.connect(self.action_New_ok)
+        self.new_cookbook_popup.pushButton_cancel.clicked.connect(self.action_New_cancel)
+        self.new_cookbook_popup.pushButton_location.clicked.connect(self.action_New_filelocation)
+        self.new_cookbook_popup.show()
+
+    def action_New_ok(self):
+        self.new_cookbook_popup.close()
+        self.new_cookbook_popup = None
+        pass
+
+    def action_New_filelocation(self):
+
+
+    def action_New_cancel(self):
+        self.new_cookbook_popup.close()
+        self.new_cookbook_popup = None
 
 # ===============================================================================
 # Recipe display

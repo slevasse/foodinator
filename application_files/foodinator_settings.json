@@ -1,0 +1,4 @@
+{
+  "cookbook_path": "cookbooks/my_super_cookbook_cookBook.cookbook",
+  "cookbook_backup_folder_path": "cookbooks_bak/"
+}

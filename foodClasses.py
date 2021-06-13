@@ -1,9 +1,6 @@
 import dataclasses
-from all_definition import *
 import json
-
 import re
-
 from datetime import date, datetime
 #######################################
 ## Ingredient ##
@@ -209,8 +206,8 @@ class Recipe:
 @dataclasses.dataclass
 class RecipeBook:
     """ A  class representing a recipe Book. """
-    name: str = "default_cookbook_name"  # the name of the book
-    _path: str = "/"  # The path of the book
+    name: str = ""  # the name of the book
+    _path: str = ""  # The path of the book
     recipe_count: int = dataclasses.field(init=False, default=None)  # how many recipes are currently in the book
     last_updated: str = dataclasses.field(init=False, default=None)  # When was the last change to the book
     auto_save: bool = False  # does the book autosave (after every change to the class)?
@@ -220,8 +217,6 @@ class RecipeBook:
     backup_cnt: int = dataclasses.field(init=False, default=0)
     backup_history_length: int = 5  # how many backup file do we keep ? (rolling buffer type)
     recipe_list: list[Recipe] = dataclasses.field(default_factory=list)
-    #filtered_recipe_list: list[Recipe] = dataclasses.field(default_factory=list)
-    #aggregated_ingredient_list: list[Ingredient] = dataclasses.field(default_factory=list, init=False)
 
     def __post_init__(self):
         self._update_meta()
@@ -235,9 +230,8 @@ class RecipeBook:
         self.sort_recipes_alphabetically()
 
     def open(self, path):
-        self.name = path.split('/')[-1]
+        self.from_file(path)
         self._path = path
-        self.from_file(self._path)
 
     @property
     def longest(self):
@@ -311,17 +305,23 @@ class RecipeBook:
 
     def from_file(self, filepath: str = None):
         if filepath is None:
-            path = self._path + self.name + "_cookBook.json"
+            path = self._path
         else:
-            path = filepath
+            if filepath.endswith(Definitions().cookbook_file_extention):
+                path = filepath
+            else:
+                raise TypeError("Provided file type is not " + Definitions().cookbook_file_extention)
         with open(path, "r") as read_file:
             self.from_dict(json.load(read_file))
 
     def to_file(self, filepath: str = None):
         if filepath is None:
-            path = self._path + self.name + "_cookBook.json"
+            path = self._path
         else:
-            path = filepath
+            if filepath.endswith(Definitions().cookbook_file_extention):
+                path = filepath
+            else:
+                raise TypeError("Provided file type is not " + Definitions().cookbook_file_extention)
         with open(path, 'w') as outfile:
             json.dump(self.dict, outfile, sort_keys=False, indent=4)
 
@@ -443,6 +443,7 @@ class RecipeBook:
 
 @dataclasses.dataclass(frozen=True)
 class Definitions:
+    cookbook_file_extention: str = dataclasses.field(default=('.cookbook'))
     difficulties: list[str] = dataclasses.field(default=("I'm too young to die",
                                                           "Hurt me plenty",
                                                           "Ultra-Violence",
