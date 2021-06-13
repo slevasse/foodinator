@@ -839,6 +839,12 @@
            </item>
            <item>
             <widget class="QTableWidget" name="tableWidget_recipe_display">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="frameShape">
               <enum>QFrame::NoFrame</enum>
              </property>
@@ -860,6 +866,9 @@
              <property name="selectionBehavior">
               <enum>QAbstractItemView::SelectRows</enum>
              </property>
+             <attribute name="verticalHeaderMinimumSectionSize">
+              <number>30</number>
+             </attribute>
             </widget>
            </item>
           </layout>
@@ -880,12 +889,21 @@
              </item>
              <item>
               <widget class="QTableWidget" name="tableWidget_meal_planner_recipes">
+               <property name="maximumSize">
+                <size>
+                 <width>800</width>
+                 <height>16777215</height>
+                </size>
+               </property>
                <property name="sizeAdjustPolicy">
                 <enum>QAbstractScrollArea::AdjustToContents</enum>
                </property>
                <property name="selectionBehavior">
                 <enum>QAbstractItemView::SelectRows</enum>
                </property>
+               <attribute name="verticalHeaderMinimumSectionSize">
+                <number>30</number>
+               </attribute>
               </widget>
              </item>
              <item>
@@ -948,7 +966,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>500</width>
-                <height>329</height>
+                <height>327</height>
                </rect>
               </property>
               <attribute name="label">
@@ -976,7 +994,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>500</width>
-                <height>329</height>
+                <height>327</height>
                </rect>
               </property>
               <attribute name="label">
@@ -1012,7 +1030,7 @@
      <x>0</x>
      <y>0</y>
      <width>1194</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <property name="sizePolicy">

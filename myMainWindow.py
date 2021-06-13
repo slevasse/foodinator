@@ -15,7 +15,6 @@ class myMainWindow(QMainWindow):
         # class variables
         self.path_app_settings = "app_files/app_setings.json"
         self.cookbook = self._setup_cookbook()
-        self.recipe_display_table_row_count = 0
         self.edit_recipe_pop = None
         self.filtered_recipes = None
         self.search_filter = None
@@ -32,9 +31,9 @@ class myMainWindow(QMainWindow):
 
     def _setup_recipe_display(self):
         self._init_recipe_table()
+        self.update_recipe_table()
         self.pushButton_add_recipe.clicked.connect(self._add_recipe)
         self.pushButton_delete_recipes.clicked.connect(self._del_recipe)
-
         self.tableWidget_recipe_display.cellDoubleClicked.connect(self.open_edit_recipe_popup)
 
     def _setup_searchbar(self):
@@ -99,14 +98,17 @@ class myMainWindow(QMainWindow):
 # Recipe display
 # ================
     def _init_recipe_table(self):
-        # clear the table
-        self.tableWidget_recipe_display.clear()
-        self.recipe_display_table_row_count = 0
-        self.tableWidget_recipe_display.setColumnCount(6)
-        self.tableWidget_recipe_display.setHorizontalHeaderLabels(["Name", "Author", "Difficulty", "Preparation Time [minutes]", "Type", "Tag"])
+        self.tableWidget_recipe_display.setColumnCount(7)
+        self.tableWidget_recipe_display.setHorizontalHeaderLabels(["Name", "Author", "Difficulty", "Prep Time", "Servings", "Type", "Tag"])
         self.tableWidget_recipe_display.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget_recipe_display.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableWidget_recipe_display.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)#QHeaderView.Stretch)
         self.tableWidget_recipe_display.setSortingEnabled(False)
+        self.tableWidget_recipe_display.setWordWrap(True)
+
+    def update_recipe_table(self):
+        # remove all rows
+        self.tableWidget_recipe_display.setRowCount(0)
+        # add new rows
         if self.filtered_recipes is None:
             for rec in self.cookbook.recipe_list:
                 self._insert_recipe_line(rec)
@@ -115,16 +117,19 @@ class myMainWindow(QMainWindow):
             for rec in self.filtered_recipes:
                 self._insert_recipe_line(rec)
             self.tableWidget_recipe_display.setRowCount(len(self.filtered_recipes))
+        # resize table
+        self.tableWidget_recipe_display.resizeRowsToContents()
 
     def _insert_recipe_line(self, recipe: Recipe):
-        self.tableWidget_recipe_display.insertRow(self.recipe_display_table_row_count)
-        self.tableWidget_recipe_display.setItem(self.recipe_display_table_row_count, 0, RecipeTableItem(recipe))
-        self.tableWidget_recipe_display.setItem(self.recipe_display_table_row_count, 1, QTableWidgetItem(recipe.author))
-        self.tableWidget_recipe_display.setItem(self.recipe_display_table_row_count, 2, QTableWidgetItem(recipe.difficulty))
-        self.tableWidget_recipe_display.setItem(self.recipe_display_table_row_count, 3, QTableWidgetItem(str(recipe.prep_time + recipe.cook_time)))
-        self.tableWidget_recipe_display.setItem(self.recipe_display_table_row_count, 4, QTableWidgetItem(','.join(recipe.types)))
-        self.tableWidget_recipe_display.setItem(self.recipe_display_table_row_count, 5, QTableWidgetItem(','.join(recipe.tags)))
-        self.recipe_display_table_row_count += 1
+        self.tableWidget_recipe_display.insertRow(self.tableWidget_recipe_display.rowCount())
+        self.tableWidget_recipe_display.setItem(self.tableWidget_recipe_display.rowCount() - 1, 0, RecipeTableItem(recipe))
+        self.tableWidget_recipe_display.setItem(self.tableWidget_recipe_display.rowCount() - 1, 1, QTableWidgetItem(recipe.author))
+        self.tableWidget_recipe_display.setItem(self.tableWidget_recipe_display.rowCount() - 1, 2, QTableWidgetItem(recipe.difficulty))
+        self.tableWidget_recipe_display.setItem(self.tableWidget_recipe_display.rowCount() - 1, 3, QTableWidgetItem(str(recipe.prep_time + recipe.cook_time)))
+        self.tableWidget_recipe_display.setItem(self.tableWidget_recipe_display.rowCount() - 1, 4,
+                                                QTableWidgetItem(str(recipe.serve)))
+        self.tableWidget_recipe_display.setItem(self.tableWidget_recipe_display.rowCount() - 1, 5, QTableWidgetItem(','.join(recipe.types)))
+        self.tableWidget_recipe_display.setItem(self.tableWidget_recipe_display.rowCount() - 1, 6, QTableWidgetItem(','.join(recipe.tags)))
 
     def _del_recipe(self):
         selected_recipes = self.tableWidget_recipe_display.selectedItems()
@@ -134,10 +139,6 @@ class myMainWindow(QMainWindow):
                     if type(recipe) == RecipeTableItem:
                         self.cookbook.remove_recipe(recipe.recipe)
                         self.tableWidget_recipe_display.removeRow(self.tableWidget_recipe_display.row(recipe))
-                        self.recipe_display_table_row_count -= 1
-
-    def _refresh_recipe_display(self):
-        self.search_recipes()
 
     def _showDialog_delete_recipe(self):
         msg_box = QMessageBox()
@@ -163,7 +164,7 @@ class myMainWindow(QMainWindow):
         self.edit_recipe_pop = None
         self.cookbook.sort_recipes_alphabetically()
         self.cookbook._auto_save()
-        self._refresh_recipe_display()
+        self.search_recipes()
 
     def _add_recipe(self):
         self.edit_recipe_pop = EditRecipePopup()
@@ -172,7 +173,7 @@ class myMainWindow(QMainWindow):
     def add_recipe_to_list(self, recipe_dict: dict):
         self.edit_recipe_pop = None
         self.cookbook.append(recipe_dict)
-        self._refresh_recipe_display()
+        self.search_recipes()
 
 # ===============================================================================
 # Recipe sorting
@@ -246,7 +247,8 @@ class myMainWindow(QMainWindow):
     def search_recipes(self):
         self.update_search_filter()
         self.update_search_form_display()
-        self._init_recipe_table()
+        self.update_recipe_table()
+
 
     def update_search_form_display(self):
         self.clear_all_filter_list()
@@ -367,22 +369,21 @@ class myMainWindow(QMainWindow):
 
     def _init_recipe_selection_table(self):
         # clear the table
-        self.tableWidget_meal_planner_recipes.clear()
-        #self.recipe_display_table_row_count = 0
         self.tableWidget_meal_planner_recipes.setColumnCount(6)
         self.tableWidget_meal_planner_recipes.setHorizontalHeaderLabels(["Name", "Servings", "Difficulty", "Prep Time",
                                                                          "Type", "Tag"])
         self.tableWidget_meal_planner_recipes.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget_meal_planner_recipes.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableWidget_meal_planner_recipes.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.tableWidget_meal_planner_recipes.setSortingEnabled(False)
+        self.tableWidget_recipe_display.setWordWrap(True)
 
     def init_ingredient_view_table(self):
         self.tableWidget_ingredient_view.setColumnCount(3)
         self.tableWidget_ingredient_view.setHorizontalHeaderLabels(["Name", "Quantity", "Unit"])
         self.tableWidget_ingredient_view.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget_ingredient_view.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableWidget_ingredient_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)#QHeaderView.Stretch)
         self.tableWidget_ingredient_view.setSortingEnabled(False)
-        print("init"+ str(self.tableWidget_ingredient_view.rowCount()))
+        self.tableWidget_recipe_display.setWordWrap(True)
 
     def add_manual_search_result(self):
         selected_recipes = self.tableWidget_recipe_display.selectedItems()
@@ -407,6 +408,7 @@ class myMainWindow(QMainWindow):
         table_widget.setItem(table_widget.rowCount() - 1, 3, QTableWidgetItem(str(new_item.recipe.prep_time + new_item.recipe.cook_time)))
         table_widget.setItem(table_widget.rowCount() - 1, 4, QTableWidgetItem(','.join(new_item.recipe.types)))
         table_widget.setItem(table_widget.rowCount() - 1, 5, QTableWidgetItem(','.join(new_item.recipe.tags)))
+        table_widget.resizeRowsToContents()
 
     def delete_selected_search_results(self):
         selected_recipes = self.tableWidget_meal_planner_recipes.selectedItems()
@@ -474,7 +476,7 @@ class myMainWindow(QMainWindow):
                         self.tableWidget_meal_planner_recipes.setItem(self.tableWidget_meal_planner_recipes.row(item),
                                                                       5,
                                                                       QTableWidgetItem(','.join(item.recipe.types)))
-        self.update_search_form_view()
+        self.update_planer_info_view()
 
     def update_planer_info_view(self):
         self.update_ingredient_view()
@@ -530,20 +532,13 @@ class myMainWindow(QMainWindow):
 
     def update_ingredient_view(self):
         self.update_aggregated_ingredient_list()
-        self.clear_ingredient_view_table()
+        self.tableWidget_ingredient_view.setRowCount(0)
         for ingredient in self.aggregated_ingredient_list:
-            print(self.tableWidget_ingredient_view.rowCount())
             self.tableWidget_ingredient_view.insertRow(self.tableWidget_ingredient_view.rowCount())
             self.tableWidget_ingredient_view.setItem(self.tableWidget_ingredient_view.rowCount() - 1, 0, QTableWidgetItem(ingredient.name))
             self.tableWidget_ingredient_view.setItem(self.tableWidget_ingredient_view.rowCount() - 1, 1, QTableWidgetItem(str(ingredient.quantity)))
             self.tableWidget_ingredient_view.setItem(self.tableWidget_ingredient_view.rowCount() - 1, 2, QTableWidgetItem(ingredient.unit))
-
-    def clear_ingredient_view_table(self):
-        #print(self.tableWidget_ingredient_view.rowCount())
-        self.tableWidget_ingredient_view.setRowCount(0)
-        #self.tableWidget_ingredient_view.clear()
-        #for index in range(self.tableWidget_ingredient_view.rowCount()):
-            #self.tableWidget_ingredient_view.removeRow(index)
+        self.tableWidget_ingredient_view.resizeRowsToContents()
 
     def update_aggregated_ingredient_list(self):
         self.aggregated_ingredient_list.clear()
@@ -553,23 +548,32 @@ class myMainWindow(QMainWindow):
         if len(selected_recipes) > 0:
             for item in selected_recipes:
                 if type(item) == SearchResultTableItem:
-                    for ingredient in item.recipe.ingredient_list:
-                        self.append_to_ingredient_list(ingredient)
+                    self.append_to_ingredient_list(item.recipe, item.servings)
         else:
             for row in range(self.tableWidget_meal_planner_recipes.rowCount()):
                 item = self.tableWidget_meal_planner_recipes.item(row, 0)
-                for ingredient in item.recipe.ingredient_list:
-                    self.append_to_ingredient_list(ingredient)
+                self.append_to_ingredient_list(item.recipe, item.servings)
+        self.round_aggregated_ingredient_quantities()
 
-    def append_to_ingredient_list(self, ingredient: Ingredient):
+    def append_to_ingredient_list(self, recipe: Recipe, serving: int):
+        # define the amount of the ingredient we have to add
+        serving_ratio = serving / recipe.serve
         # check if the ingredient already exist.
-        for ing in self.aggregated_ingredient_list:
-            # if ingredient name and unit are the same, then ingredient is the same
-            if (ingredient.name == ing.name) and (ingredient.unit == ing.unit):
-                # add quantity from existing
-                ing.quantity += ingredient.quantity
-                return
-        # if we get here, we did not find an already existing ingredient matching, thus we add one.
-        new_ingredient = Ingredient(ingredient.quantity, ingredient.unit, ingredient.food_item, ingredient.comment)
-        self.aggregated_ingredient_list.append(new_ingredient)
+        for ingredient in recipe.ingredient_list:
+            test = True
+            for ing in self.aggregated_ingredient_list:
+                # if ingredient name and unit are the same, then ingredient is the same
+                if (ingredient.name == ing.name) and (ingredient.unit == ing.unit) and (ingredient.comment == ing.comment):
+                    # add quantity from existing
+                    ing.quantity += ingredient.quantity * serving_ratio
+                    test = False
+                    break
+            if test:
+                # if we get here, we did not find an already existing ingredient matching, thus we add one.
+                new_ingredient = Ingredient(ingredient.quantity * serving_ratio, ingredient.unit, ingredient.food_item, ingredient.comment)
+                self.aggregated_ingredient_list.append(new_ingredient)
 
+    def round_aggregated_ingredient_quantities(self):
+        # round the result
+        for ingredient in self.aggregated_ingredient_list:
+            ingredient.quantity = round(ingredient.quantity, 1)

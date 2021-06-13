@@ -220,6 +220,8 @@ class RecipeBook:
     backup_cnt: int = dataclasses.field(init=False, default=0)
     backup_history_length: int = 5  # how many backup file do we keep ? (rolling buffer type)
     recipe_list: list[Recipe] = dataclasses.field(default_factory=list)
+    #filtered_recipe_list: list[Recipe] = dataclasses.field(default_factory=list)
+    #aggregated_ingredient_list: list[Ingredient] = dataclasses.field(default_factory=list, init=False)
 
     def __post_init__(self):
         self._update_meta()
