@@ -958,7 +958,7 @@
               <string/>
              </property>
              <property name="currentIndex">
-              <number>0</number>
+              <number>2</number>
              </property>
              <widget class="QWidget" name="page">
               <property name="geometry">
@@ -966,7 +966,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>500</width>
-                <height>327</height>
+                <height>293</height>
                </rect>
               </property>
               <attribute name="label">
@@ -994,7 +994,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>500</width>
-                <height>327</height>
+                <height>293</height>
                </rect>
               </property>
               <attribute name="label">
@@ -1008,6 +1008,34 @@
                  </property>
                  <property name="selectionMode">
                   <enum>QAbstractItemView::NoSelection</enum>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="page_3">
+              <attribute name="label">
+               <string>Export results</string>
+              </attribute>
+              <layout class="QVBoxLayout" name="verticalLayout_13">
+               <item>
+                <widget class="QPushButton" name="pushButton_recipee_to_file">
+                 <property name="text">
+                  <string>Export recipes to text file</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_export_ingredient_to_file">
+                 <property name="text">
+                  <string>Export ingredients to text file</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_3">
+                 <property name="text">
+                  <string>Export all to text file</string>
                  </property>
                 </widget>
                </item>

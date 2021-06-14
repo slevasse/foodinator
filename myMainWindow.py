@@ -33,6 +33,7 @@ class myMainWindow(QMainWindow):
         self._setup_recipe_display()
         self._setup_searchbar()
         self._setup_meal_planner()
+        self._setup_data_output()
         self.new_cookbook_popup = None
 
 #===============================================================================
@@ -106,6 +107,10 @@ class myMainWindow(QMainWindow):
         self.actionSave.triggered.connect(self.action_save)
         self.actionAuto_Save.triggered.connect(self.action_autosave)
         self.actionCookbook.triggered.connect(self.action_cookbook)
+
+    def _setup_data_output(self):
+        self.pushButton_recipee_to_file.clicked.connect(self.recipes_to_file)
+        self.pushButton_export_ingredient_to_file.clicked.connect(self.ingredients_to_file)
 
 # ===============================================================================
 # Application settings and management
@@ -712,20 +717,28 @@ class myMainWindow(QMainWindow):
     def update_search_form_view(self):
         self.listWidget_search_form_view.clear()
         selected = self.tableWidget_meal_planner_recipes.selectedItems()
-        for item in selected:
-            if type(item) == SearchResultTableItem:
-                gap = "    "
-                self.listWidget_search_form_view.addItem("Recipe: " + item.text())
-                # if we got a manual recipe
-                if item.mode == "manual":
-                    self.listWidget_search_form_view.addItem(gap + "- Manual selection")
-                # if we have no search params
-                elif len(item.search_form) == 0:
-                    self.listWidget_search_form_view.addItem(gap + "- All recipes")
-                else:
-                    for param in item.search_form:
-                        self.listWidget_search_form_view.addItem(gap + "- " + param["search_mode"] + " -> " + param["key"])
-                self.listWidget_search_form_view.addItem("---------------------")
+        if len(selected) > 0:
+            for item in selected:
+                if type(item) == SearchResultTableItem:
+                    self.add_line_to_search_form_view(item)
+        else:
+            for index in range(self.tableWidget_meal_planner_recipes.rowCount()):
+                item = self.tableWidget_meal_planner_recipes.item(index, 0)
+                self.add_line_to_search_form_view(item)
+
+    def add_line_to_search_form_view(self, item):
+        gap = "    "
+        self.listWidget_search_form_view.addItem("Recipe: " + item.text())
+        # if we got a manual recipe
+        if item.mode == "manual":
+            self.listWidget_search_form_view.addItem(gap + "- Manual selection")
+        # if we have no search params
+        elif len(item.search_form) == 0:
+            self.listWidget_search_form_view.addItem(gap + "- All recipes")
+        else:
+            for param in item.search_form:
+                self.listWidget_search_form_view.addItem(gap + "- " + param["search_mode"] + " -> " + param["key"])
+        self.listWidget_search_form_view.addItem("---------------------")
 
     def add_new_recipe_from_selection(self):
         selected_items = self.tableWidget_meal_planner_recipes.selectedItems()
@@ -804,3 +817,76 @@ class myMainWindow(QMainWindow):
         # round the result
         for ingredient in self.aggregated_ingredient_list:
             ingredient.quantity = round(ingredient.quantity, 1)
+
+# ===============================================================================
+# data output
+# ================
+    def recipes_to_file(self):
+        path = QFileDialog.getSaveFileName(self, 'Filename', '', "text file (*.txt)")[0]
+        if len(path) == 0:
+            return
+        # all recipes in the meal planner
+        output_string = ""
+        for row in range(self.tableWidget_meal_planner_recipes.rowCount()):
+            item = self.tableWidget_meal_planner_recipes.item(row, 0)
+            recipe = item.recipe
+            serving_ratio = item.servings / recipe.serve
+            output_string += self.recipe_to_txt(recipe, serving_ratio)
+
+        with open(path, "w") as text_file:
+            text_file.write(output_string)
+            text_file.close()
+
+    def recipe_to_txt(self, recipe: Recipe, servings_ratio: float = None, comments: bool = True):
+        # TODO move to recipe object
+        sorted_ingredient_list = self.make_sorted_ingredient_list(recipe.ingredient_list)
+        decorator_1 = "="
+        txt = (f"{decorator_1 * len(recipe.name)}\n"
+               f"{recipe.name}\n"
+               f"{decorator_1 * len(recipe.name)}\n"
+               f"Author          : {recipe.author}.\n"
+               f"Difficulty      : {recipe.difficulty}.\n"
+               f"Preparation time: {recipe.prep_time} minutes.\n"
+               f"Cooking time    : {recipe.cook_time} minutes.\n"
+               f"Total time      : {recipe.cook_time + recipe.prep_time} minutes.\n"
+               f"Serve           : {recipe.serve * servings_ratio} ({recipe.serve}) servings.\n"
+               f"Types           : {', '.join(recipe.types)}\n"
+               f"Tags            : {', '.join(recipe.tags)}\n"
+               f"\n"
+               f"-----------\n"
+               f"Ingredients\n"
+               f"-----------\n")
+        for key in sorted_ingredient_list:
+            txt += f'{key}:\n'
+            for ing in sorted_ingredient_list[key]:
+
+                txt += f'    -{ing.to_txt(servings_ratio=servings_ratio, comments=comments)}\n'
+        txt += f"\n\n"
+        return txt
+
+    def make_sorted_ingredient_list(self, ingredient_list: list) -> dict:
+        result = {}
+        for ing in ingredient_list:
+            if ing.type in result.keys():
+                result[ing.type].append(ing)
+            else:
+                result[ing.type] = [ing]
+        return result
+
+    def ingredients_to_file(self):
+        path = QFileDialog.getSaveFileName(self, 'Filename', '', "text file (*.txt)")[0]
+        if len(path) == 0:
+            return
+        # all ingredients aggregated
+        sorted_ingredient_list = self.make_sorted_ingredient_list(self.aggregated_ingredient_list)
+        txt = (f"-----------\n"
+               f"Ingredient list:\n"
+               f"-----------\n")
+        for key in sorted_ingredient_list:
+            txt += f'{key}:\n'
+            for ing in sorted_ingredient_list[key]:
+                txt += f'    -{ing.to_txt(comments=True)}\n'
+
+        with open(path, "w") as text_file:
+            text_file.write(txt)
+            text_file.close()

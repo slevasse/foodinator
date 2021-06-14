@@ -38,13 +38,13 @@ class Ingredient:
         self.food_item = dict_ingredient['food_item']
         self.comment = dict_ingredient['comment']
 
-    def to_txt(self, standard_value: int = None, comments: bool = True):
-        if standard_value is None:
-            txt = self.name + ": " + str(self.quantity) + " " + self.unit + "."
+    def to_txt(self, servings_ratio: float = None, comments: bool = True):
+        if servings_ratio is None:
+            txt = f"{self.name}: {self.quantity} {self.unit}."
         else:
-            txt = self.name + ": " + str(self.quantity) + " (" + str(standard_value) + ")" + self.unit + "."
+            txt = f"{self.name}: {round(self.quantity * servings_ratio, 1)} ({self.quantity}) {self.unit}."
         if comments:
-            txt += "Comment: " + self.comment
+            txt += f"  Comment: {self.comment}"
         return txt
 
 #######################################
@@ -493,11 +493,12 @@ class Definitions:
                                                  "Baby",
                                                  "High protein",
                                                  "Gluten free",
-                                                 "Meat",
-                                                 "Fish",
                                                  "Cold",
                                                  "Hot",
-                                                 "Take away"))
+                                                 "Take away",
+                                                 "curry",
+                                                 "dhal",
+                                                 "indian"))
     units: list[str] = dataclasses.field(default=("Piece",
                                                   "Clove",
                                                   "Leaf",
