@@ -8,6 +8,8 @@ from custom_table_items import *
 from editRecipePopup import *
 from random import *
 import re
+from os.path import dirname, exists
+from os import makedirs
 
 class myMainWindow(QMainWindow):
     def __init__(self):
@@ -15,8 +17,11 @@ class myMainWindow(QMainWindow):
         uic.loadUi('main_window.ui', self)
         # class variables
         self.path_app_settings = AppDefaults().application_settings_path
-        self.cookbook_path = None
-        self.cookbook_backup_folder_path = None
+        self.is_cookbook_loaded = False
+        self.cookbook_path = ""
+        self.cookbook_backup_folder_path = ""
+        self.output_file_path = None
+        self.search_configuration_path = None
         self.food_library_path = None
         self.cookbook = None
         self.edit_recipe_pop = None
@@ -28,7 +33,6 @@ class myMainWindow(QMainWindow):
         self._setup_recipe_display()
         self._setup_searchbar()
         self._setup_meal_planner()
-        self._setup_advanced_search()
         self.new_cookbook_popup = None
 
 #===============================================================================
@@ -37,7 +41,8 @@ class myMainWindow(QMainWindow):
 
     def _setup_recipe_display(self):
         self._init_recipe_table()
-        self.update_recipe_table()
+        if self.is_cookbook_loaded:
+            self.update_recipe_table()
         self.pushButton_add_recipe.clicked.connect(self._add_recipe)
         self.pushButton_delete_recipes.clicked.connect(self._del_recipe)
         self.tableWidget_recipe_display.cellDoubleClicked.connect(self.open_edit_recipe_popup)
@@ -45,7 +50,7 @@ class myMainWindow(QMainWindow):
     def _setup_searchbar(self):
         # duration
         self.horizontalSlider_prep_time_filter.valueChanged.connect(self.search_recipes)
-        self.horizontalSlider_prep_time_filter.setMaximum(self.cookbook.longest)
+        self.update_time_search_scale()
         # name
         self.lineEdit_recipe_name_seach.textChanged.connect(self.search_recipes)
         self.listWidget_recipe_name_search.itemDoubleClicked.connect(self.add_to_selected_recipe_name_list)
@@ -76,7 +81,8 @@ class myMainWindow(QMainWindow):
         self.listWidget_recipe_ingredient_type_selection.itemDoubleClicked.connect(self.del_from_selected_recipe_ingredient_type_list)
         # ingredient season
         self.lineEdit_ingredient_season_search.textChanged.connect(self.search_recipes)
-        self.search_recipes()
+        if self.is_cookbook_loaded:
+            self.search_recipes()
 
     def _setup_meal_planner(self):
         self._init_meal_planner()
@@ -87,18 +93,19 @@ class myMainWindow(QMainWindow):
         self.tableWidget_meal_planner_recipes.itemSelectionChanged.connect(self.update_planer_info_view)
         self.pushButton_add_new_from_selection.clicked.connect(self.add_new_recipe_from_selection)
 
-    def _setup_advanced_search(self):
-        pass
-
     def _setup_application(self):
         # logger
         logging.basicConfig(filename=AppDefaults().logging_path, format=AppDefaults().logging_format, level=logging.INFO)  # use INFO in release
         logging.info('App Started.')
         # read parameter from setting file.
         self._load_application_settings()
-        # application menubar
+        # application menu bar
         self.actionOpen.triggered.connect(self.action_open)
         self.actionNew_cookook.triggered.connect(self.action_new)
+        self.actionSave_as.triggered.connect(self.action_save_as)
+        self.actionSave.triggered.connect(self.action_save)
+        self.actionAuto_Save.triggered.connect(self.action_autosave)
+        self.actionCookbook.triggered.connect(self.action_cookbook)
 
 # ===============================================================================
 # Application settings and management
@@ -110,32 +117,54 @@ class myMainWindow(QMainWindow):
         try:
             with open(self.path_app_settings, "r") as read_file:
                 settings = json.load(read_file)
-                self.cookbook_path = settings["cookbook_path"]
-                self.cookbook_backup_folder_path = settings["cookbook_backup_folder_path"]
-                self._open_cookbook(self.cookbook_path)
+                if len(settings["cookbook_path"]) > 0:
+                    self.cookbook_path = settings["cookbook_path"]
+                    self.cookbook_backup_folder_path = settings["cookbook_backup_folder_path"]
+                    self._open_cookbook(self.cookbook_path)
+                else:
+                    self.is_cookbook_loaded = False
         except (OSError, IOError) as err:
             logging.warning("In _load_application_settings, {0}".format(err))
-            # TODO
+            # write a new setting file
+            self._write_application_settings()
+            # TODO Fix this self.make_folder_structure()
             logging.warning("In _load_application_settings, create a new application setting file at :" + AppDefaults().application_settings_path)
             self._showDialog_user_info("The setting file required to start the program was not found. Starting with default settings",
                                        "Application settings not found!")
             # default settings
-            self._set_cookbook_to_default()
+            #self._set_cookbook_to_default()
+
+    # TODO Fix this
+    # def make_folder_structure(self):
+    #     # application_files
+    #     if not exists(dirname(AppDefaults().application_settings_path)):
+    #         makedirs(dirname(AppDefaults().application_settings_path))
+    #     # cookbooks
+    #     if not exists(dirname(AppDefaults().default_cookbook_folder_path)):
+    #         makedirs(dirname(AppDefaults().default_cookbook_folder_path))
+    #     # cookbook backup
+    #     if not exists(dirname(AppDefaults().default_cookbook_backup_folder_path)):
+    #         makedirs(dirname(AppDefaults().default_cookbook_backup_folder_path))
 
     def _open_cookbook(self, path: str):
-        self.cookbook = RecipeBook()
+        temp_cookbook = RecipeBook()
         try:
-            self.cookbook.open(path)
+            temp_cookbook.open(path)
+            self.cookbook = temp_cookbook
+            self.cookbook_path = self.cookbook.path
+            self.is_cookbook_loaded = True
+            # set the value of autosave in the setting menue
+            self.actionAuto_Save.setChecked(self.cookbook.auto_save)
         except TypeError as err:
             logging.error("In '_open_cookbook', TypeError: {0}".format(err))
             self._showDialog_user_info(
                 "The file provided does not have the right file extension. Please try again.",
                 "Cookbook file extension is wrong!")
-            self._set_cookbook_to_default()
+            #self._set_cookbook_to_default()
         except (OSError, IOError) as err:
             logging.error("In '_open_cookbook', {0}".format(err))
             self._showDialog_user_info("Cookbook file not found. If it is the first time you open this program, ignore this message.", "Cookbook file not found!")
-            self._set_cookbook_to_default()
+            #self._set_cookbook_to_default()
 
     def _set_cookbook_to_default(self):
         self.cookbook = RecipeBook(AppDefaults().default_cookbook_name,
@@ -146,8 +175,10 @@ class myMainWindow(QMainWindow):
                                    backup_history_length=AppDefaults().default_cookbook_backup_history_length)
 
     def _write_application_settings(self):
-        # TODO
-        pass
+        temp = {"cookbook_path": self.cookbook_path,
+                "cookbook_backup_folder_path": self.cookbook_backup_folder_path}
+        with open(AppDefaults().application_settings_path, 'w') as outfile:
+            json.dump(temp, outfile, sort_keys=False, indent=4)
 
     def _showDialog_user_info(self, message: str, title: str):
         msg_box = QMessageBox()
@@ -157,10 +188,18 @@ class myMainWindow(QMainWindow):
         msg_box.setStandardButtons(QMessageBox.Ok)
         msg_box.exec()
 
+    # Open an existing cookbook
     def action_open(self):
         filename = QFileDialog.getOpenFileName(self, 'Open cookbook file', '', "Cookbook file (*" + Definitions().cookbook_file_extention + ")")[0]
         self._open_cookbook(filename)
+        # update searchbar time scale
+        self.update_time_search_scale()
+        # update the setting file
+        self._write_application_settings()
+        # update the screen
+        self.search_recipes()
 
+    # Open an new cookbook
     def action_new(self):
         self.new_cookbook_popup = None
         self.new_cookbook_popup = QWidget()
@@ -172,17 +211,108 @@ class myMainWindow(QMainWindow):
         self.new_cookbook_popup.pushButton_ok.clicked.connect(self.action_New_ok)
         self.new_cookbook_popup.pushButton_cancel.clicked.connect(self.action_New_cancel)
         self.new_cookbook_popup.pushButton_location.clicked.connect(self.action_New_filelocation)
+        # set the current new cookbook location to the standard location
+        self.new_cookbook_popup.lineEdit_location.setText(AppDefaults().default_cookbook_folder_path)
         self.new_cookbook_popup.show()
 
     def action_New_ok(self):
+        # if we do not hava a name, do not save
+        if len(self.new_cookbook_popup.lineEdit_name.text()) == 0:
+            self._showDialog_user_info("Please give a name to the cookbook.", "Cookbook has no name")
+            return
+        name = self.new_cookbook_popup.lineEdit_name.text()
+        path = self.new_cookbook_popup.lineEdit_location.text() + "/"  + name.replace(" ", "_") + Definitions().cookbook_file_extention
+        self.cookbook = RecipeBook(name,
+                                   path,
+                                   auto_save=self.new_cookbook_popup.checkBox_autosave.isChecked(),
+                                   auto_backup=self.new_cookbook_popup.checkBox_backup.isChecked(),
+                                   backup_interval=self.new_cookbook_popup.spinBox_backup_interval.value(),
+                                   backup_history_length=self.new_cookbook_popup.spinBox_backup_history.value())
+        # save new cookbook
+        self.cookbook.to_file()
+        self.is_cookbook_loaded = True
+        # update setting view
+        self.actionAuto_Save.setChecked(self.cookbook.auto_save)
+        # update searchbar time scale
+        self.update_time_search_scale()
+        # update the screen
+        self.search_recipes()
+        # save app settings
+        self._write_application_settings()
+        # close
         self.new_cookbook_popup.close()
         self.new_cookbook_popup = None
-        pass
 
     def action_New_filelocation(self):
-
+        dirname = QFileDialog.getExistingDirectory(self, 'Select cookbook location', '', options=QFileDialog.ShowDirsOnly)
+        self.new_cookbook_popup.lineEdit_location.setText(dirname)
 
     def action_New_cancel(self):
+        self.new_cookbook_popup.close()
+        self.new_cookbook_popup = None
+
+    # Save the cookbook
+    def action_save(self):
+        if self.is_cookbook_loaded:
+            self.cookbook.to_file()
+        else:
+            self._showDialog_user_info("No cookboob is currently loaded, please create a new cookbook or lead and existing one before to save.", "Save impossible.")
+
+    # Save_as the cookbook
+    def action_save_as(self):
+        if self.is_cookbook_loaded:
+            old_path = self.cookbook.path
+            path = QFileDialog.getSaveFileName(self, 'Select cookbook filename', '', "Cookbook file (*" + Definitions().cookbook_file_extention + ")")[0]
+            self.cookbook.to_file(path)
+            self.cookbook.path = old_path
+        else:
+            self._showDialog_user_info("No cookboob is currently loaded, please create a new cookbook or lead and existing one before to save.", "Save impossible.")
+
+    def action_autosave(self):
+        if self.is_cookbook_loaded:
+            self.cookbook.auto_save = self.actionAuto_Save.isChecked()
+        else:
+            self._showDialog_user_info("No cookboob is currently loaded, please create a new cookbook or lead and existing one.", "Setting change impossible.")
+
+    def action_cookbook(self):
+        self.new_cookbook_popup = None
+        self.new_cookbook_popup = QWidget()
+        uic.loadUi('new_cookbook_popup.ui', self.new_cookbook_popup)
+        self.new_cookbook_popup.spinBox_backup_history.setValue(self.cookbook.backup_history_length)
+        self.new_cookbook_popup.spinBox_backup_interval.setValue(self.cookbook.backup_interval)
+        self.new_cookbook_popup.checkBox_autosave.setChecked(self.cookbook.auto_save)
+        self.new_cookbook_popup.checkBox_backup.setChecked(self.cookbook.auto_backup)
+        self.new_cookbook_popup.pushButton_ok.clicked.connect(self.action_cookbook_ok)
+        self.new_cookbook_popup.pushButton_cancel.clicked.connect(self.action_New_cancel)
+        self.new_cookbook_popup.pushButton_location.clicked.connect(self.action_New_filelocation)
+        # set the current new cookbook location to the standard location
+        self.new_cookbook_popup.lineEdit_location.setText(dirname(self.cookbook.path))
+        self.new_cookbook_popup.lineEdit_name.setText(self.cookbook.name)
+        self.new_cookbook_popup.show()
+
+    def action_cookbook_ok(self):
+        if len(self.new_cookbook_popup.lineEdit_name.text()) == 0:
+            self._showDialog_user_info("Please give a name to the cookbook.", "Cookbook has no name")
+            return
+        name = self.new_cookbook_popup.lineEdit_name.text()
+        path = self.new_cookbook_popup.lineEdit_location.text() + "/"  + name.replace(" ", "_") + Definitions().cookbook_file_extention
+        self.cookbook.name = name
+        self.cookbook.path = path
+        self.cookbook.auto_save = self.new_cookbook_popup.checkBox_autosave.isChecked()
+        self.cookbook.auto_backup = self.new_cookbook_popup.checkBox_backup.isChecked()
+        self.cookbook.backup_interval = self.new_cookbook_popup.spinBox_backup_interval.value()
+        self.cookbook.backup_history_length = self.new_cookbook_popup.spinBox_backup_history.value()
+        # save new cookbook
+        self.cookbook.to_file()
+        self.is_cookbook_loaded = True
+        self.actionAuto_Save.setChecked(self.cookbook.auto_save)
+        # update searchbar time scale
+        self.update_time_search_scale()
+        # update the screen
+        self.search_recipes()
+        # save app settings
+        self._write_application_settings()
+        # close
         self.new_cookbook_popup.close()
         self.new_cookbook_popup = None
 
@@ -270,6 +400,10 @@ class myMainWindow(QMainWindow):
 # ===============================================================================
 # Recipe sorting
 # ================
+    def update_time_search_scale(self):
+        if self.is_cookbook_loaded:
+            self.horizontalSlider_prep_time_filter.setMaximum(self.cookbook.longest)
+
 # add and del items from the lists
     def add_to_selected_recipe_name_list(self):
         self.generic_add_to_selected_recipe_parameter_list(self.listWidget_recipe_name_search,
@@ -486,11 +620,12 @@ class myMainWindow(QMainWindow):
         self.update_planer_info_view()
 
     def add_parametric_search_result(self):
-        selected_recipes = sample(self.filtered_recipes, self.spinBox_quantity_selector.value())
-        for recipe in selected_recipes:
-                new_item = SearchResultTableItem(recipe, "auto", self.spinBox_servings_selector.value(), search_form=list(self.search_filter))
-                self.generic_add_search_result_line(new_item, self.tableWidget_meal_planner_recipes)
-        self.update_planer_info_view()
+        if len(self.filtered_recipes) > 0:
+            selected_recipes = sample(self.filtered_recipes, self.spinBox_quantity_selector.value())
+            for recipe in selected_recipes:
+                    new_item = SearchResultTableItem(recipe, "auto", self.spinBox_servings_selector.value(), search_form=list(self.search_filter))
+                    self.generic_add_search_result_line(new_item, self.tableWidget_meal_planner_recipes)
+            self.update_planer_info_view()
 
     def generic_add_search_result_line(self, new_item: SearchResultTableItem, table_widget):
         table_widget.insertRow(table_widget.rowCount())

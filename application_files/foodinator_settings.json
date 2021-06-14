@@ -1,4 +1,4 @@
 {
-  "cookbook_path": "cookbooks/my_super_cookbook_cookBook.cookbook",
-  "cookbook_backup_folder_path": "cookbooks_bak/"
+    "cookbook_path": "/Users/swannlevasseur/cernbox/personal/foodinator/cookbooks/my_super_cookbook.cookbook",
+    "cookbook_backup_folder_path": ""
 }

@@ -63,6 +63,7 @@ def rand_recipes():
         res.append(rand_recipe())
     return res
 
+print(rand_recipes()[0].to_txt())
 
 book = RecipeBook("my_super_cookbook", "cookbooks/", recipe_list = rand_recipes())
 d = book.recipe_list[0].dict

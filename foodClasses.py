@@ -38,6 +38,15 @@ class Ingredient:
         self.food_item = dict_ingredient['food_item']
         self.comment = dict_ingredient['comment']
 
+    def to_txt(self, standard_value: int = None, comments: bool = True):
+        if standard_value is None:
+            txt = self.name + ": " + str(self.quantity) + " " + self.unit + "."
+        else:
+            txt = self.name + ": " + str(self.quantity) + " (" + str(standard_value) + ")" + self.unit + "."
+        if comments:
+            txt += "Comment: " + self.comment
+        return txt
+
 #######################################
 ## Recipe ##
 #######################################
@@ -198,6 +207,35 @@ class Recipe:
         self.last_updated = recipe_dict['last_updated']
         self.recipe_length = recipe_dict['recipe_length']
 
+    def to_txt(self, comments: bool = True):
+        txt = "--------------------\n"
+        txt += self.name + "\n"
+        txt += "--------------------\n"
+        txt += "\n"
+        txt += "Author: " + self.author + "\n"
+        txt += "Difficulty: " + self.difficulty + "\n"
+        txt += "Preparation time: " + str(self.prep_time) + " minutes \n"
+        txt += "Cooking time: " + str(self.cook_time) + " minutes \n"
+        txt += "Total time: " + str(self.cook_time + self.prep_time) + " minutes \n"
+        txt += "Serve: " + str(self.serve) + " serving \n"
+        txt += "Types: "
+        txt += ', '.join(self.types)
+        txt += "\n"
+        txt += "Tags: "
+        txt += ', '.join(self.tags)
+        txt += "\n"
+        txt += "\n"
+        txt += "--------------------\n"
+        txt += "Ingredients:\n"
+        txt += "--------------------\n"
+        for ing in self.ingredient_list:
+            txt += "    -"
+            txt += ing.to_txt(comments=comments)
+            txt += "\n"
+        txt += "------------------------------------------------------------\n"
+        txt += "\n"
+        return txt
+
 #######################################
 ## Recipe ##
 #######################################
@@ -207,7 +245,7 @@ class Recipe:
 class RecipeBook:
     """ A  class representing a recipe Book. """
     name: str = ""  # the name of the book
-    _path: str = ""  # The path of the book
+    path: str = ""  # The path of the book
     recipe_count: int = dataclasses.field(init=False, default=None)  # how many recipes are currently in the book
     last_updated: str = dataclasses.field(init=False, default=None)  # When was the last change to the book
     auto_save: bool = False  # does the book autosave (after every change to the class)?
@@ -231,7 +269,7 @@ class RecipeBook:
 
     def open(self, path):
         self.from_file(path)
-        self._path = path
+        self.path = path
 
     @property
     def longest(self):
@@ -292,7 +330,7 @@ class RecipeBook:
 
     def from_dict(self, recipe_book_dict: dict):
         self.name = recipe_book_dict['name']
-        self._path = recipe_book_dict['_path']
+        self.path = recipe_book_dict['path']
         self.last_updated = recipe_book_dict['last_updated']
         self.recipe_count = recipe_book_dict['recipe_count']
         self.auto_save = recipe_book_dict['auto_save']
@@ -305,7 +343,7 @@ class RecipeBook:
 
     def from_file(self, filepath: str = None):
         if filepath is None:
-            path = self._path
+            path = self.path
         else:
             if filepath.endswith(Definitions().cookbook_file_extention):
                 path = filepath
@@ -316,7 +354,7 @@ class RecipeBook:
 
     def to_file(self, filepath: str = None):
         if filepath is None:
-            path = self._path
+            path = self.path
         else:
             if filepath.endswith(Definitions().cookbook_file_extention):
                 path = filepath
@@ -331,7 +369,7 @@ class RecipeBook:
                 self.backup_cnt += 1
                 if self.backup_cnt == self.backup_interval:  # do we need to do a backup ?
                     self.backup_cnt = 0
-                    backup_name = self._path + self.name  + "_" + str(datetime.now().strftime("%d-%m-%Y_%H-%M-%S")) + "_backup.json"
+                    backup_name = self.path + self.name  + "_" + str(datetime.now().strftime("%d-%m-%Y_%H-%M-%S")) + "_backup.json"
                     self.to_file(filepath = backup_name)
             self.to_file()
 
