@@ -476,6 +476,7 @@ class myMainWindow(QMainWindow):
 
 # search core
     def search_recipes(self):
+        self.update_time_search_scale()
         self.update_search_filter()
         self.update_search_form_display()
         self.update_recipe_table()

@@ -36,7 +36,7 @@ class FoodLibrary:
     def find(self, search_form: list) -> list:
         method_library = {"item_name": self.check_name,
                           "item_type": self.check_type,
-                          "item_season": self.check_type}
+                          "item_season": self.check_season}
         result = []
         test = False
         for item in self.library:

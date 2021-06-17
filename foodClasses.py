@@ -369,7 +369,7 @@ class RecipeBook:
                 self.backup_cnt += 1
                 if self.backup_cnt == self.backup_interval:  # do we need to do a backup ?
                     self.backup_cnt = 0
-                    backup_name = self.path + self.name  + "_" + str(datetime.now().strftime("%d-%m-%Y_%H-%M-%S")) + "_backup.json"
+                    backup_name = self.path + self.name  + "_" + str(datetime.now().strftime("%d-%m-%Y_%H-%M-%S")) + "_bak" + Definitions().cookbook_file_extention
                     self.to_file(filepath = backup_name)
             self.to_file()
 
@@ -498,7 +498,9 @@ class Definitions:
                                                  "Take away",
                                                  "curry",
                                                  "dhal",
-                                                 "indian"))
+                                                 "indian",
+                                                 "chilli",
+                                                 "meal-prep"))
     units: list[str] = dataclasses.field(default=("Piece",
                                                   "Clove",
                                                   "Leaf",
