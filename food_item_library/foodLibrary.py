@@ -1,7 +1,10 @@
 import dataclasses
 import csv
 import re
-
+# TODO  lines of nothing in the selection of ingredients.
+# TODO update ingredient display to show ingredient by type
+# TODO display ingredient type when selecting them
+# TODO set the unit to a "prefered" unit defined in the csv table
 
 @dataclasses.dataclass
 class FoodLibrary:

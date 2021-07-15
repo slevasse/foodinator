@@ -11,6 +11,8 @@ import re
 from os.path import dirname, exists
 from os import makedirs
 
+# TODO when writting recipe and ingredients to txt, do not write the comment if the comment is empty
+
 class myMainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
