@@ -506,15 +506,18 @@ class Definitions:
                                                   "Leaf",
                                                   "milli Litre (mL)",
                                                   "Litre (L)",
-                                                  "Gram (m)",
+                                                  "Gram (gm)",
                                                   "kilo Gram (kg)",
                                                   "Table spoon",
-                                                  "Tea spoon"))
+                                                  "Tea spoon",
+                                                  "Handful",
+                                                  "Cup"))
     types: list[str] = dataclasses.field(default=("Breakfast",
                                                   "Main",
                                                   "Dessert",
                                                   "Fika",
                                                   "Starter",
+                                                  "Side-dish",
                                                   "Juice",
                                                   "Smoothie",
                                                   "Soup"))
