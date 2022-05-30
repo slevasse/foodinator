@@ -482,25 +482,25 @@ class RecipeBook:
 @dataclasses.dataclass(frozen=True)
 class Definitions:
     cookbook_file_extention: str = dataclasses.field(default=('.cookbook'))
-    difficulties: list[str] = dataclasses.field(default=("I'm too young to die",
-                                                          "Hurt me plenty",
-                                                          "Ultra-Violence",
-                                                          "Nightmare",
-                                                          "Ultra-Nightmare"))
+    cookbook_backup_file_extention: str = dataclasses.field(default=('.bak.cookbook'))
+    difficulties: list[str] = dataclasses.field(default=("very easy",
+                                                          "easy",
+                                                          "normal",
+                                                          "hard",
+                                                          "very hard"))
+
     tags: list[str] = dataclasses.field(default=("Vegetarian",
                                                  "Vegan",
                                                  "Burger",
-                                                 "Baby",
+                                                 "Baby safe",
                                                  "High protein",
                                                  "Gluten free",
-                                                 "Cold",
-                                                 "Hot",
+                                                 "Cold meal",
+                                                 "Hot meal",
                                                  "Take away",
-                                                 "curry",
-                                                 "dhal",
-                                                 "indian",
-                                                 "chilli",
+                                                 "Spicy",
                                                  "meal-prep"))
+
     units: list[str] = dataclasses.field(default=("Piece",
                                                   "Clove",
                                                   "Leaf",
@@ -512,6 +512,7 @@ class Definitions:
                                                   "Tea spoon",
                                                   "Handful",
                                                   "Cup"))
+
     types: list[str] = dataclasses.field(default=("Breakfast",
                                                   "Main",
                                                   "Dessert",

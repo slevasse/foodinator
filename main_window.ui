@@ -793,7 +793,7 @@
        <item>
         <widget class="QTabWidget" name="tab">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab_recipes">
           <attribute name="title">
@@ -824,7 +824,7 @@
              <item>
               <widget class="QPushButton" name="pushButton_delete_recipes">
                <property name="text">
-                <string>Delete section from cookcook</string>
+                <string>Delete selection from cookcook</string>
                </property>
               </widget>
              </item>
@@ -965,8 +965,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>500</width>
-                <height>293</height>
+                <width>102</width>
+                <height>102</height>
                </rect>
               </property>
               <attribute name="label">
@@ -993,8 +993,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>500</width>
-                <height>293</height>
+                <width>102</width>
+                <height>102</height>
                </rect>
               </property>
               <attribute name="label">
@@ -1014,6 +1014,14 @@
               </layout>
              </widget>
              <widget class="QWidget" name="page_3">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>500</width>
+                <height>293</height>
+               </rect>
+              </property>
               <attribute name="label">
                <string>Export results</string>
               </attribute>

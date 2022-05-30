@@ -124,7 +124,8 @@ class myMainWindow(QMainWindow):
         try:
             with open(self.path_app_settings, "r") as read_file:
                 settings = json.load(read_file)
-                if len(settings["cookbook_path"]) > 0:
+                #if len(settings["cookbook_path"]) > 0:
+                if settings["cookbook_path"] != "":
                     self.cookbook_path = settings["cookbook_path"]
                     self.cookbook_backup_folder_path = settings["cookbook_backup_folder_path"]
                     self._open_cookbook(self.cookbook_path)
@@ -223,7 +224,7 @@ class myMainWindow(QMainWindow):
         self.new_cookbook_popup.show()
 
     def action_New_ok(self):
-        # if we do not hava a name, do not save
+        # if we do not have a name, do not save
         if len(self.new_cookbook_popup.lineEdit_name.text()) == 0:
             self._showDialog_user_info("Please give a name to the cookbook.", "Cookbook has no name")
             return
@@ -478,10 +479,11 @@ class myMainWindow(QMainWindow):
 
 # search core
     def search_recipes(self):
-        self.update_time_search_scale()
-        self.update_search_filter()
-        self.update_search_form_display()
-        self.update_recipe_table()
+        if self.is_cookbook_loaded:
+            self.update_time_search_scale()
+            self.update_search_filter()
+            self.update_search_form_display()
+            self.update_recipe_table()
 
 
     def update_search_form_display(self):

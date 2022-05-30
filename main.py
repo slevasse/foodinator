@@ -4,7 +4,7 @@ from myMainWindow import myMainWindow
 from PyQt5.QtWidgets import *
 import logging
 from foodClasses import *
-
+#TODO fix bug, if asking to find N random receipe and we have less than N receipe in total.
 def main():
     """ Main program """
 
