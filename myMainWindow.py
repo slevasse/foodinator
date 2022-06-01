@@ -884,13 +884,13 @@ class myMainWindow(QMainWindow):
             return
         # all ingredients aggregated
         sorted_ingredient_list = self.make_sorted_ingredient_list(self.aggregated_ingredient_list)
-        txt = (f"-----------\n"
-               f"Ingredient list:\n"
-               f"-----------\n")
+        txt = (f"---\n"
+               f"# Ingredient list:\n"
+               f"---\n")
         for key in sorted_ingredient_list:
-            txt += f'{key}:\n'
+            txt += f'## {key}\n'
             for ing in sorted_ingredient_list[key]:
-                txt += f'    -{ing.to_txt(comments=True)}\n'
+                txt += f'- [ ] {ing.to_txt(comments=False)}\n'
 
         with open(path, "w") as text_file:
             text_file.write(txt)
