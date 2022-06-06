@@ -207,7 +207,7 @@ class myMainWindow(QMainWindow):
         # update the screen
         self.search_recipes()
 
-    # Open an new cookbook
+    # create an new cookbook
     def action_new(self):
         self.new_cookbook_popup = None
         self.new_cookbook_popup = QWidget()
