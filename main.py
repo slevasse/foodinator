@@ -1,30 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from PyQt5 import uic
 from myMainWindow import myMainWindow
-import ingredient
-import food_list as fl
 from PyQt5.QtWidgets import *
 import logging
-
+from foodClasses import *
+#TODO fix bug, if asking to find N random receipe and we have less than N receipe in total.
 def main():
     """ Main program """
-    # start the logger
-    logging.basicConfig(filename='foodinator_log.log',format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO) # use INFO in release
-    logging.info('App Started')
 
     # load the ui
     app = QApplication([])
-    #window = QMainWindow()
     window = myMainWindow()
 
     # run the gui
     window.show()
     app.exec()
     #
-    logging.info('Program exited normaly')
+    logging.info('App exited normally.')
     # Code goes over here.
     return 0
+
 
 if __name__ == "__main__":
     main()
