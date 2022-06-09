@@ -2,11 +2,12 @@ import dataclasses
 import json
 import re
 from datetime import date, datetime
+import os
+
 #######################################
 ## Ingredient ##
 #######################################
-# TODO add a proper testbench for these classes
-# TODO make a proper recipe cookbook for test purpose
+
 
 @dataclasses.dataclass
 class Ingredient:
@@ -245,7 +246,12 @@ class Recipe:
 class RecipeBook:
     """ A  class representing a recipe Book. """
     name: str = ""  # the name of the book
-    path: str = ""  # The path of the book
+    path: str = ""  # The path where the recipe book is stored
+    head_path: str = dataclasses.field(init=False, default=None)  # path to the book top dir
+    backup_path: str = dataclasses.field(init=False, default=None)  # path to the backup dir
+    recipe_book_path: str = dataclasses.field(init=False, default=None)  # path to the recipebook dir
+    recipe_book_file_path: str = dataclasses.field(init=False, default=None)
+    saved_searches_path: str = dataclasses.field(init=False, default=None)  # path to the saved searches dir
     recipe_count: int = dataclasses.field(init=False, default=None)  # how many recipes are currently in the book
     last_updated: str = dataclasses.field(init=False, default=None)  # When was the last change to the book
     auto_save: bool = False  # does the book autosave (after every change to the class)?
@@ -263,13 +269,24 @@ class RecipeBook:
         return len(self.recipe_list)
 
     def _update_meta(self):
+        # paths
+        self.update_paths()
+        # others
         self.recipe_count = len(self.recipe_list)
         self.last_updated = str(date.today())
         self.sort_recipes_alphabetically()
 
+    def update_paths(self):
+        self.head_path = os.path.join(self.path, self.name)
+        self.backup_path = os.path.join(self.head_path, "backup")
+        self.recipe_book_path = os.path.join(self.head_path, "recipe_book")
+        self.recipe_book_file_path = os.path.join(self.recipe_book_path,
+                                                  "recipebook" + Definitions().cookbook_file_extention)
+        self.saved_searches_path = os.path.join(self.recipe_book_path, "saved_searches")
+
     def open(self, path):
-        self.from_file(path)
-        self.path = path
+        self.from_file(os.path.join(path, "recipe_book", ("recipebook" + Definitions().cookbook_file_extention)))
+        self.head_path = path
 
     @property
     def longest(self):
@@ -328,9 +345,60 @@ class RecipeBook:
     def dict(self):
         return dataclasses.asdict(self)
 
+    def save_recipe_book(self):
+        # is the recipe book does not exist yet
+        if not self.is_recipe_book(self.head_path):
+            # create it
+            self._create_recipebook_repo()
+        # in all case, save the cookbook file
+        self.to_file()
+
+    def delete_existing_recipebook(self):
+        pass
+
+    def is_recipe_book(self, path: str):
+        # is it a dir and does it exist?
+        if os.path.isdir(path):
+            # if yes, does it contain two repo called backup and recipe_book?
+            temp_dirs = os.listdir(path)
+            temp_dirs.remove('.DS_Store')  # remove the .DS_store if on mac
+            temp_dirs.sort()
+            check_dirs = ["backup", "recipe_book"]
+            check_dirs.sort()
+            if temp_dirs == check_dirs:
+                return True
+        return False
+
+    def _create_recipebook_repo(self):
+        """Create a repository for the recipebook if it does not exist."""
+        # if the path exist and is a directory
+        if os.path.isdir(self.path):
+            # create the head dir using the path provided and the name of the cookbook
+            self.head_path = os.path.join(self.path, self.name)
+            if os.path.isdir(self.head_path):
+                raise Exception("Failed to create the recipebook repository. "
+                                "A recipebook with the same name already exists.")
+            os.mkdir(self.head_path)
+            # create backup_folder
+            self.backup_path = os.path.join(self.head_path, "backup")
+            os.mkdir(self.backup_path)
+            # create recipe_book_folder
+            self.recipe_book_path = os.path.join(self.head_path, "recipe_book")
+            os.mkdir(self.recipe_book_path)
+            # create saved_searches_folder
+            self.saved_searches_path = os.path.join(self.recipe_book_path, "saved_searches")
+            os.mkdir(self.saved_searches_path)
+        else:
+            raise Exception("Failed to create the recipebook repository. The recipebook path does not exist.")
+
     def from_dict(self, recipe_book_dict: dict):
         self.name = recipe_book_dict['name']
         self.path = recipe_book_dict['path']
+        self.head_path = recipe_book_dict['head_path']
+        self.backup_path = recipe_book_dict['backup_path']
+        self.recipe_book_path = recipe_book_dict['recipe_book_path']
+        self.recipe_book_file_path = recipe_book_dict['recipe_book_file_path']
+        self.saved_searches_path = recipe_book_dict['saved_searches_path']
         self.last_updated = recipe_book_dict['last_updated']
         self.recipe_count = recipe_book_dict['recipe_count']
         self.auto_save = recipe_book_dict['auto_save']
@@ -343,7 +411,7 @@ class RecipeBook:
 
     def from_file(self, filepath: str = None):
         if filepath is None:
-            path = self.path
+            path = self.recipe_book_file_path
         else:
             if filepath.endswith(Definitions().cookbook_file_extention):
                 path = filepath
@@ -354,7 +422,7 @@ class RecipeBook:
 
     def to_file(self, filepath: str = None):
         if filepath is None:
-            path = self.path
+            path = self.recipe_book_file_path
         else:
             if filepath.endswith(Definitions().cookbook_file_extention):
                 path = filepath
@@ -369,8 +437,9 @@ class RecipeBook:
                 self.backup_cnt += 1
                 if self.backup_cnt == self.backup_interval:  # do we need to do a backup ?
                     self.backup_cnt = 0
-                    backup_name = self.path + self.name  + "_" + str(datetime.now().strftime("%d-%m-%Y_%H-%M-%S")) + "_bak" + Definitions().cookbook_file_extention
-                    self.to_file(filepath = backup_name)
+                    backup_name = os.path.join(self.backup_path, (str(datetime.now().strftime("%d-%m-%Y_%H-%M-%S"))
+                                               + Definitions().cookbook_backup_file_extention))
+                    self.to_file(filepath=backup_name)
             self.to_file()
 
 # find recipes in the cookbook
@@ -482,12 +551,12 @@ class RecipeBook:
 @dataclasses.dataclass(frozen=True)
 class Definitions:
     cookbook_file_extention: str = dataclasses.field(default=('.cookbook'))
-    cookbook_backup_file_extention: str = dataclasses.field(default=('.bak.cookbook'))
+    cookbook_backup_file_extention: str = dataclasses.field(default=('_bak.cookbook'))
     difficulties: list[str] = dataclasses.field(default=("very easy",
-                                                          "easy",
-                                                          "normal",
-                                                          "hard",
-                                                          "very hard"))
+                                                         "easy",
+                                                         "normal",
+                                                         "hard",
+                                                         "very hard"))
 
     tags: list[str] = dataclasses.field(default=("Vegetarian",
                                                  "Vegan",

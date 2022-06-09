@@ -124,7 +124,6 @@ class myMainWindow(QMainWindow):
         try:
             with open(self.path_app_settings, "r") as read_file:
                 settings = json.load(read_file)
-                #if len(settings["cookbook_path"]) > 0:
                 if settings["cookbook_path"] != "":
                     self.cookbook_path = settings["cookbook_path"]
                     self.cookbook_backup_folder_path = settings["cookbook_backup_folder_path"]
@@ -135,31 +134,16 @@ class myMainWindow(QMainWindow):
             logging.warning("In _load_application_settings, {0}".format(err))
             # write a new setting file
             self._write_application_settings()
-            # TODO Fix this self.make_folder_structure()
             logging.warning("In _load_application_settings, create a new application setting file at :" + AppDefaults().application_settings_path)
             self._showDialog_user_info("The setting file required to start the program was not found. Starting with default settings",
                                        "Application settings not found!")
-            # default settings
-            #self._set_cookbook_to_default()
-
-    # TODO Fix this
-    # def make_folder_structure(self):
-    #     # application_files
-    #     if not exists(dirname(AppDefaults().application_settings_path)):
-    #         makedirs(dirname(AppDefaults().application_settings_path))
-    #     # cookbooks
-    #     if not exists(dirname(AppDefaults().default_cookbook_folder_path)):
-    #         makedirs(dirname(AppDefaults().default_cookbook_folder_path))
-    #     # cookbook backup
-    #     if not exists(dirname(AppDefaults().default_cookbook_backup_folder_path)):
-    #         makedirs(dirname(AppDefaults().default_cookbook_backup_folder_path))
 
     def _open_cookbook(self, path: str):
         temp_cookbook = RecipeBook()
         try:
             temp_cookbook.open(path)
             self.cookbook = temp_cookbook
-            self.cookbook_path = self.cookbook.path
+            self.cookbook_path = self.cookbook.head_path
             self.is_cookbook_loaded = True
             # set the value of autosave in the setting menue
             self.actionAuto_Save.setChecked(self.cookbook.auto_save)
@@ -198,7 +182,9 @@ class myMainWindow(QMainWindow):
 
     # Open an existing cookbook
     def action_open(self):
-        filename = QFileDialog.getOpenFileName(self, 'Open cookbook file', '', "Cookbook file (*" + Definitions().cookbook_file_extention + ")")[0]
+        #filename = QFileDialog.getOpenFileName(self, 'Open cookbook file', '', "Cookbook file (*" + Definitions().cookbook_file_extention + ")")[0]
+        #filename = QFileDialog.getOpenFileName(self, 'Open cookbook file', '')[0]
+        filename = QFileDialog.getExistingDirectory(self, 'Select cookbook location', '', options=QFileDialog.ShowDirsOnly)
         self._open_cookbook(filename)
         # update searchbar time scale
         self.update_time_search_scale()
@@ -207,7 +193,7 @@ class myMainWindow(QMainWindow):
         # update the screen
         self.search_recipes()
 
-    # Open an new cookbook
+    # create an new cookbook
     def action_new(self):
         self.new_cookbook_popup = None
         self.new_cookbook_popup = QWidget()
@@ -229,7 +215,7 @@ class myMainWindow(QMainWindow):
             self._showDialog_user_info("Please give a name to the cookbook.", "Cookbook has no name")
             return
         name = self.new_cookbook_popup.lineEdit_name.text()
-        path = self.new_cookbook_popup.lineEdit_location.text() + "/"  + name.replace(" ", "_") + Definitions().cookbook_file_extention
+        path = self.new_cookbook_popup.lineEdit_location.text()
         self.cookbook = RecipeBook(name,
                                    path,
                                    auto_save=self.new_cookbook_popup.checkBox_autosave.isChecked(),
@@ -237,7 +223,8 @@ class myMainWindow(QMainWindow):
                                    backup_interval=self.new_cookbook_popup.spinBox_backup_interval.value(),
                                    backup_history_length=self.new_cookbook_popup.spinBox_backup_history.value())
         # save new cookbook
-        self.cookbook.to_file()
+        self.cookbook.save_recipe_book()
+        #self.cookbook.to_file()
         self.is_cookbook_loaded = True
         # update setting view
         self.actionAuto_Save.setChecked(self.cookbook.auto_save)
@@ -262,17 +249,20 @@ class myMainWindow(QMainWindow):
     # Save the cookbook
     def action_save(self):
         if self.is_cookbook_loaded:
-            self.cookbook.to_file()
+            self.cookbook.save_recipe_book()
         else:
             self._showDialog_user_info("No cookboob is currently loaded, please create a new cookbook or lead and existing one before to save.", "Save impossible.")
 
     # Save_as the cookbook
     def action_save_as(self):
+        #TODO update to new format
         if self.is_cookbook_loaded:
-            old_path = self.cookbook.path
-            path = QFileDialog.getSaveFileName(self, 'Select cookbook filename', '', "Cookbook file (*" + Definitions().cookbook_file_extention + ")")[0]
-            self.cookbook.to_file(path)
-            self.cookbook.path = old_path
+            pass
+            #old_path = self.cookbook.head_path
+            #path = QFileDialog.getSaveFileName(self, 'Select cookbook filename', '', "Cookbook file (*" + Definitions().cookbook_file_extention + ")")[0]
+            #path = QFileDialog.getSaveFileName(self, 'Select cookbook filename', '')[0]
+            #self.cookbook.to_file(path)
+            #self.cookbook.head_path = old_path
         else:
             self._showDialog_user_info("No cookboob is currently loaded, please create a new cookbook or lead and existing one before to save.", "Save impossible.")
 
@@ -294,7 +284,7 @@ class myMainWindow(QMainWindow):
         self.new_cookbook_popup.pushButton_cancel.clicked.connect(self.action_New_cancel)
         self.new_cookbook_popup.pushButton_location.clicked.connect(self.action_New_filelocation)
         # set the current new cookbook location to the standard location
-        self.new_cookbook_popup.lineEdit_location.setText(dirname(self.cookbook.path))
+        self.new_cookbook_popup.lineEdit_location.setText(self.cookbook.path)
         self.new_cookbook_popup.lineEdit_name.setText(self.cookbook.name)
         self.new_cookbook_popup.show()
 
@@ -303,15 +293,17 @@ class myMainWindow(QMainWindow):
             self._showDialog_user_info("Please give a name to the cookbook.", "Cookbook has no name")
             return
         name = self.new_cookbook_popup.lineEdit_name.text()
-        path = self.new_cookbook_popup.lineEdit_location.text() + "/"  + name.replace(" ", "_") + Definitions().cookbook_file_extention
-        self.cookbook.name = name
-        self.cookbook.path = path
+        path = self.new_cookbook_popup.lineEdit_location.text()
         self.cookbook.auto_save = self.new_cookbook_popup.checkBox_autosave.isChecked()
         self.cookbook.auto_backup = self.new_cookbook_popup.checkBox_backup.isChecked()
         self.cookbook.backup_interval = self.new_cookbook_popup.spinBox_backup_interval.value()
         self.cookbook.backup_history_length = self.new_cookbook_popup.spinBox_backup_history.value()
-        # save new cookbook
-        self.cookbook.to_file()
+        # if the path changed, update the paths
+        if (self.cookbook.path != path) or (self.cookbook.name != name):
+            self.cookbook.path = path
+            self.cookbook.name = name
+            self.cookbook.update_paths()
+        self.cookbook.save_recipe_book()
         self.is_cookbook_loaded = True
         self.actionAuto_Save.setChecked(self.cookbook.auto_save)
         # update searchbar time scale
@@ -483,6 +475,7 @@ class myMainWindow(QMainWindow):
             self.update_time_search_scale()
             self.update_search_filter()
             self.update_search_form_display()
+            print("hello")
             self.update_recipe_table()
 
 
@@ -579,7 +572,7 @@ class myMainWindow(QMainWindow):
         if self.horizontalSlider_prep_time_filter.value() != self.cookbook.longest:
             self.search_filter.append({"search_mode": "recipe_duration", "key": str(self.horizontalSlider_prep_time_filter.value())})
 
-        print(self.search_filter)
+        #print(self.search_filter)
         if len(self.search_filter) == 0:
             self.filtered_recipes = self.cookbook.recipe_list
         else:
