@@ -3,11 +3,11 @@ import json
 import re
 from datetime import date, datetime
 import os
-import sys
 
 #######################################
 ## Ingredient ##
 #######################################
+
 
 @dataclasses.dataclass
 class Ingredient:
@@ -247,11 +247,11 @@ class RecipeBook:
     """ A  class representing a recipe Book. """
     name: str = ""  # the name of the book
     path: str = ""  # The path where the recipe book is stored
-    head_path: str = dataclasses.field(init=False, default=None) # path to the book top dir
-    backup_path: str = dataclasses.field(init=False, default=None) # path to the backup dir
-    recipe_book_path: str = dataclasses.field(init=False, default=None) # path to the recipebook dir
+    head_path: str = dataclasses.field(init=False, default=None)  # path to the book top dir
+    backup_path: str = dataclasses.field(init=False, default=None)  # path to the backup dir
+    recipe_book_path: str = dataclasses.field(init=False, default=None)  # path to the recipebook dir
     recipe_book_file_path: str = dataclasses.field(init=False, default=None)
-    saved_searches_path: str = dataclasses.field(init=False, default=None) # path to the saved searches dir
+    saved_searches_path: str = dataclasses.field(init=False, default=None)  # path to the saved searches dir
     recipe_count: int = dataclasses.field(init=False, default=None)  # how many recipes are currently in the book
     last_updated: str = dataclasses.field(init=False, default=None)  # When was the last change to the book
     auto_save: bool = False  # does the book autosave (after every change to the class)?
@@ -361,10 +361,11 @@ class RecipeBook:
         if os.path.isdir(path):
             # if yes, does it contain two repo called backup and recipe_book?
             temp_dirs = os.listdir(path)
+            temp_dirs.remove('.DS_Store')  # remove the .DS_store if on mac
             temp_dirs.sort()
             check_dirs = ["backup", "recipe_book"]
             check_dirs.sort()
-            if temp_dirs[1:] == check_dirs: # use 1: because is gets me the .DS_store dir.. not sure how to make it better
+            if temp_dirs == check_dirs:
                 return True
         return False
 
