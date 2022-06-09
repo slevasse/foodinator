@@ -3,10 +3,15 @@ import json
 import re
 from datetime import date, datetime
 import os
+import logging
+
+# instantiate the logger
+#process_results_logger = logging.getLogger('bgisimtool.process_results')
 
 #######################################
 ## Ingredient ##
 #######################################
+
 
 
 @dataclasses.dataclass

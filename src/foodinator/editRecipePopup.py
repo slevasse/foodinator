@@ -1,7 +1,6 @@
 from PyQt5 import uic
 from PyQt5.QtCore import *
-from foodClasses import *
-from food_item_library.foodLibrary import *
+from foodLibrary import *
 from custom_table_items import *
 
 class EditRecipePopup(QWidget):
@@ -15,7 +14,7 @@ class EditRecipePopup(QWidget):
 
     def __init__(self, recipe: Recipe = None):
         super().__init__()
-        uic.loadUi('edit_recipe.ui', self)
+        uic.loadUi('ui/edit_recipe.ui', self)
         self.init_difficulty()
         self.foodLibrary = FoodLibrary()
         self.fooditem_index = 0

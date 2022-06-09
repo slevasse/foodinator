@@ -1,10 +1,8 @@
-from food_item_library.foodLibrary import FoodLibrary
+from src.foodinator.foodLibrary import FoodLibrary
 from random import *
 import string
-from foodClasses import *
-import timeit
-from datetime import date, datetime
-import json
+from src.foodinator.foodClasses import *
+
 
 # code snippet to be executed only once
 

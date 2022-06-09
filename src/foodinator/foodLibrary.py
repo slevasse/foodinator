@@ -8,7 +8,7 @@ import re
 
 @dataclasses.dataclass
 class FoodLibrary:
-    path: str = "food_item_library/all-foods.csv"
+    path: str = "application_files/all-foods.csv"
     library: list = dataclasses.field(default_factory=list)
 
     def __post_init__(self):

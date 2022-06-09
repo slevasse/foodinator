@@ -16,7 +16,7 @@ from os import makedirs
 class myMainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('main_window.ui', self)
+        uic.loadUi('ui/main_window.ui', self)
         # class variables
         self.path_app_settings = AppDefaults().application_settings_path
         self.is_cookbook_loaded = False
@@ -197,7 +197,7 @@ class myMainWindow(QMainWindow):
     def action_new(self):
         self.new_cookbook_popup = None
         self.new_cookbook_popup = QWidget()
-        uic.loadUi('new_cookbook_popup.ui', self.new_cookbook_popup)
+        uic.loadUi('ui/new_cookbook_popup.ui', self.new_cookbook_popup)
         self.new_cookbook_popup.spinBox_backup_history.setValue(AppDefaults().default_cookbook_backup_history_length)
         self.new_cookbook_popup.spinBox_backup_interval.setValue(AppDefaults().default_cookbook_backup_interval)
         self.new_cookbook_popup.checkBox_autosave.setChecked(AppDefaults().default_cookbook_autosave_state)
@@ -275,7 +275,7 @@ class myMainWindow(QMainWindow):
     def action_cookbook(self):
         self.new_cookbook_popup = None
         self.new_cookbook_popup = QWidget()
-        uic.loadUi('new_cookbook_popup.ui', self.new_cookbook_popup)
+        uic.loadUi('ui/new_cookbook_popup.ui', self.new_cookbook_popup)
         self.new_cookbook_popup.spinBox_backup_history.setValue(self.cookbook.backup_history_length)
         self.new_cookbook_popup.spinBox_backup_interval.setValue(self.cookbook.backup_interval)
         self.new_cookbook_popup.checkBox_autosave.setChecked(self.cookbook.auto_save)
