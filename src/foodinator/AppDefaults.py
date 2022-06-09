@@ -5,8 +5,8 @@ from foodClasses import Definitions
 @dataclasses.dataclass(frozen=True)
 class AppDefaults:
     # logging
-    logging_path: str = dataclasses.field(default='application_files/foodinator_log.log')
-    logging_format: str = dataclasses.field(default='%(asctime)s %(levelname)s:%(message)s')
+    logging_path: str = dataclasses.field(default='application_files/logs/foodinator_log.log')
+    logging_format: str = dataclasses.field(default='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     # setting file
     application_settings_path: str = dataclasses.field(default="application_files/foodinator_settings.json")
     # cookbook

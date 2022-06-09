@@ -1,24 +1,33 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from myMainWindow import myMainWindow
+from MyMainWindow import MyMainWindow
 from PyQt5.QtWidgets import *
 import logging
+from logging.handlers import RotatingFileHandler
+from AppDefaults import AppDefaults
 from foodClasses import *
 import sys
+
+# setup the logger
+logging.basicConfig(filename=AppDefaults().logging_path,
+                    format=AppDefaults().logging_format,
+                    level=logging.INFO)
+main_logger = logging.getLogger('foodinator.main')
+
 
 
 def main(args):
     """ Main program """
-
+    main_logger.info("Starting application")
     # load the ui
     app = QApplication([])
-    window = myMainWindow()
+    window = MyMainWindow()
 
     # run the gui
     window.show()
     app.exec()
     #
-    logging.info('App exited normally.')
+    main_logger.info('App exited normally.')
     # Code goes over here.
     return 0
 

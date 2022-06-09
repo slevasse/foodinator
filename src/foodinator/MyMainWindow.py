@@ -8,12 +8,12 @@ from custom_table_items import *
 from editRecipePopup import *
 from random import *
 import re
-from os.path import dirname, exists
-from os import makedirs
 
-# TODO when writting recipe and ingredients to txt, do not write the comment if the comment is empty
+# setup the logger
+main_window_logger = logging.getLogger('foodinator.MyMainWindow')
 
-class myMainWindow(QMainWindow):
+
+class MyMainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('ui/main_window.ui', self)
@@ -97,9 +97,6 @@ class myMainWindow(QMainWindow):
         self.pushButton_add_new_from_selection.clicked.connect(self.add_new_recipe_from_selection)
 
     def _setup_application(self):
-        # logger
-        logging.basicConfig(filename=AppDefaults().logging_path, format=AppDefaults().logging_format, level=logging.INFO)  # use INFO in release
-        logging.info('App Started.')
         # read parameter from setting file.
         self._load_application_settings()
         # application menu bar
@@ -121,6 +118,7 @@ class myMainWindow(QMainWindow):
     def _load_application_settings(self):
         # read parameter from setting file.
         # If we fail, notify the user and create a new one.
+        main_window_logger.info("loading application settings")
         try:
             with open(self.path_app_settings, "r") as read_file:
                 settings = json.load(read_file)
@@ -131,10 +129,11 @@ class myMainWindow(QMainWindow):
                 else:
                     self.is_cookbook_loaded = False
         except (OSError, IOError) as err:
-            logging.warning("In _load_application_settings, {0}".format(err))
+            main_window_logger.warning("In _load_application_settings, {0}".format(err))
             # write a new setting file
             self._write_application_settings()
-            logging.warning("In _load_application_settings, create a new application setting file at :" + AppDefaults().application_settings_path)
+            main_window_logger.warning("In _load_application_settings, create a new application setting file at :"
+                                       + AppDefaults().application_settings_path)
             self._showDialog_user_info("The setting file required to start the program was not found. Starting with default settings",
                                        "Application settings not found!")
 
@@ -148,13 +147,13 @@ class myMainWindow(QMainWindow):
             # set the value of autosave in the setting menue
             self.actionAuto_Save.setChecked(self.cookbook.auto_save)
         except TypeError as err:
-            logging.error("In '_open_cookbook', TypeError: {0}".format(err))
+            main_window_logger.error("In '_open_cookbook', TypeError: {0}".format(err))
             self._showDialog_user_info(
                 "The file provided does not have the right file extension. Please try again.",
                 "Cookbook file extension is wrong!")
             #self._set_cookbook_to_default()
         except (OSError, IOError) as err:
-            logging.error("In '_open_cookbook', {0}".format(err))
+            main_window_logger.error("In '_open_cookbook', {0}".format(err))
             self._showDialog_user_info("Cookbook file not found. If it is the first time you open this program, ignore this message.", "Cookbook file not found!")
             #self._set_cookbook_to_default()
 
@@ -182,8 +181,6 @@ class myMainWindow(QMainWindow):
 
     # Open an existing cookbook
     def action_open(self):
-        #filename = QFileDialog.getOpenFileName(self, 'Open cookbook file', '', "Cookbook file (*" + Definitions().cookbook_file_extention + ")")[0]
-        #filename = QFileDialog.getOpenFileName(self, 'Open cookbook file', '')[0]
         filename = QFileDialog.getExistingDirectory(self, 'Select cookbook location', '', options=QFileDialog.ShowDirsOnly)
         self._open_cookbook(filename)
         # update searchbar time scale
@@ -475,9 +472,7 @@ class myMainWindow(QMainWindow):
             self.update_time_search_scale()
             self.update_search_filter()
             self.update_search_form_display()
-            print("hello")
             self.update_recipe_table()
-
 
     def update_search_form_display(self):
         self.clear_all_filter_list()

@@ -5,14 +5,12 @@ from datetime import date, datetime
 import os
 import logging
 
-# instantiate the logger
-#process_results_logger = logging.getLogger('bgisimtool.process_results')
+# setup the logger
+food_classes_logger = logging.getLogger('foodinator.food_classes')
 
 #######################################
 ## Ingredient ##
 #######################################
-
-
 
 @dataclasses.dataclass
 class Ingredient:
@@ -243,7 +241,7 @@ class Recipe:
         return txt
 
 #######################################
-## Recipe ##
+## Recipe book ##
 #######################################
 
 

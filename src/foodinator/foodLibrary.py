@@ -1,10 +1,14 @@
 import dataclasses
 import csv
 import re
+import logging
 # TODO  lines of nothing in the selection of ingredients.
 # TODO update ingredient display to show ingredient by type
 # TODO display ingredient type when selecting them
 # TODO set the unit to a "prefered" unit defined in the csv table
+
+# setup the logger
+food_library_logger = logging.getLogger('foodinator.food_library')
 
 @dataclasses.dataclass
 class FoodLibrary:
@@ -23,6 +27,7 @@ class FoodLibrary:
         return self.library[key]
 
     def load_library(self):
+        food_library_logger.info("Loading default food library.")
         self.library.clear()
         with open(self.path, newline='', encoding='utf-8-sig') as csv_file:
             dialect = csv.Sniffer().sniff(csv_file.read(1024))
