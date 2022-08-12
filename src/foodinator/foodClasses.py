@@ -19,6 +19,7 @@ class Ingredient:
     unit: str = None
     food_item: dict = None
     comment: str = None
+    is_optional: bool = False
 
     @property
     def name(self):
@@ -41,14 +42,22 @@ class Ingredient:
         self.unit = dict_ingredient['unit']
         self.food_item = dict_ingredient['food_item']
         self.comment = dict_ingredient['comment']
+        # added this try statement to deal with a format change, might not be necessary anymore.
+        try:
+            self.is_optional = dict_ingredient['is_optional']
+        except KeyError:
+            food_classes_logger.warning("Missing 'is_optional' key from ingredient dict.")
+            self.is_optional = False
 
-    def to_txt(self, servings_ratio: float = None, comments: bool = True):
+    def to_txt(self, servings_ratio: float = None, comments: bool = False):
         if servings_ratio is None:
             txt = f"{self.name}: {self.quantity} {self.unit}."
         else:
             txt = f"{self.name}: {round(self.quantity * servings_ratio, 1)} ({self.quantity}) {self.unit}."
         if comments:
             txt += f"  Comment: {self.comment}"
+        if self.is_optional:
+            txt += f"   **(Optional)**"
         return txt
 
 #######################################
@@ -212,6 +221,7 @@ class Recipe:
         self.recipe_length = recipe_dict['recipe_length']
 
     def to_txt(self, comments: bool = True):
+        # TODO need upgrade to markdown
         txt = "--------------------\n"
         txt += self.name + "\n"
         txt += "--------------------\n"

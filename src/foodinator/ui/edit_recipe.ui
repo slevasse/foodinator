@@ -232,6 +232,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QCheckBox" name="checkBox_is_ingredient_optional">
+       <property name="text">
+        <string>Is optional</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QListWidget" name="listWidget_ingredient_search_result">
        <property name="editTriggers">
         <set>QAbstractItemView::DoubleClicked</set>

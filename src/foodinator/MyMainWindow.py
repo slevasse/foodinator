@@ -803,7 +803,8 @@ class MyMainWindow(QMainWindow):
                     break
             if test:
                 # if we get here, we did not find an already existing ingredient matching, thus we add one.
-                new_ingredient = Ingredient(ingredient.quantity * serving_ratio, ingredient.unit, ingredient.food_item, ingredient.comment)
+                new_ingredient = Ingredient(ingredient.quantity * serving_ratio, ingredient.unit, ingredient.food_item,
+                                            ingredient.comment, ingredient.is_optional)
                 self.aggregated_ingredient_list.append(new_ingredient)
 
     def round_aggregated_ingredient_quantities(self):
@@ -830,7 +831,8 @@ class MyMainWindow(QMainWindow):
             text_file.write(output_string)
             text_file.close()
 
-    def recipe_to_txt(self, recipe: Recipe, servings_ratio: float = None, comments: bool = True):
+    def recipe_to_txt(self, recipe: Recipe, servings_ratio: float = None):
+        # TODO This is redundant, it should be replaced by the totxt method from the recipe class directly
         # Write the header
         txt = f"# Recipe list \n"
         sorted_ingredient_list = self.make_sorted_ingredient_list(recipe.ingredient_list)

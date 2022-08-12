@@ -84,7 +84,7 @@ class EditRecipePopup(QWidget):
         self.ingredient_index = 0
         self.tableWidget_recipe_ingredient.clear()
         self.tableWidget_recipe_ingredient.setColumnCount(5)
-        self.tableWidget_recipe_ingredient.setHorizontalHeaderLabels(["Name", "Quantity", "Unit", "Type", "Season"])
+        self.tableWidget_recipe_ingredient.setHorizontalHeaderLabels(["Name", "Quantity", "Unit", "Type", "Is optional"])
         self.tableWidget_recipe_ingredient.horizontalHeader().setStretchLastSection(True)
         self.tableWidget_recipe_ingredient.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.insert_ingredients()
@@ -99,7 +99,7 @@ class EditRecipePopup(QWidget):
         self.tableWidget_recipe_ingredient.setItem(self.ingredient_index, 1, QTableWidgetItem(str(ingredient.quantity)))
         self.tableWidget_recipe_ingredient.setItem(self.ingredient_index, 2, QTableWidgetItem(str(ingredient.unit)))
         self.tableWidget_recipe_ingredient.setItem(self.ingredient_index, 3, QTableWidgetItem(str(ingredient.food_item['Type'])))
-        self.tableWidget_recipe_ingredient.setItem(self.ingredient_index, 4, QTableWidgetItem(str(ingredient.food_item['Season'])))
+        self.tableWidget_recipe_ingredient.setItem(self.ingredient_index, 4, QTableWidgetItem(str(ingredient.is_optional)))
         self.ingredient_index += 1
 
     def add_ingredient(self):
@@ -109,6 +109,7 @@ class EditRecipePopup(QWidget):
                 ingredient = Ingredient(quantity=self.doubleSpinBox_ingredient_quantity.value(),
                                         unit=self.comboBox_ingredient_unit.currentText(),
                                         food_item=item.food_item,
+                                        is_optional=self.checkBox_is_ingredient_optional.isChecked(),
                                         comment=self.lineEdit_ingredient_comment.text())
                 # if the ingredient already exist, just add the quanditie
                 if not self.does_ingredient_exit(item.food_item):
