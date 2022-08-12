@@ -740,7 +740,7 @@ class MyMainWindow(QMainWindow):
                 if item.mode == "manual":
                     continue
                 else:
-                    # if the search form is blanc
+                    # if the search form is blank
                     if len(item.search_form) == 0:
                         # if we have more than one recipe try to get new one, if we have one recipe only, do not do anything
                         if len(self.cookbook.recipe_list) > 1:
@@ -831,12 +831,11 @@ class MyMainWindow(QMainWindow):
             text_file.close()
 
     def recipe_to_txt(self, recipe: Recipe, servings_ratio: float = None, comments: bool = True):
-        # TODO move to recipe object
+        # Write the header
+        txt = f"# Recipe list \n"
         sorted_ingredient_list = self.make_sorted_ingredient_list(recipe.ingredient_list)
-        decorator_1 = "="
-        txt = (f"{decorator_1 * len(recipe.name)}\n"
-               f"{recipe.name}\n"
-               f"{decorator_1 * len(recipe.name)}\n"
+        txt += (
+               f"## {recipe.name}\n"
                f"Author          : {recipe.author}.\n"
                f"Difficulty      : {recipe.difficulty}.\n"
                f"Preparation time: {recipe.prep_time} minutes.\n"
@@ -846,15 +845,15 @@ class MyMainWindow(QMainWindow):
                f"Types           : {', '.join(recipe.types)}\n"
                f"Tags            : {', '.join(recipe.tags)}\n"
                f"\n"
-               f"-----------\n"
-               f"Ingredients\n"
-               f"-----------\n")
+               f"### Ingredients\n")
         for key in sorted_ingredient_list:
-            txt += f'{key}:\n'
+            txt += f'#### {key}:\n'
             for ing in sorted_ingredient_list[key]:
-
-                txt += f'    -{ing.to_txt(servings_ratio=servings_ratio, comments=comments)}\n'
-        txt += f"\n\n"
+                txt += f'* {ing.to_txt(servings_ratio=servings_ratio, comments=False)}\n'
+        # add the description
+        txt += "### Instructions"
+        txt += f"{recipe.instruction} \n"
+        txt += f"---\n\n"
         return txt
 
     def make_sorted_ingredient_list(self, ingredient_list: list) -> dict:
@@ -872,9 +871,7 @@ class MyMainWindow(QMainWindow):
             return
         # all ingredients aggregated
         sorted_ingredient_list = self.make_sorted_ingredient_list(self.aggregated_ingredient_list)
-        txt = (f"---\n"
-               f"# Ingredient list:\n"
-               f"---\n")
+        txt = (f"# Ingredient list:\n")
         for key in sorted_ingredient_list:
             txt += f'## {key}\n'
             for ing in sorted_ingredient_list[key]:
