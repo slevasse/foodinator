@@ -8,6 +8,7 @@ from custom_table_items import *
 from editRecipePopup import *
 from random import *
 import re
+import pyperclip  # for copy to clipboard function
 
 # setup the logger
 main_window_logger = logging.getLogger('foodinator.MyMainWindow')
@@ -110,6 +111,8 @@ class MyMainWindow(QMainWindow):
     def _setup_data_output(self):
         self.pushButton_recipee_to_file.clicked.connect(self.recipes_to_file)
         self.pushButton_export_ingredient_to_file.clicked.connect(self.ingredients_to_file)
+        self.pushButton_copy_ingredients_to_clipboard.clicked.connect(self.ingredients_to_clipboard)
+        self.pushButton_copy_recipes_to_clipboard.clicked.connect(self.recipes_to_clipoard)
 
 # ===============================================================================
 # Application settings and management
@@ -882,3 +885,24 @@ class MyMainWindow(QMainWindow):
         with open(path, "w") as text_file:
             text_file.write(txt)
             text_file.close()
+
+    def ingredients_to_clipboard(self):
+        # get a string with all ingredients
+        sorted_ingredient_list = self.make_sorted_ingredient_list(self.aggregated_ingredient_list)
+        txt = (f"# Ingredient list:\n")
+        for key in sorted_ingredient_list:
+            txt += f'## {key}\n'
+            for ing in sorted_ingredient_list[key]:
+                txt += f'- [ ] {ing.to_txt(comments=False)}\n'
+        pyperclip.copy(txt)
+
+    def recipes_to_clipoard(self):
+        # get all recipe in a string
+        output_string = ""
+        for row in range(self.tableWidget_meal_planner_recipes.rowCount()):
+            item = self.tableWidget_meal_planner_recipes.item(row, 0)
+            recipe = item.recipe
+            serving_ratio = item.servings / recipe.serve
+            output_string += self.recipe_to_txt(recipe, serving_ratio)
+        # send to clipboard
+        pyperclip.copy(output_string)

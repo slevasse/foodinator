@@ -793,7 +793,7 @@
        <item>
         <widget class="QTabWidget" name="tab">
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="tab_recipes">
           <attribute name="title">
@@ -965,8 +965,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>102</width>
-                <height>102</height>
+                <width>103</width>
+                <height>103</height>
                </rect>
               </property>
               <attribute name="label">
@@ -993,8 +993,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>102</width>
-                <height>102</height>
+                <width>103</width>
+                <height>103</height>
                </rect>
               </property>
               <attribute name="label">
@@ -1047,11 +1047,33 @@
                  </property>
                 </widget>
                </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_copy_ingredients_to_clipboard">
+                 <property name="text">
+                  <string>Copy ingredients to clipboard</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_copy_recipes_to_clipboard">
+                 <property name="text">
+                  <string>Copy recipes to clipboard</string>
+                 </property>
+                 <property name="flat">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </widget>
             </widget>
            </item>
           </layout>
+         </widget>
+         <widget class="QWidget" name="tab_foodlibrary_editor">
+          <attribute name="title">
+           <string>Food library</string>
+          </attribute>
          </widget>
         </widget>
        </item>

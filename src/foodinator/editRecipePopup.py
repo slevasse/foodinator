@@ -111,7 +111,7 @@ class EditRecipePopup(QWidget):
                                         food_item=item.food_item,
                                         is_optional=self.checkBox_is_ingredient_optional.isChecked(),
                                         comment=self.lineEdit_ingredient_comment.text())
-                # if the ingredient already exist, just add the quanditie
+                # if the ingredient already exist, just add the quantity
                 if not self.does_ingredient_exit(item.food_item):
                     self.insert_single_ingredient(ingredient)
                 # if it already exist we override
