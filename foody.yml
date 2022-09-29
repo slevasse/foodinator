@@ -1,0 +1,50 @@
+name: foody
+channels:
+  - defaults
+dependencies:
+  - ca-certificates=2021.4.13=hecd8cb5_1
+  - certifi=2020.12.5=py39hecd8cb5_0
+  - icu=58.2=h0a44026_3
+  - jpeg=9b=he5867d9_2
+  - libcxx=10.0.0=1
+  - libffi=3.3=hb1e8313_2
+  - libpng=1.6.37=ha441bb4_0
+  - ncurses=6.2=h0a44026_1
+  - openssl=1.1.1k=h9ed2024_0
+  - pyqt=5.9.2=py39h23ab428_6
+  - python=3.9.4=h88f2d9e_0
+  - qt=5.9.7=h468cd18_1
+  - readline=8.1=h9ed2024_0
+  - sip=4.19.13=py39h23ab428_0
+  - sqlite=3.35.4=hce871da_0
+  - tk=8.6.10=hb0a8c7a_0
+  - tzdata=2020f=h52ac0ba_0
+  - wheel=0.36.2=pyhd3eb1b0_0
+  - xz=5.2.5=h1de35cc_0
+  - zlib=1.2.11=h1de35cc_3
+  - pip:
+    - altgraph==0.17.2
+    - appdirs==1.4.4
+    - configupdater==3.0.1
+    - distlib==0.3.4
+    - filelock==3.4.2
+    - macholib==1.15.2
+    - packaging==21.3
+    - pip==22.2.2
+    - platformdirs==2.4.1
+    - pluggy==1.0.0
+    - py==1.11.0
+    - pyinstaller==4.8
+    - pyinstaller-hooks-contrib==2022.0
+    - pyparsing==3.0.7
+    - pyperclip==1.8.2
+    - pyscaffold==4.1.4
+    - setuptools==60.5.0
+    - setuptools-scm==6.4.2
+    - six==1.16.0
+    - toml==0.10.2
+    - tomli==2.0.0
+    - tomlkit==0.8.0
+    - tox==3.24.5
+    - virtualenv==20.13.0
+prefix: /Applications/anaconda3/envs/foody
